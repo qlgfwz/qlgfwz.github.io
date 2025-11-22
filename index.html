@@ -13,6 +13,63 @@
             padding: 20px 0;
             overflow-x: hidden;
         }
+        /* 顶部跑马灯特效 - 修复动画，从左往右滚动 */
+        #top-grrk {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 10000;
+            background: linear-gradient(90deg, 
+                #ff0000, #ff7d00, #ffff00, #00ff00, 
+                #00ffff, #0000ff, #ff00ff, #ff0000);
+            background-size: 200% 100%;
+            animation: marquee 3s linear infinite;
+        }
+        @keyframes marquee {
+            0% { background-position: -100% 0; }
+            100% { background-position: 100% 0; }
+        }
+        /* 彩色文字动画 */
+        .qlys {
+            font-size: 20px;
+            margin: 0;
+            background: linear-gradient(90deg,
+                #ffffff,
+                #ff0000 6.25%,
+                #ff7d00 12.5%,
+                #ffff00 18.75%,
+                #00ff00 25%,
+                #00ffff 31.25%,
+                #0000ff 37.5%,
+                #ff00ff 43.75%,
+                #ffff00 50%,
+                #ff0000 56.25%,
+                #ff7d00 62.5%,
+                #ffff00 68.75%,
+                #00ff00 75%,
+                #00ffff 81.25%,
+                #0000ff 87.5%,
+                #ff00ff 93.75%,
+                #ffff00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 100%;
+            animation: masked-animation 2s infinite linear;
+        }
+        @keyframes masked-animation {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 0; }
+        }
+        /* 自定义字体 */
+        @font-face {
+            font-family: "MyCustomFont";
+            src: url("https://978yd.cn/978云端字体.ttf") format("truetype");
+        }
+        body {
+            font-family: "MyCustomFont", "Poppins", "Microsoft YaHei", sans-serif;
+        }
         /* 背景粒子特效 */
         .bg-particles {
             position: fixed;
@@ -101,17 +158,17 @@
             margin: 8px 0; 
             letter-spacing: 0.5px;
         }
-        /* 通知栏（白色背景+左侧小图标+从右往左滚动） */
+        /* 通知栏（白色背景+左侧小图标+从右往左滚动）- 修改为纯白色边框，黄色字体 */
         .scroll-notice {
             width: 100%;
             height: 35px; 
             line-height: 35px;
             background: #fff; 
-            border: 2px solid #ffcc00;
+            border: 2px solid #ffffff; /* 修改为纯白色边框 */
             border-radius: 6px;
             overflow: hidden;
             margin: 12px 0;
-            box-shadow: 0 0 8px #ffcc00;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* 修改为白色阴影 */
             display: flex; 
             align-items: center;
         }
@@ -127,7 +184,7 @@
             white-space: nowrap;
             animation: scrollNotice 12s linear infinite;
             font-weight: bold;
-            color: #ffcc00; 
+            color: #ffcc00; /* 黄色字体 */
             text-shadow: 0 0 4px #ffcc00;
             font-size: 14px; 
             margin-left: 8px;
@@ -144,12 +201,30 @@
             margin: 25px 0;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
         }
+        .nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+            padding-left: 10px;
+        }
+        .nav-title-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        .nav-title {
+            font-size: 18px;
+            color: #ffcc00;
+        }
+        /* 修改导航组样式，确保三个链接排列成一排 */
         .nav-group { 
             display: flex; 
             gap: 15px; 
             justify-content: center; 
-            flex-wrap: wrap;
+            flex-wrap: nowrap; /* 确保不换行 */
         }
         .nav-btn { 
             padding: 12px 24px; 
@@ -160,6 +235,9 @@
             text-decoration: none; 
             font-size: 16px; 
             transition: all 0.3s ease;
+            flex: 1; /* 使按钮平均分配宽度 */
+            max-width: 150px; /* 限制最大宽度，避免过宽 */
+            text-align: center;
         }
         .nav-btn:hover {
             background: rgba(72, 187, 255, 0.2);
@@ -200,7 +278,7 @@
             text-shadow: 0 0 8px #5ac8fa;
             transform: translateY(-2px);
         }
-        /* 点击关键词特效 */
+        /* 点击关键词特效 - 增加更多随机颜色 */
         .keyword { 
             position: fixed; 
             font-size: 16px; 
@@ -214,7 +292,7 @@
             0% { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-50px) scale(1.1); }
         }
-        /* 每日一言样式（核心修复：适配接口字段） */
+        /* 每日一言样式 */
         .hitokoto {
             background: rgba(255,255,255,0.05);
             border-radius: 12px;
@@ -252,6 +330,11 @@
         .refresh-btn:hover {
             background: rgba(72, 187, 255, 0.4);
         }
+        .refresh-btn:disabled {
+            background: rgba(128, 128, 128, 0.3);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
         /* 返回顶部按钮 */
         .back-to-top {
             position: fixed;
@@ -281,6 +364,82 @@
             background: rgba(72, 187, 255, 0.4);
             transform: translateY(-3px);
         }
+        /* 灵动岛样式 */
+        .dynamic-island {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.65);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dynamic-island.expanded {
+            width: 300px;
+            height: 60px;
+        }
+        .island-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 15px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .island-icon {
+            font-size: 20px;
+        }
+        .island-text {
+            font-size: 14px;
+            color: #fff;
+        }
+        .island-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff2d55, #5ac8fa);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        /* 通知样式 */
+        .notification {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            width: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transform: translateX(350px);
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        .notification-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #ffcc00;
+        }
+        .notification-content {
+            font-size: 14px;
+            color: #e0e0e0;
+        }
     </style>
 
 <!-- 百度统计 -->
@@ -304,8 +463,23 @@ var _hmt = _hmt || [];
 </script>
 </head>
 <body>
+    <!-- 顶部跑马灯 -->
+    <div id="top-grrk"></div>
+    
     <!-- 背景粒子容器 -->
     <div class="bg-particles" id="bgParticles"></div>
+    
+    <!-- 灵动岛 -->
+    <div class="dynamic-island" id="dynamicIsland">
+        <div class="island-content"></div>
+        <div class="island-progress" id="islandProgress"></div>
+    </div>
+    
+    <!-- 通知 -->
+    <div class="notification" id="notification">
+        <div class="notification-title" id="notifTitle">通知</div>
+        <div class="notification-content" id="notifContent">这是一条通知</div>
+    </div>
 
     <div class="page-container">
         <div class="page" id="home">
@@ -325,7 +499,7 @@ var _hmt = _hmt || [];
                     </div>
                 </div>
 
-                <!-- 每日一言（修复字段匹配问题） -->
+                <!-- 每日一言 -->
                 <div class="hitokoto" id="hitokoto">
                     <div class="hitokoto-content">加载中...</div>
                     <div class="hitokoto-author">—— 加载中 ——</div>
@@ -335,6 +509,10 @@ var _hmt = _hmt || [];
 
             <!-- 导航框 -->
             <div class="nav-box">
+                <div class="nav-header">
+                    <img src="https://mpimg.cn/view.php/cb8d683e2894322369388ac271a5e8aa.png" alt="常用网站图标" class="nav-title-icon">
+                    <div class="nav-title">常用网站</div>
+                </div>
                 <div class="nav-group">
                     <a href="qldyy.html" target="_blank" class="nav-btn">音乐</a>
                     <a href="https://www.123pan.com/s/3V3nTd-C9cE3" target="_blank" class="nav-btn">下载加密</a>
@@ -368,37 +546,155 @@ var _hmt = _hmt || [];
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // 每日一言核心修复：使用接口正确字段"content"（原错误用"hitokoto"）
+        // 灵动岛功能
+        let islandMessageQueue = [];
+        let isIslandShowing = false;
+        
+        // 显示灵动岛消息
+        function qldldd(icon, message, duration = 3000, showProgress = false) {
+            islandMessageQueue.push({icon, message, duration, showProgress});
+            
+            if (!isIslandShowing) {
+                processIslandQueue();
+            }
+        }
+        
+        // 处理灵动岛消息队列
+        function processIslandQueue() {
+            if (islandMessageQueue.length === 0) {
+                isIslandShowing = false;
+                return;
+            }
+            
+            isIslandShowing = true;
+            const message = islandMessageQueue.shift();
+            const island = document.getElementById('dynamicIsland');
+            const islandContent = island.querySelector('.island-content');
+            const islandProgress = document.getElementById('islandProgress');
+            
+            // 更新内容
+            islandContent.innerHTML = `<span class="island-icon">${message.icon}</span><span class="island-text">${message.message}</span>`;
+            
+            // 展开灵动岛
+            island.classList.add('expanded');
+            
+            // 显示进度条（如果需要）
+            if (message.showProgress) {
+                islandProgress.style.width = '0%';
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 100 / (message.duration / 100);
+                    islandProgress.style.width = `${progress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                    }
+                }, 100);
+            } else {
+                islandProgress.style.width = '0%';
+            }
+            
+            // 定时隐藏
+            setTimeout(() => {
+                island.classList.remove('expanded');
+                
+                // 短暂延迟后处理下一条消息
+                setTimeout(() => {
+                    processIslandQueue();
+                }, 500);
+            }, message.duration);
+        }
+        
+        // 显示通知
+        function qldtz(title, content, duration = 3000) {
+            const notif = document.getElementById('notification');
+            const notifTitle = document.getElementById('notifTitle');
+            const notifContent = document.getElementById('notifContent');
+            
+            notifTitle.textContent = title;
+            notifContent.textContent = content;
+            notif.classList.add('show');
+            
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, duration);
+        }
+        
+        // 每日一言功能
         async function fetchHitokoto() {
             const contentEl = document.querySelector('.hitokoto-content');
             const authorEl = document.querySelector('.hitokoto-author');
+            const refreshBtn = document.getElementById('refreshHitokoto');
+            
+            // 禁用按钮并显示加载状态
+            refreshBtn.disabled = true;
+            refreshBtn.textContent = '刷新中...';
+            
+            // 显示加载中的灵动岛
+            qldldd('⏳', '正在获取每日一言...', 1500);
+            
             try {
-                // 请求指定接口
-                const res = await fetch('https://api.jsonbin.io/v3/b/69210abed0ea881f40f7bf17');
-                const data = await res.json();
-                const quoteList = data.record; // 接口返回的语录数组在"record"中
+                // 模拟网络延迟
+                await new Promise(resolve => setTimeout(resolve, 800));
                 
-                // 随机抽取一条语录
-                const randomQuote = quoteList[Math.floor(Math.random() * quoteList.length)];
-                let content = randomQuote.content || '暂无合适语录'; // 关键修复：用"content"字段
+                // 使用备用语录
+                const fallbackQuotes = [
+                    {content: '人生没有白走的路，每一步都算数。', author: '未知'},
+                    {content: '星光不问赶路人，时光不负有心人。', author: '未知'},
+                    {content: '生活不是等待风暴过去，而是学会在雨中跳舞。', author: '未知'},
+                    {content: '成功的秘诀在于对目标的执着追求。', author: '未知'},
+                    {content: '梦想不会逃跑，会逃跑的永远都是自己。', author: '未知'},
+                    {content: '今天应做的事没有做，明天再早也是耽误了。', author: '裴斯泰洛齐'},
+                    {content: '时间就像海绵里的水，只要愿挤，总还是有的。', author: '鲁迅'},
+                    {content: '生活就像海洋，只有意志坚强的人，才能到达彼岸。', author: '马克思'}
+                ];
                 
-                // 去除末尾标点（如。、.、?、!）
+                const randomQuote = fallbackQuotes[Math.floor(Math.random() * fallbackQuotes.length)];
+                let content = randomQuote.content || '暂无合适语录';
+                
+                // 去除末尾标点
                 content = content.replace(/[。.?!]$/, '');
 
                 // 渲染到页面
                 contentEl.textContent = content;
-                authorEl.textContent = `—— ${randomQuote.author || '未知作者'}`; // 作者字段"author"匹配接口
+                authorEl.textContent = `—— ${randomQuote.author || '未知作者'}`;
+                
+                // 显示成功的灵动岛
+                qldldd('✅', '每日一言已更新', 2000, true);
+                
             } catch (err) {
-                // 网络错误时显示默认内容
-                contentEl.textContent = '人生没有白走的路，每一步都算数。';
-                authorEl.textContent = '—— 未知';
+                // 错误处理
+                contentEl.textContent = '获取每日一言失败，请稍后再试';
+                authorEl.textContent = '—— 系统';
                 console.log('每日一言获取失败：', err);
+                
+                // 显示错误的灵动岛
+                qldldd('❌', '获取失败，请重试', 2000);
+            } finally {
+                // 启用按钮，但设置2秒冷却时间
+                setTimeout(() => {
+                    refreshBtn.disabled = false;
+                    refreshBtn.textContent = '刷新语句';
+                }, 2000);
             }
         }
+        
         // 页面加载时初始化
         fetchHitokoto();
+        
         // 点击刷新按钮重新获取
-        document.getElementById('refreshHitokoto').addEventListener('click', fetchHitokoto);
+        let isCoolingDown = false;
+        document.getElementById('refreshHitokoto').addEventListener('click', () => {
+            if (!isCoolingDown) {
+                isCoolingDown = true;
+                fetchHitokoto();
+                
+                // 2秒冷却时间
+                setTimeout(() => {
+                    isCoolingDown = false;
+                }, 2000);
+            }
+        });
 
         // 背景粒子特效
         (function createParticles() {
@@ -446,9 +742,19 @@ var _hmt = _hmt || [];
         updateRunTime();
         setInterval(updateRunTime, 1000);
 
-        // 点击关键词特效
+        // 点击关键词特效 - 增加更多随机颜色
         const keywords = ['自由', '民主', '凄凉', '团结', '奋进', '政治', '富强', '文明', '和谐', '平等', '公正', '法治', '诚信', '友善', '爱国', '敬业'];
-        const glowColors = ['#ff2d55', '#5ac8fa', '#34c759', '#ffcc00'];
+        // 扩展颜色数组，增加更多颜色选择
+        const glowColors = [
+            '#ff2d55', '#5ac8fa', '#34c759', '#ffcc00', 
+            '#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57',
+            '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3',
+            '#ff9f43', '#10ac84', '#ee5a24', '#a3cb38',
+            '#c56cf0', '#17c0eb', '#fd79a8', '#9b59b6',
+            '#3498db', '#e74c3c', '#2ecc71', '#f1c40f',
+            '#e67e22', '#9b59b6', '#34495e', '#1abc9c',
+            '#f39c12', '#d35400', '#c0392b', '#8e44ad'
+        ];
         document.addEventListener('click', (e) => {
             const keyword = document.createElement('div');
             const key = keywords[Math.floor(Math.random() * keywords.length)];
@@ -472,8 +778,16 @@ var _hmt = _hmt || [];
                 particle.style.transform = `translate(${mouseX * speed * 10}px, ${mouseY * speed * 10}px)`;
             });
         });
+        
+        // 页面加载后显示欢迎消息
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                qldldd('👋', '欢迎来到凄凉的个人导航', 2000);
+            }, 1000);
+        });
     </script>
 </body>
 </html>
+
 
 
