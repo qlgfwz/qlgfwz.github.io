@@ -248,6 +248,37 @@
             transform: scale(0.95);
             transition: transform 0.1s ease;
         }
+        /* 新增：个人档案上方的头像链接框 */
+        .profile-avatar-box {
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 15px rgba(72, 187, 255, 0.3);
+        }
+        .profile-avatar-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .profile-avatar-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
         /* 关于档案 */
         .profile { 
             margin-top: 30px; 
@@ -360,7 +391,7 @@
             opacity: 1;
             pointer-events: auto;
         }
-        .back-to-top:hover {
+              .back-to-top:hover {
             background: rgba(72, 187, 255, 0.4);
             transform: translateY(-3px);
         }
@@ -519,6 +550,121 @@ var _hmt = _hmt || [];
                     <a href="mydtg.html" target="_blank" class="nav-btn">本人TG</a>
                 </div>
             </div>
+
+        <!-- 调整后：匹配“圆形图居上+横版长方形+左彩色标签右介绍”的模块 -->
+<div class="profile-card">
+    <!-- 顶部圆形图（居中） -->
+    <div class="top-circle-avatar">
+        <img src="https://mpimg.cn/view.php/0d168dc792c3cd800c1c6d18ae1c85d1.png" alt="顶部圆形图" class="circle-avatar-img">
+    </div>
+
+    <!-- 横版长方形图（左右长、上下宽） -->
+    <div class="horizontal-rect-img">
+        <img id="randomProfileAvatar" alt="横版长方形图" class="rect-img">
+    </div>
+
+    <!-- 信息列表：左彩色标签 + 右介绍 -->
+    <div class="info-list">
+        <div class="info-row">
+            <span class="qlys">网名：</span>
+            <span class="info-content">凄凉</span>
+            <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
+        </div>
+        <div class="info-row">
+            <span class="qlys">专业：</span>
+            <span class="info-content">个人导航维护</span>
+            <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
+        </div>
+        <div class="info-row">
+            <span class="qlys">技能：</span>
+            <span class="info-content">网站搭建/资源整理</span>
+            <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
+        </div>
+        <div class="info-row">
+            <span class="qlys">标签：</span>
+            <span class="info-content">个人站长</span>
+            <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
+        </div>
+        <div class="info-row">
+            <span class="qlys">个人介绍：</span>
+            <span class="info-content">随便搞搞的导航站~</span>
+            <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
+        </div>
+    </div>
+</div>
+
+<!-- 配套CSS（添加到原<style>区域） -->
+<style>
+/* 卡片容器：整体居中+内边距 */
+.profile-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 25px 0;
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+
+/* 顶部圆形图（居中） */
+.top-circle-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    margin: 0 auto 15px; /* 居中+与下方图间距 */
+}
+.circle-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 横版长方形图（左右长、上下宽） */
+.horizontal-rect-img {
+    width: 100%;
+    height: 120px; /* 控制高度，实现“左右长、上下宽” */
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+.rect-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 信息列表：左彩色标签 + 右介绍 + 分行 */
+.info-list {
+    text-align: left;
+    padding: 0 10px;
+}
+.info-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #e0e0e0;
+}
+.qlys {
+    min-width: 80px; /* 固定标签宽度，避免挤在一起 */
+    font-size: 16px;
+}
+.info-content {
+    flex: 1;
+    margin-right: 10px;
+}
+.info-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+</style>
+
+         
 
             <div class="profile">
                 <h2 class="profile-title">关于档案</h2>
@@ -736,58 +882,120 @@ var _hmt = _hmt || [];
             const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-            document.getElementById('runTime').innerText = 
-                `网站已安全运行：${years}年${days}天${hours}时${minutes}分${seconds}秒`;
+                   document.getElementById('runTime').innerText = 
+
+            `网站已安全运行：${years}年${days}天${hours}时${minutes}分${seconds}秒`;
+
         }
+
         updateRunTime();
+
         setInterval(updateRunTime, 1000);
 
         // 点击关键词特效 - 增加更多随机颜色
+
         const keywords = ['自由', '民主', '凄凉', '团结', '奋进', '政治', '富强', '文明', '和谐', '平等', '公正', '法治', '诚信', '友善', '爱国', '敬业'];
+
         // 扩展颜色数组，增加更多颜色选择
+
         const glowColors = [
+
             '#ff2d55', '#5ac8fa', '#34c759', '#ffcc00', 
+
             '#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57',
+
             '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3',
+
             '#ff9f43', '#10ac84', '#ee5a24', '#a3cb38',
+
             '#c56cf0', '#17c0eb', '#fd79a8', '#9b59b6',
+
             '#3498db', '#e74c3c', '#2ecc71', '#f1c40f',
+
             '#e67e22', '#9b59b6', '#34495e', '#1abc9c',
+
             '#f39c12', '#d35400', '#c0392b', '#8e44ad'
+
         ];
+
         document.addEventListener('click', (e) => {
+
             const keyword = document.createElement('div');
+
             const key = keywords[Math.floor(Math.random() * keywords.length)];
+
             const color = glowColors[Math.floor(Math.random() * glowColors.length)];
+
             keyword.className = 'keyword';
+
             keyword.textContent = key;
+
             keyword.style.color = color;
+
             keyword.style.left = `${e.clientX}px`;
+
             keyword.style.top = `${e.clientY}px`;
+
             document.body.appendChild(keyword);
+
             setTimeout(() => keyword.remove(), 1500);
+
         });
 
         // 粒子背景鼠标跟随效果
+
         const particles = document.querySelectorAll('#bgParticles div');
+
         document.addEventListener('mousemove', (e) => {
+
             const mouseX = e.clientX / window.innerWidth - 0.5;
+
             const mouseY = e.clientY / window.innerHeight - 0.5;
+
             particles.forEach(particle => {
+
                 const speed = particle.style.animationDuration.replace('s', '') * 0.1;
+
                 particle.style.transform = `translate(${mouseX * speed * 10}px, ${mouseY * speed * 10}px)`;
+
             });
+
         });
+
         
+
         // 页面加载后显示欢迎消息
+
         window.addEventListener('load', () => {
+
             setTimeout(() => {
+
                 qldldd('👋', '欢迎来到凄凉的个人导航', 2000);
+
             }, 1000);
+
         });
+
+        // 随机加载头像图片
+
+        const avatarImages = [
+
+            'https://mpimg.cn/view.php/b9a1ec20426a7bf6541f1e9cb7c4f676.jpeg',
+
+            'https://mpimg.cn/view.php/dc2b6df628c3b385e1b259a141eb64fe.jpeg',
+
+            'https://mpimg.cn/view.php/8419f89ad28f481eee21b5ea04e3ce82.jpeg',
+
+            'https://mpimg.cn/view.php/f88fd46b0819eed1f31eef516e0c5061.jpeg'
+
+        ];
+
+        const randomAvatar = avatarImages[Math.floor(Math.random() * avatarImages.length)];
+
+        document.getElementById('randomProfileAvatar').src = randomAvatar;
+
     </script>
+
 </body>
+
 </html>
-
-
-
