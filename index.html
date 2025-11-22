@@ -214,7 +214,7 @@
             0% { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-50px) scale(1.1); }
         }
-        /* 每日一言样式 */
+        /* 每日一言样式（核心修复：适配接口字段） */
         .hitokoto {
             background: rgba(255,255,255,0.05);
             border-radius: 12px;
@@ -282,6 +282,26 @@
             transform: translateY(-3px);
         }
     </style>
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?272119dae6cce7e3ded69c4a57f828d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N13ZH72VV9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N13ZH72VV9');
+</script>
 </head>
 <body>
     <!-- 背景粒子容器 -->
@@ -292,20 +312,20 @@
             <div class="home-header">
                 <div class="avatar-wrapper">
                     <div class="color-halo"></div>
-                    
+                    <img src="https://mpimg.cn/view.php/0d168dc792c3cd800c1c6d18ae1c85d1.png" alt="个人头像" class="avatar">
                 </div>
                 <h1 class="home-title">凄凉的个人导航</h1>
                 <div class="run-time" id="runTime">此网站已安全运行：0年0天0时0分0秒</div>
                 
                 <!-- 通知栏 -->
                 <div class="scroll-notice">
-                    
+                    <img src="https://mpimg.cn/view.php/8b46979cfcddd86932fef6a5c1f88aac.jpg" alt="通知图标" class="notice-icon">
                     <div class="scroll-notice-content">
                         防止失联和查收重要通知，请亲们务必收藏此发布页！~
                     </div>
                 </div>
 
-                <!-- 每日一言 -->
+                <!-- 每日一言（修复字段匹配问题） -->
                 <div class="hitokoto" id="hitokoto">
                     <div class="hitokoto-content">加载中...</div>
                     <div class="hitokoto-author">—— 加载中 ——</div>
@@ -348,24 +368,33 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // 每日一言功能（使用本地语录，避免跨域问题）
-        const hitokotoQuotes = [
-            { content: "人生没有白走的路，每一步都算数。", author: "未知" },
-            { content: "代码如诗，逻辑如画，编程是一门艺术", author: "程序员" },
-            { content: "加密不是万能的，但没有加密是万万不能的", author: "安全专家" },
-            { content: "技术的价值在于解决实际问题", author: "技术爱好者" },
-            { content: "保持学习，保持进步，技术永无止境", author: "学习者" }
-        ];
-        
-        function fetchHitokoto() {
+        // 每日一言核心修复：使用接口正确字段"content"（原错误用"hitokoto"）
+        async function fetchHitokoto() {
             const contentEl = document.querySelector('.hitokoto-content');
             const authorEl = document.querySelector('.hitokoto-author');
-            const randomQuote = hitokotoQuotes[Math.floor(Math.random() * hitokotoQuotes.length)];
-            
-            contentEl.textContent = randomQuote.content;
-            authorEl.textContent = `—— ${randomQuote.author}`;
+            try {
+                // 请求指定接口
+                const res = await fetch('https://api.jsonbin.io/v3/b/69210abed0ea881f40f7bf17');
+                const data = await res.json();
+                const quoteList = data.record; // 接口返回的语录数组在"record"中
+                
+                // 随机抽取一条语录
+                const randomQuote = quoteList[Math.floor(Math.random() * quoteList.length)];
+                let content = randomQuote.content || '暂无合适语录'; // 关键修复：用"content"字段
+                
+                // 去除末尾标点（如。、.、?、!）
+                content = content.replace(/[。.?!]$/, '');
+
+                // 渲染到页面
+                contentEl.textContent = content;
+                authorEl.textContent = `—— ${randomQuote.author || '未知作者'}`; // 作者字段"author"匹配接口
+            } catch (err) {
+                // 网络错误时显示默认内容
+                contentEl.textContent = '人生没有白走的路，每一步都算数。';
+                authorEl.textContent = '—— 未知';
+                console.log('每日一言获取失败：', err);
+            }
         }
-        
         // 页面加载时初始化
         fetchHitokoto();
         // 点击刷新按钮重新获取
@@ -446,4 +475,5 @@
     </script>
 </body>
 </html>
+
 
