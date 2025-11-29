@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -119,6 +120,10 @@
             background: var(--success);
         }
         
+        .btn-danger {
+            background: var(--error);
+        }
+        
         textarea {
             width: 100%;
             height: 300px;
@@ -212,6 +217,11 @@
             color: var(--dark);
         }
         
+        .delete-btn {
+            background: var(--error);
+            color: white;
+        }
+        
         .status {
             padding: 12px 20px;
             border-radius: 10px;
@@ -245,44 +255,40 @@
     <div class="container">
         <div class="header">
             <h1><i class="fas fa-code"></i> HTML代码托管工具</h1>
-            <p>使用姓名保存和找回您的HTML代码</p>
+            <p>保存、分享和管理您的HTML代码</p>
         </div>
         
         <div class="content">
             <div class="form-group">
-                <label for="user-name">您的姓名</label>
-                <input type="text" id="user-name" placeholder="输入您的姓名（不可重复）">
+                <label for="user-name">您的姓名（可选）</label>
+                <input type="text" id="user-name" placeholder="输入您的姓名（可选）">
             </div>
             
-            <div class="editor-panel">
-                <textarea id="html-code" placeholder="在此输入HTML代码..."></textarea>
-                <input type="text" id="share-url" class="url-display" readonly placeholder="生成的可分享链接将显示在这里...">
-                
-                <div class="controls">
-                    <button id="generate-btn" class="btn btn-success">
-                        <i class="fas fa-bolt"></i> 生成链接
-                    </button>
-                    <button id="copy-btn" class="btn">
-                        <i class="fas fa-copy"></i> 复制链接
-                    </button>
-                    <button id="open-btn" class="btn">
-                        <i class="fas fa-external-link-alt"></i> 打开链接
-                    </button>
-                    <button id="save-btn" class="btn">
-                        <i class="fas fa-save"></i> 保存代码
-                    </button>
-                    <button id="download-btn" class="btn btn-secondary">
-                        <i class="fas fa-download"></i> 下载HTML
-                    </button>
-                </div>
-                <div id="status" class="status"></div>
-            </div>
+            <textarea id="html-code" placeholder="在此输入HTML代码..."></textarea>
+            <input type="text" id="share-url" class="url-display" readonly placeholder="生成的可分享链接将显示在这里...">
             
-            <div class="history-panel">
-                <h2>历史记录</h2>
-                <div id="history-list" class="history-list">
-                    <!-- 历史记录将在这里动态生成 -->
-                </div>
+            <div class="controls">
+                <button id="generate-btn" class="btn btn-success">
+                    <i class="fas fa-bolt"></i> 生成链接
+                </button>
+                <button id="copy-btn" class="btn">
+                    <i class="fas fa-copy"></i> 复制链接
+                </button>
+                <button id="open-btn" class="btn">
+                    <i class="fas fa-external-link-alt"></i> 打开链接
+                </button>
+                <button id="save-btn" class="btn">
+                    <i class="fas fa-save"></i> 保存代码
+                </button>
+                <button id="download-btn" class="btn btn-secondary">
+                    <i class="fas fa-download"></i> 下载HTML
+                </button>
+            </div>
+            <div id="status" class="status"></div>
+            
+            <h2>历史记录</h2>
+            <div id="history-list" class="history-list">
+                <!-- 历史记录将在这里动态生成 -->
             </div>
         </div>
     </div>
@@ -299,6 +305,14 @@
             const shareUrl = document.getElementById('share-url');
             const status = document.getElementById('status');
             const historyList = document.getElementById('history-list');
+            
+            // 初始化本地存储
+            if (!localStorage.getItem('htmlCodes')) {
+                localStorage.setItem('htmlCodes', JSON.stringify([]));
+            }
+            
+            // 加载历史记录
+            loadHistory();
             
             // 生成链接
             generateBtn.addEventListener('click', function() {
@@ -340,13 +354,8 @@
             
             // 保存代码
             saveBtn.addEventListener('click', function() {
-                const name = userName.value.trim();
+                const name = userName.value.trim() || '匿名用户';
                 const htmlContent = htmlCode.value;
-                
-                if (!name) {
-                    showStatus('请输入您的姓名', 'error');
-                    return;
-                }
                 
                 if (!htmlContent.trim()) {
                     showStatus('请输入HTML代码', 'error');
@@ -358,30 +367,21 @@
                     return;
                 }
                 
-                // 检查姓名是否已存在
-                const userCodes = JSON.parse(localStorage.getItem('userCodes') || '{}');
-                if (userCodes[name] && userCodes[name].length > 0) {
-                    showStatus('该姓名已被使用，请使用其他姓名', 'error');
-                    return;
-                }
-                
                 // 保存代码
-                if (!userCodes[name]) {
-                    userCodes[name] = [];
-                }
-                
-                userCodes[name].push({
+                const htmlCodes = JSON.parse(localStorage.getItem('htmlCodes'));
+                htmlCodes.unshift({
                     id: Date.now(),
+                    name: name,
                     content: htmlContent,
                     url: shareUrl.value,
                     title: `代码片段 ${new Date().toLocaleString()}`,
                     timestamp: new Date().toISOString()
                 });
                 
-                localStorage.setItem('userCodes', JSON.stringify(userCodes));
+                localStorage.setItem('htmlCodes', JSON.stringify(htmlCodes));
                 
                 showStatus('代码保存成功！', 'success');
-                loadUserHistory(name);
+                loadHistory();
             });
             
             // 下载HTML文件
@@ -405,25 +405,24 @@
                 showStatus('文件下载成功！', 'success');
             });
             
-            // 加载用户历史记录
-            function loadUserHistory(name) {
-                const userCodes = JSON.parse(localStorage.getItem('userCodes') || '{}');
-                const codes = userCodes[name] || [];
+            // 加载历史记录
+            function loadHistory() {
+                const htmlCodes = JSON.parse(localStorage.getItem('htmlCodes')) || [];
                 
                 historyList.innerHTML = '';
                 
-                if (codes.length === 0) {
+                if (htmlCodes.length === 0) {
                     historyList.innerHTML = '<div class="history-item">暂无历史记录</div>';
                     return;
                 }
                 
-                codes.forEach(code => {
+                htmlCodes.forEach(code => {
                     const item = document.createElement('div');
                     item.className = 'history-item';
                     item.innerHTML = `
                         <div>
                             <div class="title">${code.title}</div>
-                            <div class="time">${new Date(code.timestamp).toLocaleString()}</div>
+                            <div class="time">${code.name} - ${new Date(code.timestamp).toLocaleString()}</div>
                         </div>
                         <div class="actions">
                             <button class="action-btn view-btn" data-url="${code.url}">
@@ -434,6 +433,9 @@
                             </button>
                             <button class="action-btn download-btn" data-content="${encodeURIComponent(code.content)}">
                                 <i class="fas fa-download"></i> 下载
+                            </button>
+                            <button class="action-btn delete-btn" data-id="${code.id}">
+                                <i class="fas fa-trash"></i> 删除
                             </button>
                         </div>
                     `;
@@ -450,13 +452,14 @@
                 document.querySelectorAll('.edit-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const codeId = parseInt(this.dataset.id);
-                        const userCodes = JSON.parse(localStorage.getItem('userCodes'));
-                        const codes = userCodes[name];
-                        const code = codes.find(c => c.id === codeId);
+                        const htmlCodes = JSON.parse(localStorage.getItem('htmlCodes'));
+                        const code = htmlCodes.find(c => c.id === codeId);
                         
                         if (code) {
                             htmlCode.value = code.content;
                             shareUrl.value = code.url;
+                            userName.value = code.name;
+                            
                             showStatus('代码已加载到编辑器', 'success');
                         }
                     });
@@ -476,6 +479,19 @@
                         URL.revokeObjectURL(url);
                         
                         showStatus('文件下载成功！', 'success');
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const codeId = parseInt(this.dataset.id);
+                        const htmlCodes = JSON.parse(localStorage.getItem('htmlCodes'));
+                        const updatedCodes = htmlCodes.filter(c => c.id !== codeId);
+                        
+                        localStorage.setItem('htmlCodes', JSON.stringify(updatedCodes));
+                        loadHistory();
+                        
+                        showStatus('记录已删除', 'success');
                     });
                 });
             }
@@ -520,16 +536,6 @@ ${htmlContent}
                     default: return 'info-circle';
                 }
             }
-            
-            // 监听姓名输入变化
-            userName.addEventListener('input', function() {
-                const name = this.value.trim();
-                if (name) {
-                    loadUserHistory(name);
-                } else {
-                    historyList.innerHTML = '<div class="history-item">请输入姓名查看历史记录</div>';
-                }
-            });
         });
     </script>
 </body>
