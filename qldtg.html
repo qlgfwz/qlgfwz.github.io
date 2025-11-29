@@ -65,20 +65,8 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
         
-        .auth-panel {
+        .content {
             padding: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .auth-form {
-            width: 100%;
-            max-width: 500px;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .form-group {
@@ -116,8 +104,6 @@
             align-items: center;
             gap: 8px;
             transition: var(--transition);
-            width: 100%;
-            justify-content: center;
         }
         
         .btn:hover {
@@ -131,14 +117,6 @@
         
         .btn-success {
             background: var(--success);
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .editor-panel {
-            padding: 30px;
         }
         
         textarea {
@@ -261,117 +239,49 @@
             color: #721c24;
             border-left: 4px solid var(--error);
         }
-        
-        .tab-container {
-            display: flex;
-            border-bottom: 2px solid var(--primary-light);
-            margin-bottom: 20px;
-        }
-        
-        .tab {
-            padding: 12px 20px;
-            cursor: pointer;
-            font-weight: 600;
-            border-bottom: 3px solid transparent;
-            transition: var(--transition);
-        }
-        
-        .tab.active {
-            border-bottom-color: var(--primary);
-            color: var(--primary);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1><i class="fas fa-code"></i> HTML代码托管工具</h1>
-            <p>安全存储和分享您的HTML代码</p>
+            <p>使用姓名保存和找回您的HTML代码</p>
         </div>
         
-        <!-- 登录/注册面板 -->
-        <div id="auth-panel" class="auth-panel">
-            <div class="auth-form">
-                <div id="login-form">
-                    <h2>登录</h2>
-                    <div class="form-group">
-                        <label for="login-qq">QQ号</label>
-                        <input type="text" id="login-qq" placeholder="请输入您的QQ号">
-                    </div>
-                    <div class="form-group">
-                        <label for="login-password">密码</label>
-                        <input type="password" id="login-password" placeholder="请输入密码">
-                    </div>
-                    <button id="login-btn" class="btn">登录</button>
-                    <p style="text-align: center; margin-top: 15px;">还没有账号？<a href="#" id="show-register">立即注册</a></p>
-                </div>
+        <div class="content">
+            <div class="form-group">
+                <label for="user-name">您的姓名</label>
+                <input type="text" id="user-name" placeholder="输入您的姓名（不可重复）">
+            </div>
+            
+            <div class="editor-panel">
+                <textarea id="html-code" placeholder="在此输入HTML代码..."></textarea>
+                <input type="text" id="share-url" class="url-display" readonly placeholder="生成的可分享链接将显示在这里...">
                 
-                <div id="register-form" class="hidden">
-                    <h2>注册</h2>
-                    <div class="form-group">
-                        <label for="register-qq">QQ号</label>
-                        <input type="text" id="register-qq" placeholder="请输入您的QQ号">
-                    </div>
-                    <div class="form-group">
-                        <label for="register-password">密码</label>
-                        <input type="password" id="register-password" placeholder="请输入密码">
-                    </div>
-                    <div class="form-group">
-                        <label for="register-confirm">确认密码</label>
-                        <input type="password" id="register-confirm" placeholder="请再次输入密码">
-                    </div>
-                    <button id="register-btn" class="btn btn-success">注册</button>
-                    <p style="text-align: center; margin-top: 15px;">已有账号？<a href="#" id="show-login">立即登录</a></p>
+                <div class="controls">
+                    <button id="generate-btn" class="btn btn-success">
+                        <i class="fas fa-bolt"></i> 生成链接
+                    </button>
+                    <button id="copy-btn" class="btn">
+                        <i class="fas fa-copy"></i> 复制链接
+                    </button>
+                    <button id="open-btn" class="btn">
+                        <i class="fas fa-external-link-alt"></i> 打开链接
+                    </button>
+                    <button id="save-btn" class="btn">
+                        <i class="fas fa-save"></i> 保存代码
+                    </button>
+                    <button id="download-btn" class="btn btn-secondary">
+                        <i class="fas fa-download"></i> 下载HTML
+                    </button>
                 </div>
-            </div>
-        </div>
-        
-        <!-- 主内容面板 (登录后显示) -->
-        <div id="main-panel" class="hidden">
-            <div class="tab-container">
-                <div class="tab active" data-tab="editor">编辑器</div>
-                <div class="tab" data-tab="history">历史记录</div>
+                <div id="status" class="status"></div>
             </div>
             
-            <div id="editor-tab" class="tab-content active">
-                <div class="editor-panel">
-                    <textarea id="html-code" placeholder="在此输入HTML代码..."></textarea>
-                    <input type="text" id="share-url" class="url-display" readonly placeholder="生成的可分享链接将显示在这里...">
-                    
-                    <div class="controls">
-                        <button id="generate-btn" class="btn btn-success">
-                            <i class="fas fa-bolt"></i> 生成链接
-                        </button>
-                        <button id="copy-btn" class="btn">
-                            <i class="fas fa-copy"></i> 复制链接
-                        </button>
-                        <button id="open-btn" class="btn">
-                            <i class="fas fa-external-link-alt"></i> 打开链接
-                        </button>
-                        <button id="save-btn" class="btn">
-                            <i class="fas fa-save"></i> 保存代码
-                        </button>
-                        <button id="download-btn" class="btn btn-secondary">
-                            <i class="fas fa-download"></i> 下载HTML
-                        </button>
-                    </div>
-                    <div id="status" class="status"></div>
-                </div>
-            </div>
-            
-            <div id="history-tab" class="tab-content">
-                <div class="editor-panel">
-                    <div id="history-list" class="history-list">
-                        <!-- 历史记录将在这里动态生成 -->
-                    </div>
+            <div class="history-panel">
+                <h2>历史记录</h2>
+                <div id="history-list" class="history-list">
+                    <!-- 历史记录将在这里动态生成 -->
                 </div>
             </div>
         </div>
@@ -379,21 +289,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // DOM元素
-            const authPanel = document.getElementById('auth-panel');
-            const mainPanel = document.getElementById('main-panel');
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            const showRegister = document.getElementById('show-register');
-            const showLogin = document.getElementById('show-login');
-            const loginBtn = document.getElementById('login-btn');
-            const registerBtn = document.getElementById('register-btn');
-            const loginQq = document.getElementById('login-qq');
-            const loginPassword = document.getElementById('login-password');
-            const registerQq = document.getElementById('register-qq');
-            const registerPassword = document.getElementById('register-password');
-            const registerConfirm = document.getElementById('register-confirm');
-            
+            const userName = document.getElementById('user-name');
             const htmlCode = document.getElementById('html-code');
             const generateBtn = document.getElementById('generate-btn');
             const copyBtn = document.getElementById('copy-btn');
@@ -403,125 +299,6 @@
             const shareUrl = document.getElementById('share-url');
             const status = document.getElementById('status');
             const historyList = document.getElementById('history-list');
-            
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            // 当前用户
-            let currentUser = null;
-            
-            // 初始化本地存储
-            if (!localStorage.getItem('users')) {
-                localStorage.setItem('users', JSON.stringify({}));
-            }
-            
-            if (!localStorage.getItem('userCodes')) {
-                localStorage.setItem('userCodes', JSON.stringify({}));
-            }
-            
-            // 切换登录/注册表单
-            showRegister.addEventListener('click', function(e) {
-                e.preventDefault();
-                loginForm.classList.add('hidden');
-                registerForm.classList.remove('hidden');
-            });
-            
-            showLogin.addEventListener('click', function(e) {
-                e.preventDefault();
-                registerForm.classList.add('hidden');
-                loginForm.classList.remove('hidden');
-            });
-            
-            // 注册功能
-            registerBtn.addEventListener('click', function() {
-                const qq = registerQq.value.trim();
-                const password = registerPassword.value;
-                const confirm = registerConfirm.value;
-                
-                // 验证QQ号格式
-                if (!isValidQQ(qq)) {
-                    showStatus('请输入有效的QQ号', 'error');
-                    return;
-                }
-                
-                // 验证密码
-                if (password.length < 6) {
-                    showStatus('密码长度不能少于6位', 'error');
-                    return;
-                }
-                
-                if (password !== confirm) {
-                    showStatus('两次输入的密码不一致', 'error');
-                    return;
-                }
-                
-                // 检查QQ号是否已注册
-                const users = JSON.parse(localStorage.getItem('users'));
-                if (users[qq]) {
-                    showStatus('该QQ号已注册', 'error');
-                    return;
-                }
-                
-                // 注册用户
-                users[qq] = {
-                    password: password,
-                    createdAt: new Date().toISOString()
-                };
-                
-                localStorage.setItem('users', JSON.stringify(users));
-                
-                // 初始化用户代码存储
-                const userCodes = JSON.parse(localStorage.getItem('userCodes'));
-                userCodes[qq] = [];
-                localStorage.setItem('userCodes', JSON.stringify(userCodes));
-                
-                showStatus('注册成功！请登录', 'success');
-                registerForm.classList.add('hidden');
-                loginForm.classList.remove('hidden');
-            });
-            
-            // 登录功能
-            loginBtn.addEventListener('click', function() {
-                const qq = loginQq.value.trim();
-                const password = loginPassword.value;
-                
-                // 验证QQ号格式
-                if (!isValidQQ(qq)) {
-                    showStatus('请输入有效的QQ号', 'error');
-                    return;
-                }
-                
-                // 验证用户
-                const users = JSON.parse(localStorage.getItem('users'));
-                if (!users[qq]) {
-                    showStatus('该QQ号未注册', 'error');
-                    return;
-                }
-                
-                if (users[qq].password !== password) {
-                    showStatus('密码错误', 'error');
-                    return;
-                }
-                
-                // 登录成功
-                currentUser = qq;
-                authPanel.classList.add('hidden');
-                mainPanel.classList.remove('hidden');
-                
-                // 加载用户历史记录
-                loadUserHistory();
-            });
-            
-            // 切换标签页
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    
-                    this.classList.add('active');
-                    document.getElementById(`${this.dataset.tab}-tab`).classList.add('active');
-                });
-            });
             
             // 生成链接
             generateBtn.addEventListener('click', function() {
@@ -563,7 +340,14 @@
             
             // 保存代码
             saveBtn.addEventListener('click', function() {
+                const name = userName.value.trim();
                 const htmlContent = htmlCode.value;
+                
+                if (!name) {
+                    showStatus('请输入您的姓名', 'error');
+                    return;
+                }
+                
                 if (!htmlContent.trim()) {
                     showStatus('请输入HTML代码', 'error');
                     return;
@@ -574,9 +358,19 @@
                     return;
                 }
                 
-                // 保存到用户历史记录
-                const userCodes = JSON.parse(localStorage.getItem('userCodes'));
-                userCodes[currentUser].unshift({
+                // 检查姓名是否已存在
+                const userCodes = JSON.parse(localStorage.getItem('userCodes') || '{}');
+                if (userCodes[name] && userCodes[name].length > 0) {
+                    showStatus('该姓名已被使用，请使用其他姓名', 'error');
+                    return;
+                }
+                
+                // 保存代码
+                if (!userCodes[name]) {
+                    userCodes[name] = [];
+                }
+                
+                userCodes[name].push({
                     id: Date.now(),
                     content: htmlContent,
                     url: shareUrl.value,
@@ -587,7 +381,7 @@
                 localStorage.setItem('userCodes', JSON.stringify(userCodes));
                 
                 showStatus('代码保存成功！', 'success');
-                loadUserHistory();
+                loadUserHistory(name);
             });
             
             // 下载HTML文件
@@ -612,9 +406,9 @@
             });
             
             // 加载用户历史记录
-            function loadUserHistory() {
-                const userCodes = JSON.parse(localStorage.getItem('userCodes'));
-                const codes = userCodes[currentUser] || [];
+            function loadUserHistory(name) {
+                const userCodes = JSON.parse(localStorage.getItem('userCodes') || '{}');
+                const codes = userCodes[name] || [];
                 
                 historyList.innerHTML = '';
                 
@@ -657,18 +451,12 @@
                     btn.addEventListener('click', function() {
                         const codeId = parseInt(this.dataset.id);
                         const userCodes = JSON.parse(localStorage.getItem('userCodes'));
-                        const code = userCodes[currentUser].find(c => c.id === codeId);
+                        const codes = userCodes[name];
+                        const code = codes.find(c => c.id === codeId);
                         
                         if (code) {
                             htmlCode.value = code.content;
                             shareUrl.value = code.url;
-                            
-                            // 切换到编辑器标签
-                            tabs.forEach(t => t.classList.remove('active'));
-                            tabContents.forEach(c => c.classList.remove('active'));
-                            document.querySelector('.tab[data-tab="editor"]').classList.add('active');
-                            document.getElementById('editor-tab').classList.add('active');
-                            
                             showStatus('代码已加载到编辑器', 'success');
                         }
                     });
@@ -711,11 +499,6 @@ ${htmlContent}
                 return `data:text/html;charset=utf-8,${encodeURIComponent(fullHtml)}`;
             }
             
-            // 验证QQ号格式
-            function isValidQQ(qq) {
-                return /^[1-9][0-9]{4,11}$/.test(qq);
-            }
-            
             // 显示状态消息
             function showStatus(message, type) {
                 status.innerHTML = `<i class="fas fa-${getStatusIcon(type)}"></i> ${message}`;
@@ -737,8 +520,19 @@ ${htmlContent}
                     default: return 'info-circle';
                 }
             }
+            
+            // 监听姓名输入变化
+            userName.addEventListener('input', function() {
+                const name = this.value.trim();
+                if (name) {
+                    loadUserHistory(name);
+                } else {
+                    historyList.innerHTML = '<div class="history-item">请输入姓名查看历史记录</div>';
+                }
+            });
         });
     </script>
 </body>
 </html>
+
 
