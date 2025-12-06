@@ -40,6 +40,10 @@
             background-color: #dff0d8;
             color: #3c763d;
         }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
     </style>
 </head>
 <body>
@@ -58,22 +62,22 @@
     <div id="result"></div>
     
     <script>
-        // 卡密列表
+        // 修复：数组元素添加逗号分隔
         const cardKeys = [
-"mmrERO"
-"fsU4sf"
-"c67ge6"
-"jyw5ru"
-"mMOgJB"
-"m612ys"
-"3tDnf3"
-"CYgFG2"
-"4z7hEF"
+"mmrERO",
+"fsU4sf",
+"c67ge6",
+"jyw5ru",
+"mMOgJB",
+"m612ys",
+"3tDnf3",
+"CYgFG2",
+"4z7hEF",
 "8gnugz"
         ];
         
         // 已使用的卡密
-        const usedKeys = [];
+        let usedKeys = [];
         
         function purchaseCard() {
             const contact = document.getElementById('contact').value;
@@ -105,19 +109,26 @@
         function showResult(message, isSuccess) {
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = message;
-            resultDiv.className = isSuccess ? 'success' : '';
+            // 区分成功和失败样式
+            resultDiv.className = isSuccess ? 'success' : 'error';
             resultDiv.style.display = 'block';
+            // 3秒后自动隐藏提示
+            setTimeout(() => {
+                resultDiv.style.display = 'none';
+            }, 3000);
         }
         
         // 页面加载时从本地存储恢复已使用的卡密
         window.onload = function() {
             const savedUsedKeys = localStorage.getItem('usedCardKeys');
             if (savedUsedKeys) {
-                usedKeys.push(...JSON.parse(savedUsedKeys));
+                // 修复：直接赋值而非push，避免重复存储
+                usedKeys = JSON.parse(savedUsedKeys);
             }
         };
     </script>
 </body>
 </html>
+
 
 
