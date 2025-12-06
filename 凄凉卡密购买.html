@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡密购买系统</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+    </style>
+</head>
+<body>
+    <h1>卡密购买系统</h1>
+    
+    <div class="card">
+        <h2>卡密</h2>
+        <p>价格: ¥50.00</p>
+        <div class="form-group">
+            <label for="contact">联系方式(可选):</label>
+            <input type="text" id="contact" placeholder="请输入您的联系方式">
+        </div>
+        <button onclick="purchaseCard()">立即购买</button>
+    </div>
+    
+    <div id="result"></div>
+    
+    <script>
+        // 卡密列表
+        const cardKeys = [
+"mmrERO"
+"fsU4sf"
+"c67ge6"
+"jyw5ru"
+"mMOgJB"
+"m612ys"
+"3tDnf3"
+"CYgFG2"
+"4z7hEF"
+"8gnugz"
+        ];
+        
+        // 已使用的卡密
+        const usedKeys = [];
+        
+        function purchaseCard() {
+            const contact = document.getElementById('contact').value;
+            
+            // 获取一个未使用的卡密
+            const availableKeys = cardKeys.filter(key => !usedKeys.includes(key));
+            
+            if (availableKeys.length === 0) {
+                showResult("抱歉，卡密已售罄", false);
+                return;
+            }
+            
+            const randomKey = availableKeys[Math.floor(Math.random() * availableKeys.length)];
+            usedKeys.push(randomKey);
+            
+            let message = `<h3>购买成功！</h3>
+                          <p>您的卡密是: <strong>${randomKey}</strong></p>`;
+            
+            if (contact) {
+                message += `<p>联系方式: ${contact}</p>`;
+            }
+            
+            showResult(message, true);
+            
+            // 保存已使用的卡密到本地存储
+            localStorage.setItem('usedCardKeys', JSON.stringify(usedKeys));
+        }
+        
+        function showResult(message, isSuccess) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = message;
+            resultDiv.className = isSuccess ? 'success' : '';
+            resultDiv.style.display = 'block';
+        }
+        
+        // 页面加载时从本地存储恢复已使用的卡密
+        window.onload = function() {
+            const savedUsedKeys = localStorage.getItem('usedCardKeys');
+            if (savedUsedKeys) {
+                usedKeys.push(...JSON.parse(savedUsedKeys));
+            }
+        };
+    </script>
+</body>
+</html>
+
+
