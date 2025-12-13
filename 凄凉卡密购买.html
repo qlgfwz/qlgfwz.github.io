@@ -24,7 +24,7 @@
         }
         
         .container {
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             animation: fadeIn 1s ease-out;
         }
@@ -296,6 +296,50 @@
             animation: pulse 2s infinite;
         }
         
+        /* 历史记录样式 */
+        .history-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid #00dbde;
+        }
+        
+        .history-key {
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        
+        .history-time {
+            color: #b0b0ff;
+            font-size: 0.9rem;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            margin-top: 10px;
+        }
+        
+        .btn-secondary::after {
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -337,6 +381,15 @@
             .key-display {
                 font-size: 1.4rem;
                 letter-spacing: 2px;
+            }
+            
+            .history-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .history-time {
+                margin-top: 5px;
             }
         }
         
@@ -404,6 +457,20 @@
                 <i class="fas fa-shopping-cart"></i> 立即领取卡密
             </button>
             
+            <button id="viewHistoryBtn" class="btn btn-secondary" onclick="toggleHistory()">
+                <i class="fas fa-history"></i> 查看历史卡密
+            </button>
+            
+            <!-- 历史记录容器 -->
+            <div class="history-container" id="historyContainer">
+                <h3 style="margin-top: 20px; color: #00dbde;">
+                    <i class="fas fa-clock"></i> 已领取卡密历史
+                </h3>
+                <div class="history-list" id="historyList">
+                    <!-- 历史记录将在这里动态生成 -->
+                </div>
+            </div>
+            
             <!-- 结果显示区域 -->
             <div class="result-container" id="resultContainer">
                 <div class="result" id="result"></div>
@@ -412,7 +479,7 @@
             <!-- 库存信息 -->
             <div class="inventory">
                 <div class="inventory-item">
-                    <div class="inventory-value" id="totalKeys">25</div>
+                    <div class="inventory-value" id="totalKeys">35</div>
                     <div class="inventory-label">总卡密数</div>
                 </div>
                 <div class="inventory-item">
@@ -420,7 +487,7 @@
                     <div class="inventory-label">已领取</div>
                 </div>
                 <div class="inventory-item">
-                    <div class="inventory-value" id="availableKeys">25</div>
+                    <div class="inventory-value" id="availableKeys">35</div>
                     <div class="inventory-label">剩余可用</div>
                 </div>
             </div>
@@ -429,26 +496,26 @@
         <div class="card">
             <h2 class="card-title"><i class="fas fa-info-circle card-icon"></i> 使用说明</h2>
             <div class="card-description">
-                <p><i class="fas fa-check-circle" style="color: #00dbde; margin-right: 8px;"></i> 点击"立即领取卡密"按钮获取您的卡密</p>
-                <p><i class="fas fa-check-circle" style="color: #00dbde; margin-right: 8px;"></i> 每个领取操作之间有3秒冷却时间</p>
-                <p><i class="fas fa-check-circle" style="color: #00dbde; margin-right: 8px;"></i> 卡密数量有限，领取后将从库存中移除</p>
-                <p><i class="fas fa-check-circle" style="color: #00dbde; margin-right: 8px;"></i> 已领取的卡密会保存在本地，刷新页面不会丢失</p>
-                <p><i class="fas fa-check-circle" style="color: #00dbde; margin-right: 8px;"></i> 如需联系客服，请通过上方联系方式选项</p>
+                <p><i class="fas fa-check-circle" style="color: #00dbde; margin-right: 8px;"></i> 本网站模拟购买卡密，但是可以正常按rlgg使用</p>
+                <p><i class="fas fa-check-circle" style="color: #00dbde; margin-right: 8px;"></i> 购买后可查看历史记录，可以重复使用</p>
+                
             </div>
         </div>
     </div>
 
     <script>
-        // 卡密数组
+        // 卡密数组（包含原有的25个和新添加的10个）
         const cardKeys = [
             "mmrERO", "fsU4sf", "c67ge6", "jyw5ru", "mMOgJB",
             "m612ys", "3tDnf3", "CYgFG2", "4z7hEF", "8gnugz",
             "KP1996", "aKhFKS", "bGXS83", "6RoMeq", "5UE5XT",
             "4dV6vb", "vE14g4", "UrRW8r", "UQ2qPF", "75n4oN",
-            "FpCgoD", "2eVn9z", "D7zDw9", "n78xo6", "zTR474"
+            "FpCgoD", "2eVn9z", "D7zDw9", "n78xo6", "zTR474",
+            "cDBwCW", "Parzz3", "ZnNH0I", "rybYZt", "nzRMC4",
+            "CM8863", "VkMrr8", "Za4ni1", "i3Ykj5", "7Y7k3k"
         ];
         
-        // 已使用的卡密
+        // 已使用的卡密（包含卡密和领取时间）
         let usedKeys = [];
         // 记录上次购买时间
         let lastPurchaseTime = 0;
@@ -467,6 +534,9 @@
             
             // 创建浮动背景图标
             createFloatingIcons();
+            
+            // 更新历史记录显示
+            updateHistoryDisplay();
         };
         
         // 创建浮动背景图标
@@ -507,7 +577,7 @@
             }
             
             // 检查卡密库存
-            const availableKeys = cardKeys.filter(key => !usedKeys.includes(key));
+            const availableKeys = cardKeys.filter(key => !usedKeys.some(used => used.key === key));
             if (availableKeys.length === 0) {
                 showNotification("抱歉，卡密已全部领完", 'error');
                 return;
@@ -515,7 +585,8 @@
             
             // 随机选择一个卡密
             const randomKey = availableKeys[Math.floor(Math.random() * availableKeys.length)];
-            usedKeys.push(randomKey);
+            const purchaseTime = new Date().toLocaleString('zh-CN');
+            usedKeys.push({key: randomKey, time: purchaseTime});
             lastPurchaseTime = now;
             
             // 显示结果
@@ -523,6 +594,7 @@
             let message = `<h3><i class="fas fa-check-circle"></i> 领取成功！</h3>`;
             message += `<p>您的卡密是：</p>`;
             message += `<div class="key-display">${randomKey}</div>`;
+            message += `<p><i class="fas fa-clock"></i> 领取时间: ${purchaseTime}</p>`;
             if (contact) {
                 message += `<p class="contact-info"><i class="fas fa-address-card"></i> 联系方式: ${contact}</p>`;
             }
@@ -532,6 +604,9 @@
             
             // 更新库存显示
             updateInventory();
+            
+            // 更新历史记录显示
+            updateHistoryDisplay();
             
             // 启用按钮冷却
             buyBtn.disabled = true;
@@ -559,6 +634,45 @@
             showNotification("卡密领取成功！", 'success');
         }
         
+        // 切换历史记录显示/隐藏
+        function toggleHistory() {
+            const historyContainer = document.getElementById('historyContainer');
+            const viewHistoryBtn = document.getElementById('viewHistoryBtn');
+            
+            if (historyContainer.style.maxHeight === '0px' || !historyContainer.style.maxHeight) {
+                historyContainer.style.maxHeight = historyContainer.scrollHeight + "px";
+                viewHistoryBtn.innerHTML = `<i class="fas fa-chevron-up"></i> 隐藏历史卡密`;
+            } else {
+                historyContainer.style.maxHeight = "0";
+                viewHistoryBtn.innerHTML = `<i class="fas fa-history"></i> 查看历史卡密`;
+            }
+        }
+        
+        // 更新历史记录显示
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            
+            if (usedKeys.length === 0) {
+                historyList.innerHTML = '<p style="text-align: center; color: #b0b0ff; padding: 20px;">暂无领取记录</p>';
+                return;
+            }
+            
+            // 按领取时间倒序排列（最新的在最上面）
+            const sortedUsedKeys = [...usedKeys].reverse();
+            
+            let historyHTML = '';
+            sortedUsedKeys.forEach(item => {
+                historyHTML += `
+                    <div class="history-item">
+                        <span class="history-key">${item.key}</span>
+                        <span class="history-time">${item.time}</span>
+                    </div>
+                `;
+            });
+            
+            historyList.innerHTML = historyHTML;
+        }
+        
         // 显示结果
         function showResult(message, isSuccess) {
             const resultDiv = document.getElementById('result');
@@ -570,7 +684,7 @@
             // 展开结果容器
             resultContainer.style.maxHeight = resultContainer.scrollHeight + "px";
             
-            // 3秒后自动收起
+            // 10秒后自动收起
             setTimeout(() => {
                 resultContainer.style.maxHeight = "0";
             }, 10000);
@@ -614,7 +728,3 @@
     </script>
 </body>
 </html>
-
-
-
-
