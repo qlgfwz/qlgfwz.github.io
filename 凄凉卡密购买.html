@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RLGG卡密购买系统 | 高级版</title>
+    <title>RLGG卡密购买系统 | 炫酷版</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,7 +14,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: linear-gradient(135deg, #0f0c29, #1a1a40, #24243e);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,12 +22,43 @@
             padding: 20px;
             color: #fff;
             overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 星空背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+        
+        /* 流星效果 */
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255,255,255,0));
+            transform: rotate(-45deg);
+            animation: shooting 10s linear infinite;
+            opacity: 0;
         }
         
         .container {
             max-width: 900px;
             width: 100%;
             animation: fadeIn 1s ease-out;
+            position: relative;
+            z-index: 1;
         }
         
         .header {
@@ -37,27 +68,22 @@
         }
         
         .title {
-            font-size: 2.8rem;
-            background: linear-gradient(to right, #ff6b6b, #ffd93d, #6bcf7f);
+            font-size: 3rem;
+            background: linear-gradient(to right, #00dbde, #fc00ff, #00dbde);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 0 20px rgba(0, 219, 222, 0.5);
             margin-bottom: 10px;
             letter-spacing: 2px;
             position: relative;
             display: inline-block;
+            animation: glow 3s ease-in-out infinite alternate;
         }
         
-        .title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 10%;
-            width: 80%;
-            height: 3px;
-            background: linear-gradient(to right, transparent, #00dbde, transparent);
-            border-radius: 50%;
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(0, 219, 222, 0.5); }
+            to { text-shadow: 0 0 30px rgba(0, 219, 222, 0.8), 0 0 40px rgba(0, 219, 222, 0.6); }
         }
         
         .subtitle {
@@ -80,21 +106,23 @@
         }
         
         .card {
-            background: rgba(20, 20, 40, 0.85);
+            background: rgba(20, 20, 40, 0.7);
             backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 30px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1);
         }
         
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 50px rgba(0, 219, 222, 0.3);
         }
         
         .card::before {
@@ -107,6 +135,21 @@
             background: linear-gradient(to right, #00dbde, #fc00ff, #00dbde);
             background-size: 200% 100%;
             animation: shimmer 3s infinite linear;
+        }
+        
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.7s;
+        }
+        
+        .card:hover::after {
+            left: 100%;
         }
         
         .card-header {
@@ -126,6 +169,7 @@
         .card-icon {
             color: #00dbde;
             font-size: 1.8rem;
+            filter: drop-shadow(0 0 5px rgba(0, 219, 222, 0.7));
         }
         
         .price {
@@ -135,6 +179,7 @@
             font-weight: bold;
             font-size: 1.3rem;
             box-shadow: 0 5px 15px rgba(0, 219, 222, 0.3);
+            animation: pulse 2s infinite;
         }
         
         .card-description {
@@ -192,6 +237,7 @@
             position: relative;
             overflow: hidden;
             z-index: 1;
+            margin-bottom: 10px;
         }
         
         .btn:hover {
@@ -224,6 +270,16 @@
         
         .btn:hover::after {
             opacity: 1;
+        }
+        
+        /* 按钮点击涟漪效果 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
         }
         
         .btn-cooldown {
@@ -270,6 +326,7 @@
             word-break: break-all;
             position: relative;
             overflow: hidden;
+            animation: glow 2s ease-in-out infinite alternate;
         }
         
         .key-display::before {
@@ -306,6 +363,7 @@
             font-size: 2rem;
             font-weight: bold;
             color: #00dbde;
+            transition: all 0.5s ease;
         }
         
         .inventory-label {
@@ -392,6 +450,16 @@
             background: linear-gradient(to right, #2575fc, #6a11cb);
         }
         
+        /* 粒子效果 */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
         /* 新增强化样式 */
         .glow {
             text-shadow: 0 0 10px rgba(0, 219, 222, 0.7);
@@ -410,6 +478,12 @@
             padding: 10px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .feature-icon {
@@ -427,6 +501,7 @@
             color: transparent;
             text-align: center;
             margin: 20px 0;
+            animation: count 1s ease-out;
         }
         
         @keyframes fadeIn {
@@ -458,6 +533,35 @@
         @keyframes shine {
             0% { left: -100%; }
             100% { left: 100%; }
+        }
+        
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes count {
+            from { transform: scale(1.5); }
+            to { transform: scale(1); }
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes shooting {
+            0% { 
+                opacity: 0;
+                transform: translateX(0) translateY(0) rotate(-45deg);
+            }
+            10% { opacity: 1; }
+            20%, 100% {
+                opacity: 0;
+                transform: translateX(100vw) translateY(100vh) rotate(-45deg);
+            }
         }
         
         @media (max-width: 768px) {
@@ -524,6 +628,12 @@
     </style>
 </head>
 <body>
+    <!-- 粒子背景 -->
+    <div id="particles-js"></div>
+    
+    <!-- 星空背景 -->
+    <div class="stars" id="stars"></div>
+    
     <!-- 浮动背景图标 -->
     <div class="floating-icons" id="floatingIcons"></div>
     
@@ -632,6 +742,9 @@
         </div>
     </div>
 
+    <!-- 引入粒子效果库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
     <script>
         // 卡密数组（包含原有的25个和新添加的10个）
         const cardKeys = [
@@ -664,12 +777,115 @@
             // 创建浮动背景图标
             createFloatingIcons();
             
+            // 创建星空背景
+            createStarfield();
+            
+            // 初始化粒子效果
+            initParticles();
+            
             // 更新历史记录显示
             updateHistoryDisplay();
             
             // 更新总购买次数
             updatePurchaseCounter();
+            
+            // 添加按钮点击涟漪效果
+            addRippleEffect();
+            
+            // 创建流星
+            createShootingStars();
         };
+        
+        // 创建星空背景
+        function createStarfield() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // 随机大小
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // 随机位置
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // 随机动画延迟和持续时间
+                const duration = Math.random() * 10 + 5;
+                const delay = Math.random() * 5;
+                star.style.animationDuration = `${duration}s`;
+                star.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // 创建流星
+        function createShootingStars() {
+            const starsContainer = document.getElementById('stars');
+            const shootingStarCount = 5;
+            
+            for (let i = 0; i < shootingStarCount; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                
+                // 随机位置
+                shootingStar.style.left = `${Math.random() * 100}%`;
+                shootingStar.style.top = `${Math.random() * 100}%`;
+                
+                // 随机动画延迟
+                const delay = Math.random() * 20;
+                shootingStar.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(shootingStar);
+            }
+        }
+        
+        // 初始化粒子效果
+        function initParticles() {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#00dbde" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#00dbde",
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" },
+                        resize: true
+                    },
+                    modes: {
+                        repulse: { distance: 100, duration: 0.4 },
+                        push: { particles_nb: 4 }
+                    }
+                },
+                retina_detect: true
+            });
+        }
         
         // 创建浮动背景图标
         function createFloatingIcons() {
@@ -694,6 +910,32 @@
                 
                 floatingIconsContainer.appendChild(icon);
             }
+        }
+        
+        // 添加按钮点击涟漪效果
+        function addRippleEffect() {
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple';
+                    
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = `${size}px`;
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
         }
         
         // 购买卡密函数
@@ -864,6 +1106,13 @@
             usedKeysElement.textContent = used;
             availableKeysElement.textContent = available;
             
+            // 添加数字变化动画
+            [totalKeysElement, usedKeysElement, availableKeysElement].forEach(el => {
+                el.classList.remove('counter');
+                void el.offsetWidth; // 触发重绘
+                el.classList.add('counter');
+            });
+            
             // 更新可用卡密的颜色
             if (available <= 5) {
                 availableKeysElement.style.color = '#ff6b6b';
@@ -876,3 +1125,4 @@
     </script>
 </body>
 </html>
+
