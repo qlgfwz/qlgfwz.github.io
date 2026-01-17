@@ -8,4 +8,4 @@ Disallow: /search?*
 Crawl-delay: 10
 
 
-Sitemap: https://qlgfwz.github.io/sitemap.xml
+Sitemap: https://qlgfwz.github.io/
