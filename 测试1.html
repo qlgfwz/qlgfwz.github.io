@@ -1,10 +1,12 @@
 <!doctype html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>凄凉端口已连接</title>
   <style>
-    html, body {
+    html,
+    body {
       margin: 0px;
       width: 100%;
       height: 100%;
@@ -17,18 +19,20 @@
       position: absolute;
       width: 100%;
       height: 100%;
+      z-index: 1;
     }
 
     .div1 {
-      text-shadow: rgba(255, 255, 255, 0.5) 0 5px 6px, rgba(255, 255, 255, 0.2) 1px 3px 3px;
+      text-shadow: rgba(255, 255, 255, 0.7) 0 5px 8px, rgba(100, 200, 255, 0.5) 1px 3px 5px;
       text-align: center;
       position: relative;
       text-transform: uppercase;
       color: #fff;
       font-size: 3vw;
       letter-spacing: 1.2vw;
-      font-weight: 400;
+      font-weight: 600;
       padding-bottom: 15px;
+      z-index: 2;
     }
 
     .owText {
@@ -37,7 +41,7 @@
       font-size: 4vw;
       text-align: center;
       text-transform: uppercase;
-      animation: move linear 5000ms infinite;
+      animation: move linear 4000ms infinite, glow 2s ease-in-out infinite alternate;
     }
 
     @keyframes move {
@@ -52,6 +56,7 @@
           -2px 2px 0 hsla(180, 100%, 50%, 1),
           -1px 1px 0 hsla(180, 100%, 50%, 1);
       }
+
       25% {
         text-shadow:
           -4px -4px 0 hsla(180, 100%, 50%, 1),
@@ -63,6 +68,7 @@
           2px 2px 0 hsla(0, 100%, 50%, 1),
           1px 1px 0 hsla(0, 100%, 50%, 1);
       }
+
       50% {
         text-shadow:
           -4px 4px 0 hsla(0, 100%, 50%, 1),
@@ -74,6 +80,7 @@
           2px -2px 0 hsla(180, 100%, 50%, 1),
           1px -1px 0 hsla(180, 100%, 50%, 1);
       }
+
       75% {
         text-shadow:
           4px 4px 0 hsla(180, 100%, 50%, 1),
@@ -85,6 +92,7 @@
           -2px -2px 0 hsla(0, 100%, 50%, 1),
           -1px -1px 0 hsla(0, 100%, 50%, 1);
       }
+
       100% {
         text-shadow:
           4px -4px 0 hsla(0, 100%, 50%, 1),
@@ -98,12 +106,28 @@
       }
     }
 
+    @keyframes glow {
+      from {
+        filter: brightness(1);
+      }
+
+      to {
+        filter: brightness(1.5);
+      }
+    }
+
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
 
     .d1 {
       font-size: 5vw;
       color: #e7e7e7;
       text-shadow: 1.5px 1.5px 0 #333, 0px 1.5px 0 #333, -1.5px -1.5px 0 #333, -1.5px -1.5px 0 #333, -1.5px 1.5px 0 #333, 1.5px -1.5px 0 #333, 0.77782px 0.77782px 0 #aaaaaa, 1.55563px 1.55563px 0 #aaaaaa, 2.33345px 2.33345px 0 #aaaaaa, 3.11127px 3.11127px 0 #aaaaaa, 3.88909px 3.88909px 0 #aaaaaa, 4.6669px 4.6669px 0 #aaaaaa, 5.44472px 5.44472px 0 #aaaaaa, 6.22254px 6.22254px 0 #aaaaaa, 7.00036px 7.00036px 0 #aaaaaa, 7.77817px 7.77817px 0 #aaaaaa;
+      animation: textPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes textPulse {
+      0%,100% {transform: scale(1);}
+      50% {transform: scale(1.05);}
     }
 
     .canvas {
@@ -114,6 +138,7 @@
       top: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
+      z-index: 2;
     }
 
     .progress {
@@ -159,6 +184,7 @@
       position: absolute;
       left: 0;
       top: 0;
+      -webkit-transform: rotate(-90deg);
       transform: rotate(-90deg);
     }
 
@@ -168,26 +194,32 @@
       stroke-dasharray: 629;
       stroke: #fff;
       opacity: .9;
+      -webkit-animation: load 10s;
       animation: load 10s;
     }
 
     .d2 {
-      text-shadow: rgba(255, 255, 255, 0.5) 0 5px 6px, rgba(255, 255, 255, 0.2) 1px 3px 3px;
+      text-shadow: rgba(255, 255, 255, 0.7) 0 5px 8px, rgba(100, 200, 255, 0.5) 1px 3px 5px;
     }
 
     .text {
-      background-image: linear-gradient(to right, blue, #66ffff 10%, #cc00ff 20%, #CC00CC 30%, #CCCCFF 40%, #00FFFF 50%, #CCCCFF 60%, #CC00CC 70%, #CC00FF 80%, #66FFFF 90%, blue 100%);
+      background-image: -webkit-linear-gradient(left, blue, #66ffff 10%, #cc00ff 20%, #CC00CC 30%, #CCCCFF 40%, #00FFFF 50%, #CCCCFF 60%, #CC00CC 70%, #CC00FF 80%, #66FFFF 90%, blue 100%);
       -webkit-text-fill-color: transparent;
-      background-clip: text;
-      background-size: 200% 100%;
-      animation: masked-animation 4s linear infinite;
+      -webkit-background-clip: text;
+      -webkit-background-size: 200% 100%;
+      -webkit-animation: masked-animation 3s linear infinite;
       font-size: 25px;
       padding-bottom: 10px;
     }
 
     @keyframes masked-animation {
-      0% { background-position: 0 0; }
-      100% { background-position: -100% 0; }
+      0% {
+        background-position: 0 0;
+      }
+
+      100% {
+        background-position: -100% 0;
+      }
     }
 
     img {
@@ -207,6 +239,8 @@
       margin-top: 290px;
       width: 200px;
       height: 50px;
+      z-index: 2;
+      filter: drop-shadow(0 0 10px #66ffff);
     }
 
     p {
@@ -223,7 +257,14 @@
       top: 300px;
       transform: translate(-50%, -50%);
       color: #daf6ff;
-      text-shadow: 0 0 20px #0aafe6, 0 0 20px rgba(10, 175, 230, 0);
+      text-shadow: 0 0 20px #0aafe6, 0 0 40px rgba(10, 175, 230, 0.5);
+      z-index: 2;
+      animation: clockFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes clockFloat {
+      0%,100% {transform: translate(-50%, -50%) translateY(0);}
+      50% {transform: translate(-50%, -50%) translateY(-10px);}
     }
 
     #clock .time {
@@ -237,6 +278,24 @@
       font-size: 24px;
     }
 
+    /* 调整SVG圆圈到时间下方 */
+    #dc-spinner {
+      position: absolute;
+      left: 50%;
+      top: 420px;
+      transform: translateX(-50%);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 3;
+      width: 60px;
+      height: 60px;
+    }
+
+    #dc-spinner:hover {
+      transform: translateX(-50%) scale(1.1);
+      filter: drop-shadow(0 0 15px #2aa198);
+    }
+
     .d6 {
       position: relative;
       left: 50%;
@@ -244,6 +303,7 @@
       top: 7%;
       width: 300px;
       height: 70px;
+      z-index: 2;
     }
 
     a {
@@ -258,132 +318,104 @@
       font-size: 45px;
       font-family: '楷体';
       text-decoration: none;
+      filter: drop-shadow(0 0 10px skyblue);
+      transition: all 0.3s ease;
+    }
+
+    a:hover {
+      background-color: rgba(135, 206, 235, 0.2);
+      transform: scale(1.05);
     }
 
     .box {
       position: relative;
       height: 900px;
       margin-top: 450px;
+      z-index: 2;
     }
 
-    /* 新增样式：可点击圆圈和游戏菜单 */
-    .clickable-circle {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 120px;
-      height: 120px;
-      background: rgba(42, 161, 152, 0.7);
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(42, 161, 152, 0.5);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      animation: pulse 2s infinite;
-    }
-
-    .clickable-circle:hover {
-      transform: translate(-50%, -50%) scale(1.1);
-      box-shadow: 0 0 30px rgba(42, 161, 152, 0.8);
-      background: rgba(42, 161, 152, 0.9);
-    }
-
-    .clickable-circle:active {
-      transform: translate(-50%, -50%) scale(0.95);
-    }
-
-    .clickable-circle span {
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(42, 161, 152, 0.7); }
-      70% { box-shadow: 0 0 0 20px rgba(42, 161, 152, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(42, 161, 152, 0); }
-    }
-
-    .game-menu {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 300px;
-      background: rgba(0, 0, 0, 0.85);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 30px rgba(42, 161, 152, 0.7);
-      z-index: 1001;
-      display: none;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(42, 161, 152, 0.5);
-    }
-
-    .game-menu h3 {
-      color: #2aa198;
-      text-align: center;
-      margin-top: 0;
-      font-size: 22px;
-      text-shadow: 0 0 10px rgba(42, 161, 152, 0.7);
-    }
-
-    .game-item {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: 12px;
-      margin: 10px 0;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border-left: 3px solid #2aa198;
-    }
-
-    .game-item:hover {
-      background: rgba(42, 161, 152, 0.3);
-      transform: translateX(5px);
-    }
-
-    .game-item .name {
-      color: #fff;
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    .game-item .package {
-      color: #aaa;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-
-    .close-menu {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      color: #aaa;
-      cursor: pointer;
-      font-size: 20px;
-    }
-
-    .close-menu:hover {
-      color: #2aa198;
-    }
-
-    .menu-overlay {
+    /* 弹窗样式 */
+    .server-modal {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0,0,0,0.8);
       z-index: 999;
       display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #1a1a1a;
+      padding: 30px;
+      border-radius: 20px;
+      border: 2px solid #0aafe6;
+      box-shadow: 0 0 30px #0aafe6;
+    }
+
+    .modal-content h2 {
+      color: #0aafe6;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #0aafe6;
+    }
+
+    .server-btn {
+      display: block;
+      width: 250px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      color: #fff;
+      background-color: #1a1a1a;
+      border: 2px solid #66ffff;
+      border-radius: 10px;
+      margin: 15px auto;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .server-btn:hover {
+      background-color: rgba(102, 255, 255, 0.2);
+      box-shadow: 0 0 15px #66ffff;
+      transform: scale(1.05);
+    }
+
+    /* 通知弹窗样式 */
+    #notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #222;
+      border-left: 4px solid #0aafe6;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(10, 175, 230, 0.5);
+      z-index: 9999;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+    }
+
+    #notification.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    #notifTitle {
+      color: #0aafe6;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    #notifContent {
+      color: #fff;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -392,28 +424,25 @@
   <canvas id="canvas"></canvas>
   <div class="box">
     <div class="scene">
+      <!-- SVG圆圈独立出来，定位到时间下方 -->
       <svg 
         version="1.1" 
         id="dc-spinner" 
         xmlns="http://www.w3.org/2000/svg" 
         x="0px" y="0px"
-        width:"38"
-        height:"38"
         viewBox="0 0 38 38" 
         preserveAspectRatio="xMinYMin meet"
       >
-        <text x="7.5" y="21" font-family="Monaco" font-size="3px" style="letter-spacing:0.6; color:rgb(42, 161, 152); text-align:center;" fill="#2aa198">&nbsp;端口开启成功 
+        <text x="7.5" y="21" font-family="Monaco" font-size="3px" style="letter-spacing:0.6;  color:rgb(42, 161, 152); text-align:center;" fill="#2aa198">&nbsp;端口开启成功 
         </text>
         <path fill="#373a42" d="M20,35c-8.271,0-15-6.729-15-15S11.729,5,20,5s15,6.729,15,15S28.271,35,20,35z M20,5.203
           C11.841,5.203,5.203,11.841,5.203,20c0,8.159,6.638,14.797,14.797,14.797S34.797,28.159,34.797,20
           C34.797,11.841,28.159,5.203,20,5.203z">
         </path>
-
         <path fill="#373a42" d="M20,33.125c-7.237,0-13.125-5.888-13.125-13.125S12.763,6.875,20,6.875S33.125,12.763,33.125,20
           S27.237,33.125,20,33.125z M20,7.078C12.875,7.078,7.078,12.875,7.078,20c0,7.125,5.797,12.922,12.922,12.922
           S32.922,27.125,32.922,20C32.922,12.875,27.125,7.078,20,7.078z">
         </path>
-
         <path fill="#2AA198" stroke="#2AA198" stroke-width="0.6027" stroke-miterlimit="10" d="M5.203,20
           c0-8.159,6.638-14.797,14.797-14.797V5C11.729,5,5,11.729,5,20s6.729,15,15,15v-0.203C11.841,34.797,5.203,28.159,5.203,20z">
           <animateTransform
@@ -427,10 +456,9 @@
             dur="2s"
             repeatCount="indefinite" />      
         </path>
-
         <path fill="#859900" stroke="#859900" stroke-width="0.2027" stroke-miterlimit="10" d="M7.078,20
-        c0-7.125,5.797-12.922,12.922-12.922V6.875C12.763,6.875,6.875,12.763,6.875,20S12.763,33.125,20,33.125v-0.203
-        C12.875,32.922,7.078,27.125,7.078,20z">
+          c0-7.125,5.797-12.922,12.922-12.922V6.875C12.763,6.875,6.875,12.763,6.875,20S12.763,33.125,20,33.125v-0.203
+          C12.875,32.922,7.078,27.125,7.078,20z">
           <animateTransform
             attributeName="transform"
             type="rotate"
@@ -440,44 +468,16 @@
             repeatCount="indefinite" />
         </path>
       </svg>
-      
-      <!-- 可点击圆圈 -->
-      <div class="clickable-circle" id="clickableCircle">
-        <span>点击打开<br>应用游戏</span>
-      </div>
-      
-      <!-- 游戏菜单 -->
-      <div class="menu-overlay" id="menuOverlay"></div>
-      <div class="game-menu" id="gameMenu">
-        <span class="close-menu" id="closeMenu">×</span>
-        <h3>选择游戏服务器</h3>
-        <div class="game-item" data-package="com.tencent.ig">
-          <div class="name">全球服</div>
-          <div class="package">com.tencent.ig</div>
-        </div>
-        <div class="game-item" data-package="com.rekoo.pubgm">
-          <div class="name">台湾服</div>
-          <div class="package">com.rekoo.pubgm</div>
-        </div>
-        <div class="game-item" data-package="com.pubg.krmobile">
-          <div class="name">日韩服</div>
-          <div class="package">com.pubg.krmobile</div>
-        </div>
-        <div class="game-item" data-package="com.vng.pubgmobile">
-          <div class="name">越南服</div>
-          <div class="package">com.vng.pubgmobile</div>
-        </div>
-      </div>
-      
       <div class="info">
         <div class="div1 d2"> </div>
         <div class="div1 d3"> 欢迎使用</div>
         <div class="div1 d4"> 凄凉祝您稳定奔放</div>
         <div class="div1 d5"> </div>
 
-        <marquee behavior="scroll" direction="left" style="color:#E0FFFF">凄凉</marquee>
-
         <marquee behavior="scroll" direction="left" style="color:#E0FFFF">
+        </marquee>
+
+        <marquee behavior="scroll" direction="left" style="color:#E0FFFF; text-shadow: 0 0 10px #E0FFFF;">
           凄凉
         </marquee>
 
@@ -487,21 +487,41 @@
           <p class="text"></p>
         </div>
       </div>
-      
+      <!-- 音乐播放器 - 替换为指定链接 -->
       <audio src="https://mpimg.cn/view.php/083ecb86d525ea04d58c032ecc2221a1.mp3" loop="loop" autoplay="autoplay" controls />
     </div>
   </div>
 
+  <!-- 游戏服选择弹窗 -->
+  <div class="server-modal" id="serverModal">
+    <div class="modal-content">
+      <h2>选择游戏服务器</h2>
+      <div class="server-btn" onclick="openGame('com.tencent.ig', '全球服')">全球服</div>
+      <div class="server-btn" onclick="openGame('com.rekoo.pubgm', '台湾服')">台湾服</div>
+      <div class="server-btn" onclick="openGame('com.pubg.krmobile', '日韩服')">日韩服</div>
+      <div class="server-btn" onclick="openGame('com.vng.pubgmobile', '越南服')">越南服</div>
+      <div class="server-btn" onclick="closeModal()" style="border-color: #ff4444;">关闭</div>
+    </div>
+  </div>
+
+  <!-- 通知弹窗结构 -->
+  <div id="notification">
+    <div id="notifTitle"></div>
+    <div id="notifContent"></div>
+  </div>
+
   <script>
-    // 时钟功能
+    // 时间更新函数
     var week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
     var timerID = setInterval(updateTime, 1000);
     updateTime();
 
     function updateTime() {
       var cd = new Date();
-      document.getElementById("time").innerHTML = zeroPadding(cd.getHours(), 2) + ':' + zeroPadding(cd.getMinutes(), 2) + ':' + zeroPadding(cd.getSeconds(), 2);
-      document.getElementById("date").innerHTML = zeroPadding(cd.getFullYear(), 4) + '-' + zeroPadding(cd.getMonth() + 1, 2) + '-' + zeroPadding(cd.getDate(), 2) + ' ' + week[cd.getDay()];
+      document.getElementById("time").innerHTML = zeroPadding(cd.getHours(), 2) + ':' + zeroPadding(cd.getMinutes(),
+        2) + ':' + zeroPadding(cd.getSeconds(), 2);
+      document.getElementById("date").innerHTML = zeroPadding(cd.getFullYear(), 4) + '-' + zeroPadding(cd.getMonth() +
+        1, 2) + '-' + zeroPadding(cd.getDate(), 2) + ' ' + week[cd.getDay()];
     };
 
     function zeroPadding(num, digit) {
@@ -512,51 +532,7 @@
       return (zero + num).slice(-digit);
     }
 
-    // 可点击圆圈和游戏菜单功能
-    document.addEventListener('DOMContentLoaded', function() {
-      var clickableCircle = document.getElementById('clickableCircle');
-      var gameMenu = document.getElementById('gameMenu');
-      var menuOverlay = document.getElementById('menuOverlay');
-      var closeMenu = document.getElementById('closeMenu');
-      var gameItems = document.querySelectorAll('.game-item');
-      
-      // 点击圆圈打开菜单
-      clickableCircle.addEventListener('click', function() {
-        gameMenu.style.display = 'block';
-        menuOverlay.style.display = 'block';
-      });
-      
-      // 点击关闭按钮关闭菜单
-      closeMenu.addEventListener('click', function() {
-        gameMenu.style.display = 'none';
-        menuOverlay.style.display = 'none';
-      });
-      
-      // 点击遮罩层关闭菜单
-      menuOverlay.addEventListener('click', function() {
-        gameMenu.style.display = 'none';
-        menuOverlay.style.display = 'none';
-      });
-      
-      // 点击游戏项
-      gameItems.forEach(function(item) {
-        item.addEventListener('click', function() {
-          var packageName = this.getAttribute('data-package');
-          var gameName = this.querySelector('.name').textContent;
-          
-          alert('正在启动 ' + gameName + '\n包名: ' + packageName);
-          
-          // 在实际应用中，这里可以添加启动游戏的代码
-          // 例如：window.location.href = 'intent://' + packageName + '#Intent;scheme=package;end;';
-          
-          // 关闭菜单
-          gameMenu.style.display = 'none';
-          menuOverlay.style.display = 'none';
-        });
-      });
-    });
-
-    // 原有的3D背景效果代码
+    // 粒子特效函数（保留并优化）
     function project3D(x, y, z, vars) {
       var p, d;
       x -= vars.camX;
@@ -592,13 +568,11 @@
         return { d: -1 };
       }
     }
-    
     function elevation(x, y, z) {
       var dist = Math.sqrt(x * x + y * y + z * z);
       if (dist && z / dist >= -1 && z / dist <= 1) return Math.acos(z / dist);
       return 0.00000001;
     }
-    
     function rgb(col) {
       col += 0.000001;
       var r = parseInt((0.5 + Math.sin(col) * 0.5) * 16);
@@ -606,13 +580,11 @@
       var b = parseInt((0.5 - Math.sin(col) * 0.5) * 16);
       return "#" + r.toString(16) + g.toString(16) + b.toString(16);
     }
-    
     function interpolateColors(RGB1, RGB2, degree) {
       var w2 = degree;
       var w1 = 1 - w2;
       return [w1 * RGB1[0] + w2 * RGB2[0], w1 * RGB1[1] + w2 * RGB2[1], w1 * RGB1[2] + w2 * RGB2[2]];
     }
-    
     function rgbArray(col) {
       col += 0.000001;
       var r = parseInt((0.5 + Math.sin(col) * 0.5) * 256);
@@ -620,14 +592,12 @@
       var b = parseInt((0.5 - Math.sin(col) * 0.5) * 256);
       return [r, g, b];
     }
-    
     function colorString(arr) {
       var r = parseInt(arr[0]);
       var g = parseInt(arr[1]);
       var b = parseInt(arr[2]);
       return "#" + ("0" + r.toString(16)).slice(-2) + ("0" + g.toString(16)).slice(-2) + ("0" + b.toString(16)).slice(-2);
     }
-    
     function process(vars) {
       if (vars.points.length < vars.initParticles) for (var i = 0; i < 5; ++i) spawnParticle(vars);
       var p, d, t;
@@ -657,7 +627,6 @@
         }
       }
     }
-    
     function drawFloor(vars) {
       var x, y, z, d, point, a;
       for (var i = -25; i <= 25; i += 1) {
@@ -698,11 +667,9 @@
         }
       }
     }
-    
     function sortFunction(a, b) {
       return b.dist - a.dist;
     }
-    
     function draw(vars) {
       vars.ctx.globalAlpha = .15;
       vars.ctx.fillStyle = "#000";
@@ -726,7 +693,6 @@
       }
       vars.points.sort(sortFunction);
     }
-    
     function spawnParticle(vars) {
       var p, ls;
       pt = {};
@@ -740,7 +706,6 @@
       pt.color = pt.radius / 1000 + vars.frameNo / 250;
       vars.points.push(pt);
     }
-    
     function frame(vars) {
       if (vars === undefined) {
         var vars = {};
@@ -768,10 +733,10 @@
         vars.floor = 26.5;
 
         vars.points = [];
-        vars.initParticles = 700;
-        vars.initV = .01;
-        vars.distributionRadius = 800;
-        vars.vortexHeight = 25;
+        vars.initParticles = 1000; 
+        vars.initV = .015; 
+        vars.distributionRadius = 1000;
+        vars.vortexHeight = 30;
       }
       vars.frameNo++;
       requestAnimationFrame(function () {
@@ -781,6 +746,50 @@
       draw(vars);
     }
     frame();
+
+    // 弹窗和打开游戏功能
+    const modal = document.getElementById('serverModal');
+    // 点击SVG圆圈打开弹窗
+    document.getElementById('dc-spinner').addEventListener('click', function() {
+      modal.style.display = 'flex';
+    });
+    // 关闭弹窗
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    // 通知函数
+    function qldtz(title, content, duration = 3000) {
+      const notif = document.getElementById('notification');
+      const notifTitle = document.getElementById('notifTitle');
+      const notifContent = document.getElementById('notifContent');
+      
+      notifTitle.textContent = title;
+      notifContent.textContent = content;
+      notif.classList.add('show');
+      
+      setTimeout(() => {
+          notif.classList.remove('show');
+      }, duration);
+    }
+
+    // 改用 am start 命令启动游戏
+    function openGame(packageName, serverName) {
+      // 拼接 am start 命令
+      const cmd = `system/bin/am start -n ${packageName}/com.epicgames.ue4.SplashActivity >/dev/null 2>&1`;
+      // 执行命令（需在支持执行shell命令的环境中运行，如GG修改器、Termux等）
+      // 这里需要根据实际运行环境替换执行逻辑，示例为模拟执行
+      console.log("执行命令：", cmd);
+      qldtz("启动成功", `正在打开${serverName}`, 2000);
+      closeModal();
+
+      // 实际环境中执行shell命令的示例（以GG修改器为例）
+      // if (typeof gg !== 'undefined') {
+      //   gg.exec(cmd);
+      // }
+    }
   </script>
 </body>
+
 </html>
+
