@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html>
 
@@ -773,23 +775,19 @@
       }, duration);
     }
 
-    // 改用 am start 命令启动游戏
+    // HTML专属：安卓WebView环境下的Intent启动方案
     function openGame(packageName, serverName) {
-      // 拼接 am start 命令
-      const cmd = `system/bin/am start -n ${packageName}/com.epicgames.ue4.SplashActivity >/dev/null 2>&1`;
-      // 执行命令（需在支持执行shell命令的环境中运行，如GG修改器、Termux等）
-      // 这里需要根据实际运行环境替换执行逻辑，示例为模拟执行
-      console.log("执行命令：", cmd);
-      qldtz("启动成功", `正在打开${serverName}`, 2000);
+      // 拼接安卓Intent协议链接（启动指定包名+Activity）
+      const intentUrl = `intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;component=${packageName}/com.epicgames.ue4.SplashActivity;end`;
+      
+      // 跳转Intent链接（需WebView开启allowIntentUrl配置）
+      window.location.href = intentUrl;
+      
+      // 显示启动通知
+      qldtz("启动中", `正在打开${serverName}\n包名: ${packageName}`, 2000);
       closeModal();
-
-      // 实际环境中执行shell命令的示例（以GG修改器为例）
-      // if (typeof gg !== 'undefined') {
-      //   gg.exec(cmd);
-      // }
     }
   </script>
 </body>
 
 </html>
-
