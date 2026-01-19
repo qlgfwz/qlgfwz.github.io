@@ -1,290 +1,1057 @@
 <!doctype html>
 <html>
+
 <head>
   <meta charset="utf-8">
-  <title>恶搞PUBG启动器</title>
+  <title>启动pubg</title>
   <style>
-    * {margin: 0;padding: 0;box-sizing: border-box;}
-    html,body {
-      width: 100%;height: 100%;
-      overflow: hidden;background: #000;
+    html,
+    body {
+      margin: 0px;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      background-size: 100vh;
     }
-    /* 粒子背景画布 */
-    #canvas {position: absolute;width: 100%;height: 100%;z-index: 1;}
-    /* 核心标题样式 */
-    .title-box {
-      position: absolute;top: 30%;left: 50%;
-      transform: translate(-50%,-50%);z-index: 2;
+
+    #canvas {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .div1 {
+      text-shadow: rgba(255, 255, 255, 0.7) 0 5px 8px, rgba(100, 200, 255, 0.5) 1px 3px 5px;
       text-align: center;
+      position: relative;
+      text-transform: uppercase;
+      color: #fff;
+      font-size: 3vw;
+      letter-spacing: 1.2vw;
+      font-weight: 600;
+      padding-bottom: 15px;
+      z-index: 2;
     }
-    .main-title {
-      color: #fff;font-size: 4vw;
-      text-shadow: 0 0 15px #00ffff,0 0 30px #00ffff;
-      text-transform: uppercase;letter-spacing: 0.5vw;
-      animation: pulse 2s ease-in-out infinite;
+
+    .owText {
+      left: 0;
+      letter-spacing: 5px;
+      font-size: 4vw;
+      text-align: center;
+      text-transform: uppercase;
+      animation: move linear 4000ms infinite, glow 2s ease-in-out infinite alternate;
     }
-    @keyframes pulse {
+
+    @keyframes move {
+      0% {
+        text-shadow:
+          4px -4px 0 hsla(0, 100%, 50%, 1),
+          3px -3px 0 hsla(0, 100%, 50%, 1),
+          2px -2px 0 hsla(0, 100%, 50%, 1),
+          1px -1px 0 hsla(0, 100%, 50%, 1),
+          -4px 4px 0 hsla(180, 100%, 50%, 1),
+          -3px 3px 0 hsla(180, 100%, 50%, 1),
+          -2px 2px 0 hsla(180, 100%, 50%, 1),
+          -1px 1px 0 hsla(180, 100%, 50%, 1);
+      }
+
+      25% {
+        text-shadow:
+          -4px -4px 0 hsla(180, 100%, 50%, 1),
+          -3px -3px 0 hsla(180, 100%, 50%, 1),
+          -2px -2px 0 hsla(180, 100%, 50%, 1),
+          -1px -1px 0 hsla(180, 100%, 50%, 1),
+          4px 4px 0 hsla(0, 100%, 50%, 1),
+          3px 3px 0 hsla(0, 100%, 50%, 1),
+          2px 2px 0 hsla(0, 100%, 50%, 1),
+          1px 1px 0 hsla(0, 100%, 50%, 1);
+      }
+
+      50% {
+        text-shadow:
+          -4px 4px 0 hsla(0, 100%, 50%, 1),
+          -3px 3px 0 hsla(0, 100%, 50%, 1),
+          -2px 2px 0 hsla(0, 100%, 50%, 1),
+          -1px 1px 0 hsla(0, 100%, 50%, 1),
+          4px -4px 0 hsla(180, 100%, 50%, 1),
+          3px -3px 0 hsla(180, 100%, 50%, 1),
+          2px -2px 0 hsla(180, 100%, 50%, 1),
+          1px -1px 0 hsla(180, 100%, 50%, 1);
+      }
+
+      75% {
+        text-shadow:
+          4px 4px 0 hsla(180, 100%, 50%, 1),
+          3px 3px 0 hsla(180, 100%, 50%, 1),
+          2px 2px 0 hsla(180, 100%, 50%, 1),
+          1px 1px 0 hsla(180, 100%, 50%, 1),
+          -4px -4px 0 hsla(0, 100%, 50%, 1),
+          -3px -3px 0 hsla(0, 100%, 50%, 1),
+          -2px -2px 0 hsla(0, 100%, 50%, 1),
+          -1px -1px 0 hsla(0, 100%, 50%, 1);
+      }
+
+      100% {
+        text-shadow:
+          4px -4px 0 hsla(0, 100%, 50%, 1),
+          3px -3px 0 hsla(0, 100%, 50%, 1),
+          2px -2px 0 hsla(0, 100%, 50%, 1),
+          1px -1px 0 hsla(0, 100%, 50%, 1),
+          -4px 4px 0 hsla(180, 100%, 50%, 1),
+          -3px 3px 0 hsla(180, 100%, 50%, 1),
+          -2px 2px 0 hsla(180, 100%, 50%, 1),
+          -1px 1px 0 hsla(180, 100%, 50%, 1);
+      }
+    }
+
+    @keyframes glow {
+      from {
+        filter: brightness(1);
+      }
+
+      to {
+        filter: brightness(1.5);
+      }
+    }
+
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
+
+    .d1 {
+      font-size: 5vw;
+      color: #e7e7e7;
+      text-shadow: 1.5px 1.5px 0 #333, 0px 1.5px 0 #333, -1.5px -1.5px 0 #333, -1.5px -1.5px 0 #333, -1.5px 1.5px 0 #333, 1.5px -1.5px 0 #333, 0.77782px 0.77782px 0 #aaaaaa, 1.55563px 1.55563px 0 #aaaaaa, 2.33345px 2.33345px 0 #aaaaaa, 3.11127px 3.11127px 0 #aaaaaa, 3.88909px 3.88909px 0 #aaaaaa, 4.6669px 4.6669px 0 #aaaaaa, 5.44472px 5.44472px 0 #aaaaaa, 6.22254px 6.22254px 0 #aaaaaa, 7.00036px 7.00036px 0 #aaaaaa, 7.77817px 7.77817px 0 #aaaaaa;
+      animation: textPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes textPulse {
       0%,100% {transform: scale(1);}
       50% {transform: scale(1.05);}
     }
-    /* 双圈启动按钮 */
-    #start-btn {
-      position: absolute;top: 55%;left: 50%;
-      transform: translate(-50%,-50%);z-index: 3;
-      width: 120px;height: 120px;cursor: pointer;
+
+    .canvas {
+      height: 100%;
+      position: absolute;
+      left: 50%;
+      width: 100%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
     }
+
+    .progress {
+      position: relative;
+      display: inline-block;
+      padding: 0;
+      text-align: center;
+    }
+
+    .progress>li {
+      display: inline-block;
+      position: relative;
+      text-align: center;
+      color: #93A2AC;
+      font-family: Lato;
+      font-weight: 100;
+    }
+
+    .progress>li:before {
+      content: attr(data-name);
+      position: absolute;
+      width: 100%;
+      bottom: -2rem;
+      font-weight: 400;
+    }
+
+    .progress>li:after {
+      content: attr(data-percent);
+      position: absolute;
+      width: 100%;
+      top: 3.7rem;
+      left: 0;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .progress svg {
+      width: 10rem;
+      height: 10rem;
+    }
+
+    .progress svg:nth-child(2) {
+      position: absolute;
+      left: 0;
+      top: 0;
+      -webkit-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+    }
+
+    .progress svg:nth-child(2) path {
+      fill: none;
+      stroke-width: 25;
+      stroke-dasharray: 629;
+      stroke: #fff;
+      opacity: .9;
+      -webkit-animation: load 10s;
+      animation: load 10s;
+    }
+
+    .d2 {
+      text-shadow: rgba(255, 255, 255, 0.7) 0 5px 8px, rgba(100, 200, 255, 0.5) 1px 3px 5px;
+    }
+
+    .text {
+      background-image: -webkit-linear-gradient(left, blue, #66ffff 10%, #cc00ff 20%, #CC00CC 30%, #CCCCFF 40%, #00FFFF 50%, #CCCCFF 60%, #CC00CC 70%, #CC00FF 80%, #66FFFF 90%, blue 100%);
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      -webkit-background-size: 200% 100%;
+      -webkit-animation: masked-animation 3s linear infinite;
+      font-size: 25px;
+      padding-bottom: 10px;
+    }
+
+    @keyframes masked-animation {
+      0% {
+        background-position: 0 0;
+      }
+
+      100% {
+        background-position: -100% 0;
+      }
+    }
+
+    img {
+      position: relative;
+      left: 9990px;
+      width: 10rem;
+      height: 10rem;
+      border-radius: 50%;
+      margin-top: 200px;
+    }
+
+    /* 放大音乐控件并支持进度条 */
+    audio {
+      position: absolute;
+      left: 50%;
+      margin-left: -150px;
+      bottom: 20px;
+      width: 300px;
+      height: 60px;
+      z-index: 2;
+      filter: drop-shadow(0 0 15px #66ffff);
+      -webkit-appearance: media-controls;
+      appearance: media-controls;
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+
+    #clock {
+      font-family: "Share Tech Mono", monospace;
+      color: #ffffff;
+      text-align: center;
+      position: absolute;
+      left: 50%;
+      top: 300px;
+      transform: translate(-50%, -50%);
+      color: #daf6ff;
+      text-shadow: 0 0 20px #0aafe6, 0 0 40px rgba(10, 175, 230, 0.5);
+      z-index: 2;
+      animation: clockFloat 6s ease-in-out infinite;
+    }
+
+    /* 天气显示样式（默认隐藏，定位成功后显示） */
+    #weather {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #ffeb3b;
+      text-shadow: 0 0 10px #ffeb3b;
+      display: none; /* 初始隐藏 */
+    }
+
+    @keyframes clockFloat {
+      0%,100% {transform: translate(-50%, -50%) translateY(0);}
+      50% {transform: translate(-50%, -50%) translateY(-10px);}
+    }
+
+    #clock .time {
+      letter-spacing: 0.05em;
+      font-size: 80px;
+      padding: 5px 0;
+    }
+
+    #clock .date {
+      letter-spacing: 0.1em;
+      font-size: 24px;
+    }
+
+    /* 超大双圈动画（黄+绿，顺/逆时针） */
+    #dc-spinner-container {
+      position: absolute;
+      left: 50%;
+      top: 420px;
+      transform: translateX(-50%);
+      width: 120px; /* 容器放大 */
+      height: 120px;
+      z-index: 3;
+      cursor: pointer;
+    }
+
+    /* 外圈（黄色，顺时针） */
     #outer-circle {
-      width: 100%;height: 100%;
+      position: absolute;
+      width: 100%;
+      height: 100%;
       border: 4px solid #ffeb3b;
-      border-radius: 50%;border-top-color: transparent;
-      animation: spin-cw 3s linear infinite;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin-clockwise 3s linear infinite;
       filter: drop-shadow(0 0 10px #ffeb3b);
     }
+
+    /* 内圈（绿色，逆时针，半圈断裂） */
     #inner-circle {
-      position: absolute;top: 10%;left: 10%;
-      width: 80%;height: 80%;
+      position: absolute;
+      width: 80%;
+      height: 80%;
+      top: 10%;
+      left: 10%;
       border: 4px solid #4caf50;
-      border-radius: 50%;border-right-color: transparent;border-bottom-color: transparent;
-      animation: spin-ccw 2s linear infinite;
+      border-radius: 50%;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      animation: spin-counter 2s linear infinite;
       filter: drop-shadow(0 0 10px #4caf50);
     }
-    #btn-text {
-      position: absolute;top: 50%;left: 50%;
-      transform: translate(-50%,-50%);
-      color: #fff;font-size: 14px;font-weight: bold;
+
+    /* 中心标识 */
+    #center-mark {
+      position: absolute;
+      width: 30%;
+      height: 30%;
+      top: 35%;
+      left: 35%;
+      background-color: #2aa198;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
     }
-    @keyframes spin-cw {0% {transform: rotate(0deg);}100% {transform: rotate(360deg);}}
-    @keyframes spin-ccw {0% {transform: rotate(0deg);}100% {transform: rotate(-360deg);}}
-    /* 随机移动水印样式（强制显示） */
+
+    @keyframes spin-clockwise {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes spin-counter {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
+    }
+
+    .d6 {
+      position: relative;
+      left: 50%;
+      margin-left: -150px;
+      top: 7%;
+      width: 300px;
+      height: 70px;
+      z-index: 2;
+    }
+
+    a {
+      float: left;
+      width: 300px;
+      height: 70px;
+      border: 2px solid #ededed;
+      border-radius: 15px;
+      color: skyblue;
+      text-align: center;
+      line-height: 70px;
+      font-size: 45px;
+      font-family: '楷体';
+      text-decoration: none;
+      filter: drop-shadow(0 0 10px skyblue);
+      transition: all 0.3s ease;
+    }
+
+    a:hover {
+      background-color: rgba(135, 206, 235, 0.2);
+      transform: scale(1.05);
+    }
+
+    .box {
+      position: relative;
+      height: 900px;
+      margin-top: 450px;
+      z-index: 2;
+    }
+
+    /* 弹窗样式 */
+    .server-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      z-index: 999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #1a1a1a;
+      padding: 30px;
+      border-radius: 20px;
+      border: 2px solid #0aafe6;
+      box-shadow: 0 0 30px #0aafe6;
+    }
+
+    .modal-content h2 {
+      color: #0aafe6;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #0aafe6;
+    }
+
+    .server-btn {
+      display: block;
+      width: 250px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      color: #fff;
+      background-color: #1a1a1a;
+      border: 2px solid #66ffff;
+      border-radius: 10px;
+      margin: 15px auto;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .server-btn:hover {
+      background-color: rgba(102, 255, 255, 0.2);
+      box-shadow: 0 0 15px #66ffff;
+      transform: scale(1.05);
+    }
+
+    /* 通知弹窗样式 */
+    #notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #222;
+      border-left: 4px solid #0aafe6;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(10, 175, 230, 0.5);
+      z-index: 9999;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+    }
+
+    #notification.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    #notifTitle {
+      color: #0aafe6;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    #notifContent {
+      color: #fff;
+      font-size: 14px;
+    }
+
+    /* 随机移动水印样式 - 修复层级 */
     .random-watermark {
-      position: absolute;color: #00ffff;
-      font-size: 16px;font-weight: bold;
-      text-shadow: 0 0 8px #00ffff;
-      pointer-events: none;z-index: 4;
+      position: fixed;
+      color: #E0FFFF;
+      text-shadow: 0 0 10px #E0FFFF;
+      pointer-events: none;
+      z-index: 9998;
       white-space: nowrap;
+      font-size: 16px;
     }
-    /* 假注入弹窗 */
-    .inject-modal {
-      position: fixed;top: 0;left: 0;
-      width: 100%;height: 100%;
-      background: rgba(0,0,0,0.95);z-index: 999;
-      display: none;flex-direction: column;
-      justify-content: center;align-items: center;
+
+    /* 注入特效1：全屏闪烁扫描 */
+    #inject-scan {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(0,255,0,0.1) 0%, rgba(0,255,0,0.3) 50%, rgba(0,255,0,0.1) 100%);
+      background-size: 200% 100%;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      animation: scanAnim 0.8s linear infinite;
     }
-    .inject-title {
-      color: #4caf50;font-size: 28px;
-      text-shadow: 0 0 10px #4caf50;margin-bottom: 20px;
+    @keyframes scanAnim {
+      0% {background-position: 200% 0;}
+      100% {background-position: -200% 0;}
     }
-    .inject-progress {
-      width: 60%;height: 10px;
-      border: 1px solid #4caf50;border-radius: 5px;
-      overflow: hidden;margin-bottom: 30px;
+
+    /* 注入特效2：控制台代码滚动 */
+    #inject-console {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 400px;
+      height: 200px;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid #0f0;
+      color: #0f0;
+      font-family: Consolas, monospace;
+      font-size: 12px;
+      padding: 10px;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
     }
-    .progress-bar {
-      width: 0%;height: 100%;
-      background: linear-gradient(90deg,#4caf50,#00ffff);
-      animation: progress 5s linear forwards;
+    #console-lines {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      animation: consoleScroll 3s linear;
     }
-    @keyframes progress {
-      0% {width: 0%;}
-      100% {width: 100%;}
-    }
-    .inject-log {
-      color: #00ffff;font-size: 14px;
-      line-height: 1.5;max-height: 200px;
-      overflow-y: auto;padding: 0 20px;
-    }
-    /* 代码雨特效 */
-    #code-rain {position: absolute;width: 100%;height: 100%;z-index: 1;opacity: 0.7;}
-    /* 音乐控件 */
-    audio {
-      position: absolute;left: 50%;bottom: 20px;
-      transform: translateX(-50%);width: 300px;height: 60px;
-      z-index: 2;filter: drop-shadow(0 0 15px #66ffff);
+    @keyframes consoleScroll {
+      0% {top: 100%;}
+      100% {top: -100%;}
     }
   </style>
 </head>
+
 <body>
-  <!-- 粒子背景 -->
   <canvas id="canvas"></canvas>
-  <!-- 代码雨特效 -->
-  <canvas id="code-rain"></canvas>
-  <!-- 标题 -->
-  <div class="title-box">
-    <h1 class="main-title">PUBG 恶搞启动器</h1>
+  <div class="box">
+    <div class="scene">
+      <!-- 超大双圈动画容器 -->
+      <div id="dc-spinner-container">
+        <div id="outer-circle"></div>
+        <div id="inner-circle"></div>
+        <div id="center-mark">启动</div>
+      </div>
+      <div class="info">
+        <div class="div1 d2"> </div>
+        <div class="div1 d3"> 欢迎使用</div>
+        <div class="div1 d4"> 高鼎pubg启动器</div>
+        <div class="div1 d5"> </div>
+        <div id="clock">
+          <p id="weather">定位中... 加载天气信息</p>
+          <p id="date" class="date"></p>
+          <p id="time" class="time"></p>
+          <p class="text"></p>
+        </div>
+      </div>
+      <audio src="https://mpimg.cn/view.php/083ecb86d525ea04d58c032ecc2221a1.mp3" loop="loop" autoplay="autoplay" controls preload="metadata">
+        您的浏览器不支持音频播放
+      
+    </div>
   </div>
-  <!-- 启动按钮 -->
-  <div id="start-btn">
-    <div id="outer-circle"></div>
-    <div id="inner-circle"></div>
-    <div id="btn-text">启动</div>
+
+  <!-- 游戏服选择弹窗 -->
+  <div class="server-modal" id="serverModal">
+    <div class="modal-content">
+      <h2>选择游戏服务器</h2>
+      <div class="server-btn" onclick="startInject('com.tencent.ig', '全球服')">全球服</div>
+      <div class="server-btn" onclick="startInject('com.rekoo.pubgm', '台湾服')">台湾服</div>
+      <div class="server-btn" onclick="startInject('com.pubg.krmobile', '日韩服')">日韩服</div>
+      <div class="server-btn" onclick="startInject('com.vng.pubgmobile', '越南服')">越南服</div>
+      <div class="server-btn" onclick="closeModal()" style="border-color: #ff4444;">关闭</div>
+    </div>
   </div>
-  <!-- 随机水印容器 -->
+
+  <!-- 通知弹窗结构 -->
+  <div id="notification">
+    <div id="notifTitle"></div>
+    <div id="notifContent"></div>
+  </div>
+
+  <!-- 注入特效元素 -->
+  <div id="inject-scan"></div>
+  <div id="inject-console">
+    <div id="console-lines">
+      [+] 初始化内存注入模块...<br>
+      [+] 扫描PUBGM进程 PID: 12345<br>
+      [+] 绕过反作弊检测 SUCCESS<br>
+      [+] 加载配置文件 config.lua<br>
+      [+] 注入皮肤参数表...<br>
+      [+] 枪械属性修改完成<br>
+      [+] 注入成功 等待游戏启动...<br>
+      [+] 后台运行模式开启<br>
+    </div>
+  </div>
+
+  <!-- 水印容器 -->
   <div class="watermark-container"></div>
-  <!-- 假注入弹窗 -->
-  <div class="inject-modal" id="injectModal">
-    <h2 class="inject-title">正在注入游戏资源...</h2>
-    <div class="inject-progress">
-      <div class="progress-bar"></div>
-    </div>
-    <div class="inject-log" id="injectLog">
-      [1] 连接游戏服务器...<br>
-      [2] 加载皮肤配置文件...<br>
-      [3] 检测游戏版本...<br>
-      [4] 匹配玩家数据...<br>
-      [5] 注入完成，准备启动游戏...
-    </div>
-  </div>
-  <!-- 音乐 -->
-  <audio src="https://mpimg.cn/view.php/083ecb86d525ea04d58c032ecc2221a1.mp3" loop autoplay controls preload="metadata">
-    浏览器不支持音频播放
-  
 
   <script>
-    // 1. 粒子背景特效（保留原逻辑）
-    function initParticle() {
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const particles = [];
-      const particleCount = 1000;
+    // 时间更新函数
+    var week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+    var timerID = setInterval(updateTime, 1000);
+    updateTime();
 
-      class Particle {
-        constructor() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
-          this.size = Math.random() * 2 + 0.5;
-          this.speedX = Math.random() * 1 - 0.5;
-          this.speedY = Math.random() * 1 - 0.5;
-          this.color = `hsl(${Math.random() * 180},100%,50%)`;
-        }
-        update() {
-          this.x += this.speedX;
-          this.y += this.speedY;
-          if(this.x < 0 || this.x > canvas.width) this.speedX = -this.speedX;
-          if(this.y < 0 || this.y > canvas.height) this.speedY = -this.speedY;
-        }
-        draw() {
-          ctx.fillStyle = this.color;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
+    function updateTime() {
+      var cd = new Date();
+      document.getElementById("time").innerHTML = zeroPadding(cd.getHours(), 2) + ':' + zeroPadding(cd.getMinutes(),
+        2) + ':' + zeroPadding(cd.getSeconds(), 2);
+      document.getElementById("date").innerHTML = zeroPadding(cd.getFullYear(), 4) + '-' + zeroPadding(cd.getMonth() +
+        1, 2) + '-' + zeroPadding(cd.getDate(), 2) + ' ' + week[cd.getDay()];
+    };
 
-      for(let i=0; i<particleCount; i++) particles.push(new Particle());
-      function animate() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        particles.forEach(p => {p.update();p.draw()});
-        requestAnimationFrame(animate);
+    function zeroPadding(num, digit) {
+      var zero = '';
+      for (var i = 0; i < digit; i++) {
+        zero += '0';
       }
-      animate();
-      window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      });
+      return (zero + num).slice(-digit);
     }
 
-    // 2. 随机移动水印修复（强制显示+双水印）
-    function initWatermark() {
-      const container = document.querySelector('.watermark-container');
-      const texts = ['高鼎专属', '恶搞启动器']; // 水印文本
-      texts.forEach(text => {
-        const mark = document.createElement('div');
-        mark.className = 'random-watermark';
-        mark.textContent = text;
-        container.appendChild(mark);
-        // 初始化位置和速度
-        resetMark(mark);
-        // 移动逻辑
-        setInterval(() => {
-          let x = parseFloat(mark.style.left) || 0;
-          let y = parseFloat(mark.style.top) || 0;
-          let dx = parseFloat(mark.dataset.dx) || 2;
-          let dy = parseFloat(mark.dataset.dy) || 1;
-          // 更新位置
-          x += dx;
-          y += dy;
-          mark.style.left = `${x}px`;
-          mark.style.top = `${y}px`;
-          // 碰边重置
-          const rect = mark.getBoundingClientRect();
-          if(x < -rect.width || x > window.innerWidth || y < -rect.height || y > window.innerHeight) {
-            resetMark(mark);
+    // 粒子特效函数（保留原逻辑）
+    function project3D(x, y, z, vars) {
+      var p, d;
+      x -= vars.camX;
+      y -= vars.camY - 8;
+      z -= vars.camZ;
+      p = Math.atan2(x, z);
+      d = Math.sqrt(x * x + z * z);
+      x = Math.sin(p - vars.yaw) * d;
+      z = Math.cos(p - vars.yaw) * d;
+      p = Math.atan2(y, z);
+      d = Math.sqrt(y * y + z * z);
+      y = Math.sin(p - vars.pitch) * d;
+      z = Math.cos(p - vars.pitch) * d;
+      var rx1 = -1000;
+      var ry1 = 1;
+      var rx2 = 1000;
+      var ry2 = 1;
+      var rx3 = 0;
+      var ry3 = 0;
+      var rx4 = x;
+      var ry4 = z;
+      var uc = (ry4 - ry3) * (rx2 - rx1) - (rx4 - rx3) * (ry2 - ry1);
+      var ua = ((rx4 - rx3) * (ry1 - ry3) - (ry4 - ry3) * (rx1 - rx3)) / uc;
+      var ub = ((rx2 - rx1) * (ry1 - ry3) - (ry2 - ry1) * (rx1 - rx3)) / uc;
+      if (!z) z = 0.000000001;
+      if (ua > 0 && ua < 1 && ub > 0 && ub < 1) {
+        return {
+          x: vars.cx + (rx1 + ua * (rx2 - rx1)) * vars.scale,
+          y: vars.cy + y / z * vars.scale,
+          d: (x * x + y * y + z * z)
+        };
+      } else {
+        return { d: -1 };
+      }
+    }
+    function elevation(x, y, z) {
+      var dist = Math.sqrt(x * x + y * y + z * z);
+      if (dist && z / dist >= -1 && z / dist <= 1) return Math.acos(z / dist);
+      return 0.00000001;
+    }
+    function rgb(col) {
+      col += 0.000001;
+      var r = parseInt((0.5 + Math.sin(col) * 0.5) * 16);
+      var g = parseInt((0.5 + Math.cos(col) * 0.5) * 16);
+      var b = parseInt((0.5 - Math.sin(col) * 0.5) * 16);
+      return "#" + r.toString(16) + g.toString(16) + b.toString(16);
+    }
+    function interpolateColors(RGB1, RGB2, degree) {
+      var w2 = degree;
+      var w1 = 1 - w2;
+      return [w1 * RGB1[0] + w2 * RGB2[0], w1 * RGB1[1] + w2 * RGB2[1], w1 * RGB1[2] + w2 * RGB2[2]];
+    }
+    function rgbArray(col) {
+      col += 0.000001;
+      var r = parseInt((0.5 + Math.sin(col) * 0.5) * 256);
+      var g = parseInt((0.5 + Math.cos(col) * 0.5) * 256);
+      var b = parseInt((0.5 - Math.sin(col) * 0.5) * 256);
+      return [r, g, b];
+    }
+    function colorString(arr) {
+      var r = parseInt(arr[0]);
+      var g = parseInt(arr[1]);
+      var b = parseInt(arr[2]);
+      return "#" + ("0" + r.toString(16)).slice(-2) + ("0" + g.toString(16)).slice(-2) + ("0" + b.toString(16)).slice(-2);
+    }
+    function process(vars) {
+      if (vars.points.length < vars.initParticles) for (var i = 0; i < 5; ++i) spawnParticle(vars);
+      var p, d, t;
+      p = Math.atan2(vars.camX, vars.camZ);
+      d = Math.sqrt(vars.camX * vars.camX + vars.camZ * vars.camZ);
+      d -= Math.sin(vars.frameNo / 80) / 25;
+      t = Math.cos(vars.frameNo / 300) / 165;
+      vars.camX = Math.sin(p + t) * d;
+      vars.camZ = Math.cos(p + t) * d;
+      vars.camY = -Math.sin(vars.frameNo / 220) * 15;
+      vars.yaw = Math.PI + p + t;
+      vars.pitch = elevation(vars.camX, vars.camZ, vars.camY) - Math.PI / 2;
+      var t;
+      for (var i = 0; i < vars.points.length; ++i) {
+        x = vars.points[i].x;
+        y = vars.points[i].y;
+        z = vars.points[i].z;
+        d = Math.sqrt(x * x + z * z) / 1.0075;
+        t = .1 / (1 + d * d / 5);
+        p = Math.atan2(x, z) + t;
+        vars.points[i].x = Math.sin(p) * d;
+        vars.points[i].z = Math.cos(p) * d;
+        vars.points[i].y += vars.points[i].vy * t * ((Math.sqrt(vars.distributionRadius) - d) * 2);
+        if (vars.points[i].y > vars.vortexHeight / 2 || d < .25) {
+          vars.points.splice(i, 1);
+          spawnParticle(vars);
+        }
+      }
+    }
+    function drawFloor(vars) {
+      var x, y, z, d, point, a;
+      for (var i = -25; i <= 25; i += 1) {
+        for (var j = -25; j <= 25; j += 1) {
+          x = i * 2;
+          z = j * 2;
+          y = vars.floor;
+          d = Math.sqrt(x * x + z * z);
+          point = project3D(x, y - d * d / 85, z, vars);
+          if (point.d != -1) {
+            size = 1 + 15000 / (1 + point.d);
+            a = 0.15 - Math.pow(d / 50, 4) * 0.15;
+            if (a > 0) {
+              vars.ctx.fillStyle = colorString(interpolateColors(rgbArray(d / 26 - vars.frameNo / 40), [0, 128, 32], .5 + Math.sin(d / 6 - vars.frameNo / 8) / 2));
+              vars.ctx.globalAlpha = a;
+              vars.ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+            }
           }
-        }, 30);
-      });
-    }
-    function resetMark(mark) {
-      // 随机位置（屏幕内）
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 50);
-      // 随机速度
-      const dx = (Math.random() - 0.5) * 4;
-      const dy = (Math.random() - 0.5) * 4;
-      mark.style.left = `${x}px`;
-      mark.style.top = `${y}px`;
-      mark.dataset.dx = dx;
-      mark.dataset.dy = dy;
-    }
-
-    // 3. 代码雨特效（恶搞视觉）
-    function initCodeRain() {
-      const canvas = document.getElementById('code-rain');
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const chars = '0123456789ABCDEF';
-      const fontSize = 16;
-      const columns = Math.floor(canvas.width / fontSize);
-      const drops = Array(columns).fill(1);
-
-      function draw() {
-        ctx.fillStyle = 'rgba(0,0,0,0.05)';
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = '#00ffff';
-        ctx.font = `${fontSize}px monospace`;
-        for(let i=0; i<drops.length; i++) {
-          const text = chars[Math.floor(Math.random() * chars.length)];
-          ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-          if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
-          }
-          drops[i]++;
         }
       }
-      setInterval(draw, 30);
-      window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      });
+      vars.ctx.fillStyle = "#82f";
+      for (var i = -25; i <= 25; i += 1) {
+        for (var j = -25; j <= 25; j += 1) {
+          x = i * 2;
+          z = j * 2;
+          y = -vars.floor;
+          d = Math.sqrt(x * x + z * z);
+          point = project3D(x, y + d * d / 85, z, vars);
+          if (point.d != -1) {
+            size = 1 + 15000 / (1 + point.d);
+            a = 0.15 - Math.pow(d / 50, 4) * 0.15;
+            if (a > 0) {
+              vars.ctx.fillStyle = colorString(interpolateColors(rgbArray(-d / 26 - vars.frameNo / 40), [32, 0, 128], .5 + Math.sin(-d / 6 - vars.frameNo / 8) / 2));
+              vars.ctx.globalAlpha = a;
+              vars.ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+            }
+          }
+        }
+      }
     }
+    function sortFunction(a, b) {
+      return b.dist - a.dist;
+    }
+    function draw(vars) {
+      vars.ctx.globalAlpha = .15;
+      vars.ctx.fillStyle = "#000";
+      vars.ctx.fillRect(0, 0, canvas.width, canvas.height);
+      drawFloor(vars);
+      var point, x, y, z, a;
+      for (var i = 0; i < vars.points.length; ++i) {
+        x = vars.points[i].x;
+        y = vars.points[i].y;
+        z = vars.points[i].z;
+        point = project3D(x, y, z, vars);
+        if (point.d != -1) {
+          vars.points[i].dist = point.d;
+          size = 1 + vars.points[i].radius / (1 + point.d);
+          d = Math.abs(vars.points[i].y);
+          a = .8 - Math.pow(d / (vars.vortexHeight / 2), 1000) * .8;
+          vars.ctx.globalAlpha = a >= 0 && a <= 1 ? a : 0;
+          vars.ctx.fillStyle = rgb(vars.points[i].color);
+          if (point.x > -1 && point.x < vars.canvas.width && point.y > -1 && point.y < vars.canvas.height) vars.ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+        }
+      }
+      vars.points.sort(sortFunction);
+    }
+    function spawnParticle(vars) {
+      var p, ls;
+      pt = {};
+      p = Math.PI * 2 * Math.random();
+      ls = Math.sqrt(Math.random() * vars.distributionRadius);
+      pt.x = Math.sin(p) * ls;
+      pt.y = -vars.vortexHeight / 2;
+      pt.vy = vars.initV / 20 + Math.random() * vars.initV;
+      pt.z = Math.cos(p) * ls;
+      pt.radius = 200 + 800 * Math.random();
+      pt.color = pt.radius / 1000 + vars.frameNo / 250;
+      vars.points.push(pt);
+    }
+    function frame(vars) {
+      if (vars === undefined) {
+        var vars = {};
+        vars.canvas = document.querySelector("canvas");
+        vars.ctx = vars.canvas.getContext("2d");
+        vars.canvas.width = document.body.clientWidth;
+        vars.canvas.height = document.body.clientHeight;
+        window.addEventListener("resize", function () {
+          vars.canvas.width = document.body.clientWidth;
+          vars.canvas.height = document.body.clientHeight;
+          vars.cx = vars.canvas.width / 2;
+          vars.cy = vars.canvas.height / 2;
+        }, true);
+        vars.frameNo = 0;
 
-    // 4. 假注入弹窗逻辑
-    function showInjectModal() {
-      const modal = document.getElementById('injectModal');
+        vars.camX = 0;
+        vars.camY = 0;
+        vars.camZ = -14;
+        vars.pitch = elevation(vars.camX, vars.camZ, vars.camY) - Math.PI / 2;
+        vars.yaw = 0;
+        vars.cx = vars.canvas.width / 2;
+        vars.cy = vars.canvas.height / 2;
+        vars.bounding = 10;
+        vars.scale = 500;
+        vars.floor = 26.5;
+
+        vars.points = [];
+        vars.initParticles = 1000; 
+        vars.initV = .015; 
+        vars.distributionRadius = 1000;
+        vars.vortexHeight = 30;
+      }
+      vars.frameNo++;
+      requestAnimationFrame(function () {
+        frame(vars);
+      });
+      process(vars);
+      draw(vars);
+    }
+    frame();
+
+    // 弹窗和打开游戏功能
+    const modal = document.getElementById('serverModal');
+    document.getElementById('dc-spinner-container').addEventListener('click', function() {
       modal.style.display = 'flex';
-      // 5秒后关闭弹窗+后台运行
-      setTimeout(() => {
-        modal.style.display = 'none';
-        // 安卓WebView后台运行
-        try {navigator.app.minimize();} catch(e) {window.blur();}
-      }, 5000);
+    });
+    function closeModal() {
+      modal.style.display = 'none';
     }
 
-    // 5. 启动按钮点击事件
-    document.getElementById('start-btn').addEventListener('click', showInjectModal);
+    // 通知函数
+    function qldtz(title, content, duration = 3000) {
+      const notif = document.getElementById('notification');
+      const notifTitle = document.getElementById('notifTitle');
+      const notifContent = document.getElementById('notifContent');
+      
+      notifTitle.textContent = title;
+      notifContent.textContent = content;
+      notif.classList.add('show');
+      
+      setTimeout(() => {
+          notif.classList.remove('show');
+      }, duration);
+    }
 
-    // 初始化所有特效
-    window.onload = () => {
-      initParticle();
-      initWatermark();
-      initCodeRain();
+    // 注入特效 + 启动游戏 核心函数
+    function startInject(packageName, serverName) {
+      closeModal();
+      // 显示注入特效
+      const scan = document.getElementById('inject-scan');
+      const console = document.getElementById('inject-console');
+      scan.style.opacity = '1';
+      console.style.opacity = '1';
+      // 3秒后关闭特效并启动游戏
+      setTimeout(() => {
+        scan.style.opacity = '0';
+        console.style.opacity = '0';
+        // 启动游戏
+        openGame(packageName, serverName);
+      }, 3000);
+    }
+
+    // 启动游戏函数
+    function openGame(packageName, serverName) {
+      const intentUrl = `intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;component=${packageName}/com.epicgames.ue4.SplashActivity;end`;
+      window.location.href = intentUrl;
+      qldtz("启动中", `正在打开${serverName}\n包名: ${packageName}`, 2000);
+      // 后台运行
+      try {
+        navigator.app.minimize();
+      } catch (e) {
+        window.blur();
+      }
+    }
+
+    // 多接口天气查询
+    function getWeather() {
+      const weatherEl = document.getElementById('weather');
+      fetch('https://restapi.amap.com/v3/ip?key=0530927d32196134053856d794222113')
+        .then(res => res.json())
+        .then(ipData => {
+          if (ipData.status === '1') {
+            const city = ipData.city;
+            fetch(`https://restapi.amap.com/v3/weather/weatherInfo?key=0530927d32196134053856d794222113&city=${encodeURIComponent(city)}&extensions=base`)
+              .then(res => res.json())
+              .then(weatherData => {
+                if (weatherData.status === '1') {
+                  const weather = weatherData.lives[0];
+                  weatherEl.innerHTML = `${weather.city} | ${weather.weather} | ${weather.temperature}°C`;
+                  weatherEl.style.display = 'block';
+                } else {
+                  fetch(`https://api.map.baidu.com/weather/v1/?district_id=${ipData.adcode}&data_type=all&ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg`)
+                    .then(res => res.json())
+                    .then(baiduWeather => {
+                      if (baiduWeather.status === 0) {
+                        const now = baiduWeather.result.now;
+                        weatherEl.innerHTML = `${city} | ${now.text} | ${now.temp}°C`;
+                        weatherEl.style.display = 'block';
+                      } else {
+                        weatherEl.style.display = 'none';
+                      }
+                    })
+                    .catch(err => {
+                      weatherEl.style.display = 'none';
+                    });
+                }
+              })
+              .catch(err => {
+                fetch('https://api.map.baidu.com/location/ip?ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg&coor=bd09ll')
+                  .then(res => res.json())
+                  .then(baiduIp => {
+                    if (baiduIp.status === 0) {
+                      const city = baiduIp.content.address_detail.city;
+                      fetch(`https://api.map.baidu.com/weather/v1/?district_id=${baiduIp.content.address_detail.adcode}&data_type=all&ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg`)
+                        .then(res => res.json())
+                        .then(baiduWeather => {
+                          if (baiduWeather.status === 0) {
+                            const now = baiduWeather.result.now;
+                            weatherEl.innerHTML = `${city} | ${now.text} | ${now.temp}°C`;
+                            weatherEl.style.display = 'block';
+                          } else {
+                            weatherEl.style.display = 'none';
+                          }
+                        })
+                        .catch(err => {
+                          weatherEl.style.display = 'none';
+                        });
+                    } else {
+                      weatherEl.style.display = 'none';
+                    }
+                  })
+                  .catch(err => {
+                    weatherEl.style.display = 'none';
+                  });
+              });
+          } else {
+            fetch('https://api.map.baidu.com/location/ip?ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg&coor=bd09ll')
+              .then(res => res.json())
+              .then(baiduIp => {
+                if (baiduIp.status === 0) {
+                  const city = baiduIp.content.address_detail.city;
+                  fetch(`https://api.map.baidu.com/weather/v1/?district_id=${baiduIp.content.address_detail.adcode}&data_type=all&ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg`)
+                    .then(res => res.json())
+                    .then(baiduWeather => {
+                      if (baiduWeather.status === 0) {
+                        const now = baiduWeather.result.now;
+                        weatherEl.innerHTML = `${city} | ${now.text} | ${now.temp}°C`;
+                        weatherEl.style.display = 'block';
+                      } else {
+                        weatherEl.style.display = 'none';
+                      }
+                    })
+                    .catch(err => {
+                      weatherEl.style.display = 'none';
+                    });
+                } else {
+                  weatherEl.style.display = 'none';
+                }
+              })
+              .catch(err => {
+                weatherEl.style.display = 'none';
+              });
+          }
+        })
+        .catch(err => {
+          weatherEl.style.display = 'none';
+        });
+    }
+
+    // 双随机移动水印 修复版
+    function initRandomWatermarks() {
+      const container = document.querySelector('.watermark-container');
+      const watermarkTexts = ['高鼎水印1', '高鼎水印2'];
+      const speedRange = [1, 3];
+
+      watermarkTexts.forEach(text => {
+        const watermark = document.createElement('div');
+        watermark.className = 'random-watermark';
+        watermark.textContent = text;
+        container.appendChild(watermark);
+        resetWatermark(watermark);
+      });
+
+      setInterval(() => {
+        document.querySelectorAll('.random-watermark').forEach(watermark => {
+          const x = parseFloat(watermark.style.left) || 0;
+          const y = parseFloat(watermark.style.top) || 0;
+          const dx = parseFloat(watermark.dataset.dx) || 0;
+          const dy = parseFloat(watermark.dataset.dy) || 0;
+
+          const newX = x + dx;
+          const newY = y + dy;
+          watermark.style.left = `${newX}px`;
+          watermark.style.top = `${newY}px`;
+
+          const rect = watermark.getBoundingClientRect();
+          if (newX < -rect.width || newX > window.innerWidth || newY < -rect.height || newY > window.innerHeight) {
+            resetWatermark(watermark);
+          }
+        });
+      }, 16);
+    }
+
+    function resetWatermark(watermark) {
+      const maxX = window.innerWidth - 100;
+      const maxY = window.innerHeight - 50;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+      watermark.style.left = `${x}px`;
+      watermark.style.top = `${y}px`;
+
+      const speed = speedRange[0] + Math.random() * (speedRange[1] - speedRange[0]);
+      const angle = Math.random() * Math.PI * 2;
+      const dx = Math.cos(angle) * speed;
+      const dy = Math.sin(angle) * speed;
+      watermark.dataset.dx = dx;
+      watermark.dataset.dy = dy;
+    }
+
+    // 页面加载初始化
+    window.onload = function() {
+      getWeather();
+      initRandomWatermarks();
+      window.addEventListener('resize', () => {
+        document.querySelectorAll('.random-watermark').forEach(resetWatermark);
+      });
     };
   </script>
 </body>
+
 </html>
+
 
 
 
