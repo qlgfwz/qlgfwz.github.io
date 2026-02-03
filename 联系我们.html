@@ -3,68 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>链接导航</title>
+    <title>导航</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
+            min-height: 100vh;
             padding: 2rem;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
         }
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 900px;
             display: flex;
             gap: 2rem;
             flex-wrap: wrap;
+            justify-content: center;
         }
         .link-card {
             flex: 1;
-            min-width: 300px;
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-width: 320px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2.5rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(149, 157, 165, 0.1);
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .link-card:hover {
+            transform: translateY(-5px);
         }
         .link-card h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: #2d3748;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #1a202c;
+            font-weight: 600;
         }
         .link-btn {
             display: inline-block;
-            padding: 0.8rem 2rem;
-            background-color: #2563eb;
+            padding: 1rem 2.5rem;
+            background-color: #3b82f6;
             color: white;
             text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.2s;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
             cursor: pointer;
+            border: none;
         }
         .link-btn:hover {
-            background-color: #1d4ed8;
+            background-color: #2563eb;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
         .link-btn.disabled {
             background-color: #94a3b8;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
         }
         .notice {
-            max-width: 800px;
-            margin: 2rem auto 0;
-            padding: 1rem;
-            background-color: #fff3e0;
-            border-left: 4px solid #f59e0b;
-            color: #92400e;
+            width: 100%;
+            max-width: 900px;
+            padding: 1.2rem 1.5rem;
+            border-radius: 8px;
+            color: #374151;
+            font-size: 1rem;
+            line-height: 1.6;
         }
-        .error-notice {
-            background-color: #ffebee;
+        .success {
+            background-color: #ecfdf5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+        .error {
+            background-color: #fee2e2;
             border-left: 4px solid #ef4444;
-            color: #b91c1c;
+            color: #991b1b;
+        }
+        .loading {
+            background-color: #f3f4f6;
+            border-left: 4px solid #f59e0b;
+            color: #78350f;
+        }
+        .ip-info {
+            margin-top: 0.5rem;
+            font-weight: 500;
+            color: inherit;
         }
     </style>
 </head>
@@ -73,53 +106,116 @@
         <!-- 本人链接框 -->
         <div class="link-card">
             <h2>本人链接</h2>
-            <div class="link-btn" data-url="https://t.me/qiliangnb">打开链接</div>
+            <button class="link-btn disabled" data-url="https://t.me/qiliangnb">打开链接</button>
         </div>
 
         <!-- 频道链接框 -->
         <div class="link-card">
             <h2>频道链接</h2>
-            <div class="link-btn" data-url="https://t.me/+0t3NSCFb6t85ZGM1">打开链接</div>
+            <button class="link-btn disabled" data-url="https://t.me/+0t3NSCFb6t85ZGM1">打开链接</button>
         </div>
     </div>
 
-    <!-- 提示区域 -->
-    <div class="notice" id="notice">
-        <p>正在检测IP区域...</p>
+    <!-- 检测提示与IP信息 -->
+    <div class="notice loading" id="notice">
+        <p>正在进行 IPv4 + IPv6 双重IP检测...</p>
+        <p class="ip-info" id="ipDetail"></p>
     </div>
 
     <script>
-        // 检测IP区域（使用公开接口，实际项目建议替换为后端接口）
-        let isOverseas = false;
         const noticeEl = document.getElementById('notice');
+        const ipDetailEl = document.getElementById('ipDetail');
         const btnEls = document.querySelectorAll('.link-btn');
+        let isAccessible = false; // 是否允许访问（境外+港澳台）
 
-        // 调用IP检测接口
-        fetch('https://api.ip.sb/geoip')
-            .then(res => res.json())
-            .then(data => {
-                // 判断是否为境外（排除中国大陆）
-                const excludeCountries = ['CN'];
-                isOverseas = !excludeCountries.includes(data.country_code);
+        // 支持的IP检测接口（双重检测，提高稳定性）
+        const ipApis = [
+            'https://api.ip.sb/geoip',
+            'https://api.ipify.org?format=json' // 备用接口获取IP，配合geoip查询
+        ];
+
+        // 地区映射（补充港澳台及常见国家中文名称）
+        const regionMap = {
+            'CN': '中国大陆',
+            'HK': '中国香港',
+            'MO': '中国澳门',
+            'TW': '中国台湾',
+            'US': '美国',
+            'JP': '日本',
+            'KR': '韩国',
+            'SG': '新加坡',
+            'GB': '英国',
+            'DE': '德国',
+            'FR': '法国',
+            'AU': '澳大利亚'
+        };
+
+        // 双重IP检测核心函数
+        async function doubleIpCheck() {
+            try {
+                // 1. 优先调用主接口（支持IPv4/IPv6）
+                let geoData = await fetchIpData(ipApis[0]);
                 
-                if (isOverseas) {
-                    noticeEl.innerHTML = '<p>IP区域符合要求，可正常访问</p>';
-                    btnEls.forEach(btn => {
-                        btn.addEventListener('click', () => {
-                            window.open(btn.dataset.url, '_blank');
-                        });
-                    });
-                } else {
-                    noticeEl.innerHTML = '<p>当前IP区域不支持访问该链接</p>';
-                    noticeEl.classList.add('error-notice');
-                    btnEls.forEach(btn => btn.classList.add('disabled'));
+                // 2. 提取IP和地区信息
+                const ip = geoData.ip || '未知IP';
+                const countryCode = geoData.country_code || '未知';
+                const region = regionMap[countryCode] || geoData.country || '未知国家/地区';
+
+                // 3. 判定访问权限（排除中国大陆）
+                isAccessible = !['CN'].includes(countryCode);
+
+                // 4. 更新UI显示
+                updateUI(ip, region);
+
+            } catch (err) {
+                try {
+                    // 主接口失败，使用备用接口重试
+                    const ipRes = await fetch(ipApis[1]);
+                    const ipData = await ipRes.json();
+                    const backupGeoData = await fetch(`https://api.ip.sb/geoip/${ipData.ip}`);
+                    await doubleIpCheck(); // 重试双重检测
+                } catch (backupErr) {
+                    noticeEl.className = 'notice error';
+                    noticeEl.innerHTML = '<p>IP检测失败（IPv4/IPv6均未响应）</p>';
+                    ipDetailEl.textContent = '请检查网络连接或稍后重试';
                 }
-            })
-            .catch(err => {
-                noticeEl.innerHTML = '<p>IP检测失败，请手动确认区域</p>';
-                noticeEl.classList.add('error-notice');
+            }
+        }
+
+        // 通用IP数据请求函数
+        async function fetchIpData(apiUrl) {
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
             });
+            if (!response.ok) throw new Error('接口请求失败');
+            return await response.json();
+        }
+
+        // 更新页面UI状态
+        function updateUI(ip, region) {
+            if (isAccessible) {
+                // 允许访问：按钮激活，成功提示
+                noticeEl.className = 'notice success';
+                noticeEl.innerHTML = `<p>IP区域符合要求，可正常访问</p>`;
+                ipDetailEl.textContent = `检测到IP：${ip} | 所在地区：${region}`;
+                
+                btnEls.forEach(btn => {
+                    btn.classList.remove('disabled');
+                    btn.addEventListener('click', () => {
+                        window.open(btn.dataset.url, '_blank');
+                    });
+                });
+            } else {
+                // 禁止访问：按钮置灰，错误提示
+                noticeEl.className = 'notice error';
+                noticeEl.innerHTML = `<p>当前IP区域不支持访问</p>`;
+                ipDetailEl.textContent = `检测到IP：${ip} | 所在地区：${region}（仅境外及港澳台可访问）`;
+            }
+        }
+
+        // 初始化检测
+        doubleIpCheck();
     </script>
 </body>
 </html>
-
