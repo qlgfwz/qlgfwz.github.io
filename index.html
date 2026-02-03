@@ -272,36 +272,57 @@
             transform: scale(0.95);
             transition: transform 0.1s ease;
         }
-        /* 新增：个人档案上方的头像链接框 */
-        .profile-avatar-box {
+        /* 新增：联系方式模块样式 */
+        .contact-module {
             background: rgba(255,255,255,0.08);
             border-radius: 15px;
-            padding: 20px;
+            padding: 25px;
             margin: 25px 0;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .contact-module:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .contact-group {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 15px;
-        }
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 15px rgba(72, 187, 255, 0.3);
-        }
-        .profile-avatar-text {
-            display: flex;
+            gap: 30px;
             align-items: center;
-            gap: 8px;
+            flex-wrap: nowrap; /* 确保图标不换行，始终横向排列 */
         }
-        .profile-avatar-icon {
-            width: 28px;
-            height: 28px;
-            object-fit: contain;
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 80px; /* 确保每个联系项目有最小宽度 */
+        }
+        .contact-item:hover {
+            transform: translateY(-3px);
+        }
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 8px;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        .contact-item:hover .contact-icon {
+            border-color: rgba(72, 187, 255, 0.6);
+            box-shadow: 0 0 15px rgba(72, 187, 255, 0.4);
+        }
+        .contact-name {
+            color: #fff;
+            font-size: 14px;
+            text-shadow: 0 0 4px rgba(255,255,255,0.3);
         }
         /* 关于档案 */
         .profile { 
@@ -320,22 +341,6 @@
             color: #c0c4cc; 
             line-height: 1.7; 
             margin-bottom: 10px;
-        }
-        .learn-more {
-            color: #5ac8fa;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            display: inline-block;
-            margin-top: 5px;
-            position: relative;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-        .learn-more:hover {
-            text-shadow: 0 0 8px #5ac8fa;
-            transform: translateY(-2px);
-            background: rgba(90, 200, 250, 0.1);
         }
         /* 点击关键词特效 - 增加更多随机颜色 */
         .keyword { 
@@ -568,26 +573,6 @@
             height: 20px;
             object-fit: contain;
         }
-        /* 左上角网速显示 */
-        .network-speed {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            padding: 8px 12px;
-            font-size: 12px;
-            z-index: 999;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .network-icon {
-            width: 16px;
-            height: 16px;
-        }
         /* 右上角电量显示 */
         .battery-status {
             position: fixed;
@@ -608,9 +593,9 @@
             width: 16px;
             height: 16px;
         }
-        /* 响应式调整 */
+        /* 响应式调整 - 确保联系方式图标始终横向排列 */
         @media (max-width: 768px) {
-            .network-speed, .battery-status {
+            .battery-status {
                 font-size: 10px;
                 padding: 6px 8px;
             }
@@ -621,6 +606,39 @@
             .nav-btn {
                 max-width: 100%;
                 width: 100%;
+            }
+            .contact-group {
+                flex-direction: row; /* 确保图标横向排列 */
+                gap: 15px; /* 缩小间隙以适应小屏幕 */
+                flex-wrap: nowrap; /* 确保不换行 */
+                justify-content: space-around; /* 平均分配空间 */
+            }
+            .contact-item {
+                min-width: 60px; /* 在小屏幕上适当缩小 */
+            }
+            .contact-icon {
+                width: 40px; /* 在小屏幕上适当缩小图标 */
+                height: 40px;
+            }
+            .contact-name {
+                font-size: 12px; /* 在小屏幕上适当缩小字体 */
+            }
+        }
+        
+        /* 针对更小屏幕的进一步优化 */
+        @media (max-width: 480px) {
+            .contact-group {
+                gap: 10px; /* 进一步缩小间隙 */
+            }
+            .contact-item {
+                min-width: 50px;
+            }
+            .contact-icon {
+                width: 35px;
+                height: 35px;
+            }
+            .contact-name {
+                font-size: 10px;
             }
         }
     </style>
@@ -652,18 +670,6 @@ var _hmt = _hmt || [];
     
     <!-- 背景粒子容器 -->
     <div class="bg-particles" id="bgParticles"></div>
-    
-    <!-- 左上角网速显示 -->
-    <div class="network-speed">
-        <svg class="network-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 20V10" stroke="#5ac8fa" stroke-width="2" stroke-linecap="round"/>
-            <path d="M16 20V6" stroke="#5ac8fa" stroke-width="2" stroke-linecap="round"/>
-            <path d="M8 20V14" stroke="#5ac8fa" stroke-width="2" stroke-linecap="round"/>
-            <path d="M4 20V18" stroke="#5ac8fa" stroke-width="2" stroke-linecap="round"/>
-            <path d="M20 20V12" stroke="#5ac8fa" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <span id="networkSpeed">0 KB/s</span>
-    </div>
     
     <!-- 右上角电量显示 -->
     <div class="battery-status">
@@ -722,7 +728,33 @@ var _hmt = _hmt || [];
                 <div class="nav-group">
                     <a href="音乐.html" target="_blank" class="nav-btn">音乐</a>
                     <a href="https://www.123pan.com/s/3V3nTd-C9cE3" target="_blank" class="nav-btn">下载加密</a>
-                    <a href="联系我们.html" target="_blank" class="nav-btn">本人TG</a>
+                </div>
+            </div>
+
+            <!-- 新增联系方式模块 -->
+            <div class="contact-module">
+                <div class="nav-header">
+                    <img src="https://mpimg.cn/view.php/cb8d683e2894322369388ac271a5e8aa.png" alt="联系方式图标" class="nav-title-icon">
+                    <div class="nav-title">联系方式</div>
+                </div>
+                <div class="contact-group">
+                    <!-- 微信 -->
+                    <a href="https://mpimg.cn/view.php/a6a8064d81ca2e8be5528f90d33aa8b8.png" target="_blank" class="contact-item">
+                        <img src="https://mpimg.cn/view.php/fb57334f4854ab88c7981526a59cc972.png" alt="微信" class="contact-icon">
+                        <span class="contact-name">微信</span>
+                    </a>
+                    
+                    <!-- Telegram -->
+                    <a href="联系我们.html" target="_blank" class="contact-item">
+                        <img src="https://mpimg.cn/view.php/0ebe0c0bc29d57ac5b70b3e58d5b6f3d.jpeg" alt="Telegram" class="contact-icon">
+                        <span class="contact-name">Telegram</span>
+                    </a>
+                    
+                    <!-- QQ -->
+                    <a href="https://qm.qq.com/q/gKOyuv0D0k" target="_blank" class="contact-item">
+                        <img src="https://mpimg.cn/view.php/03fe528340933932a4758bbcee670889.png" alt="QQ" class="contact-icon">
+                        <span class="contact-name">QQ</span>
+                    </a>
                 </div>
             </div>
 
@@ -776,7 +808,6 @@ var _hmt = _hmt || [];
                     维护者：凄凉
                 </p>
                 <p class="profile-desc">...</p>
-                <a href="产品介绍.html" class="learn-more">了解更多</a>
             </div>
         </div>
     </div>
@@ -1044,54 +1075,6 @@ var _hmt = _hmt || [];
         const randomAvatar = avatarImages[Math.floor(Math.random() * avatarImages.length)];
         document.getElementById('randomProfileAvatar').src = randomAvatar;
 
-        // 修复后的实时网速监测功能
-        let lastBytesReceived = 0;
-        let lastTime = Date.now();
-        
-        function updateNetworkSpeed() {
-            if ('connection' in navigator && navigator.connection) {
-                const connection = navigator.connection;
-                if (connection.downlink) {
-                    // 使用Network Information API获取下行速度
-                    const speed = (connection.downlink * 125).toFixed(1); // 转换为KB/s
-                    document.getElementById('networkSpeed').textContent = `${speed} KB/s`;
-                    return;
-                }
-            }
-            
-            // 备用方案：通过资源加载计算
-            if (performance && performance.getEntriesByType) {
-                const resources = performance.getEntriesByType('resource');
-                let totalBytes = 0;
-                
-                // 计算最近加载的资源大小
-                const recentResources = resources.slice(-10); // 取最近10个资源
-                recentResources.forEach(resource => {
-                    totalBytes += resource.transferSize || 0;
-                });
-                
-                const currentTime = Date.now();
-                const timeDiff = currentTime - lastTime;
-                
-                if (timeDiff > 0) {
-                    const bytesDiff = totalBytes - lastBytesReceived;
-                    const speed = (bytesDiff / timeDiff * 1000 / 1024).toFixed(1);
-                    document.getElementById('networkSpeed').textContent = `${speed} KB/s`;
-                }
-                
-                lastBytesReceived = totalBytes;
-                lastTime = currentTime;
-            } else {
-                // 如果以上方法都不可用，显示模拟数据
-                const speed = (Math.random() * 100 + 50).toFixed(1);
-                document.getElementById('networkSpeed').textContent = `${speed} KB/s`;
-            }
-        }
-        
-        // 每2秒更新一次网速
-        setInterval(updateNetworkSpeed, 2000);
-        updateNetworkSpeed(); // 初始化
-
         // 实时电量显示功能
         function updateBatteryStatus() {
             if ('getBattery' in navigator) {
@@ -1144,3 +1127,4 @@ var _hmt = _hmt || [];
     </script>
 </body>
 </html>
+
