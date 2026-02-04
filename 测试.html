@@ -487,6 +487,33 @@
                 font-size: 12px;
             }
         }
+
+        /* API说明样式 */
+        .api-section {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+        .api-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+        .api-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        .api-content pre {
+            background: #e9ecef;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 13px;
+            margin: 8px 0;
+        }
     </style>
 </head>
 <body>
@@ -521,13 +548,10 @@
             <p class="folder-description">雀云注入，为Android二创引流赋能，一站式服务渠道。支持在线支付系统，支付宝每日结算。</p>
             <p class="folder-stats">
                 <span>
-                    共 <span>2</span> 项
+                    共 <span>1</span> 项
                 </span>
             </p>
         </div>
-
-        <!-- 密码验证区域 -->
-        
 
         <!-- 面包屑导航 -->
         <div class="breadcrumb">
@@ -539,27 +563,7 @@
 
         <!-- 文件夹内容 -->
         <div class="file-list" id="fileList">
-            <!-- 子文件夹 -->
-            
-
-            <!-- 文件 -->
-            <div>
-                <div class="file-item">
-                    <div class="file-icon">
-                        <img src="https://i2.qyimage.store/i/7356b3220408446a"
-                             alt="文件">
-                    </div>
-                    <div class="file-content">
-                        <div class="file-info">
-                            <div class="file-name">雀云注入_2.0.0.apk</div>
-                        </div>
-                        <div class="file-size" data-bytes="11617322"></div>
-                        <div class="file-action">
-                            <a href="/s/ohiwrn?fileId=489279" class="action-btn">下载</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- 新增分享文件 -->
             <div>
                 <div class="file-item">
                     <div class="file-icon">
@@ -568,18 +572,52 @@
                     </div>
                     <div class="file-content">
                         <div class="file-info">
-                            <div class="file-name">雀云注入使用教程.mp4</div>
+                            <div class="file-name">新增分享文件.zip</div>
                         </div>
-                        <div class="file-size" data-bytes="22930580"></div>
+                        <div class="file-size" data-bytes="15234567">14.5MB</div>
                         <div class="file-action">
-                            <a href="/s/ohiwrn?fileId=52034" class="action-btn">下载</a>
+                            <a href="/s/ohiwrn?fileId=123456" class="action-btn">下载</a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 空文件夹提示 -->
-            
+            <!-- API说明区域 -->
+            <div class="api-section">
+                <div class="api-title">API接口说明</div>
+                <div class="api-content">
+                    <p><strong>接口1：</strong>https://pan.szfx.top/api.php</p>
+                    <p>请求方式：POST multipart/form-data</p>
+                    <p>请求参数：
+                        <pre>
+字段名       是否必填   示例值       描述
+file         是        multipart格式 文件
+show         否        1            是否首页显示（默认是）
+ispwd        否        0            是否设置密码（默认否）
+pwd          否        123456       下载密码（默认留空）
+format       否        json         返回格式（json/jsonp/form，默认json）
+urlbackurl   否        http://...   上传成功跳转地址（仅form格式有效）
+callback     否        callback     回调函数（仅jsonp格式有效）
+                        </pre>
+                    </p>
+                    <p>返回参数（JSON格式）：
+                        <pre>
+{
+    "code": 0,
+    "msg": "上传成功！",
+    "hash": "f1e807cb0d6ba52d71bdb02864e6bda8",
+    "name": "exapmle1.jpg",
+    "size": 58937,
+    "type": "jpg",
+    "downurl": "http://.....",
+    "viewurl": "http://....."
+}
+                        </pre>
+                    </p>
+                    <p><strong>接口2：</strong>https://17h.top:443/wp/api.php</p>
+                    <p>说明：该接口为扩展API，具体参数请参考对应文档。</p>
+                </div>
+            </div>
 
             <button id="saveToCloudBtn" class="verify-btn" style="margin-top:20px; padding-left: 20px; padding-right: 20px;">
                 <span id="saveToCloudText">保存到我的网盘</span>
@@ -594,7 +632,6 @@
     </a>
 </div>
 
-<!--<script src="/js/feather.min.js"></script>-->
 <script src="/js/common.js"></script>
 <script src="/js/utils.js"></script>
 <script src="/js/scripts.js"></script>
@@ -609,7 +646,23 @@
             const breadcrumb = document.querySelector('.breadcrumb');
             if (breadcrumb) breadcrumb.style.display = 'none';
         }
+        // 填充文件大小
+        document.querySelectorAll('.file-size').forEach(el => {
+            const bytes = el.getAttribute('data-bytes');
+            if (bytes) {
+                const size = formatFileSize(bytes);
+                el.textContent = size;
+            }
+        });
     });
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
 
     function checkPassword() {
         const password = document.getElementById('passwordInput').value.trim();
@@ -668,4 +721,5 @@
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"9bdcaec8c1cc49999b6008d8e34fbe10","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
-    </html>
+</html>
+
