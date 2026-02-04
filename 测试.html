@@ -303,114 +303,55 @@
             margin-top: 12px;
             font-size: 14px;
         }
-
-        /* 顶部广告位样式 */
-        .promo-banner {
-            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        /* 上传区域样式 */
+        .upload-section {
+            background: #f8f9fa;
             border-radius: 16px;
-            padding: 36px 24px 20px 24px; /* 上方留出空间放广告标签避免与icon重叠 */
+            padding: 24px;
             margin-bottom: 24px;
-            position: relative;
-            box-shadow: 0 8px 20px rgba(90, 103, 216, 0.15);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            overflow: hidden;
         }
-
-        .promo-banner:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(90, 103, 216, 0.25);
-        }
-
-        .promo-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transform: translate(30px, -30px);
-        }
-
-        .promo-label {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #5a67d8;
-            font-size: 11px;
+        .upload-title {
+            font-size: 18px;
             font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            line-height: 1;
-            pointer-events: none; /* 防止挡住点击 */
+            color: #1a1a1a;
+            margin: 0 0 16px 0;
+            text-align: center;
         }
-
-        .promo-content {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            position: relative;
-            z-index: 1;
+        .upload-input {
+            display: none;
         }
-
-        .promo-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.15);
+        .upload-label {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border: 2px dashed #e9ecef;
             border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            margin-bottom: 16px;
+        }
+        .upload-label:hover {
+            border-color: #667eea;
+        }
+        .upload-btn-wrap {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
-            margin-top: 0;
+            gap: 12px;
         }
-
-        .promo-text {
+        .upload-btn {
             flex: 1;
-            color: white;
+            background: linear-gradient(135deg, #38b2ac 0%, #48bb78 100%);
         }
-
-        .promo-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin: 0 0 4px 0;
-            line-height: 1.3;
+        .upload-btn:hover {
+            box-shadow: 0 12px 24px rgba(56, 178, 172, 0.4);
         }
-
-        .promo-description {
-            font-size: 13px;
-            opacity: 0.85;
-            margin: 0;
-            line-height: 1.4;
+        .reset-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
         }
-
-        .promo-button {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            border-radius: 10px;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-            backdrop-filter: blur(10px);
+        .reset-btn:hover {
+            box-shadow: 0 12px 24px rgba(245, 158, 11, 0.4);
         }
-
-        .promo-button:hover {
-            background: rgba(255, 255, 255, 0.25);
-            border-color: rgba(255, 255, 255, 0.4);
-            color: white;
-            text-decoration: none;
-        }
-
         @media (max-width: 768px) {
             .container {
                 padding-top: 10px;
@@ -454,175 +395,53 @@
                 padding: 6px 12px;
                 font-size: 12px;
             }
-            .promo-banner {
-                padding: 32px 20px 16px 20px;
-                margin-bottom: 20px;
-            }
-
-            .promo-label {
-                top: 8px;
-                left: 20px;
-            }
-
-            .promo-content {
-                gap: 12px;
-            }
-
-            .promo-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-
-            .promo-title {
-                font-size: 14px;
-            }
-
-            .promo-description {
-                font-size: 12px;
-            }
-
-            .promo-button {
-                padding: 8px 16px;
-                font-size: 12px;
-            }
-        }
-
-        /* API说明样式 */
-        .api-section {
-            background: #f8f9fa;
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 24px;
-        }
-        .api-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 12px;
-        }
-        .api-content {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.6;
-        }
-        .api-content pre {
-            background: #e9ecef;
-            padding: 12px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-size: 13px;
-            margin: 8px 0;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- 顶部广告 -->
-    <div class="promo-banner">
-        <div class="promo-label">广告</div>
-        <div class="promo-content">
-            <div class="promo-icon">
-                <img src="https://i2.qyimage.store:2999/i/7356b3220408446a"
-                     alt="文件图标"
-                     style="width: 32px; height: 32px; border-radius: 6px;">
-                
-            </div>
-            <div class="promo-text">
-                <div class="promo-title">雀云注入</div>
-                <div class="promo-description">安卓APP添加弹窗引流软件，全新升级激活码系统，支持在线支付，可开启广告收入，点击查看教程与下载。</div>
-            </div>
-            <a href="https://wwwz.qyshare.site:2083/s/ohiwrn" target="_blank" rel="noopener"
-               class="promo-button"
-               onclick="event.stopPropagation()">立即下载</a>
-        </div>
-    </div>
-
     <div class="folder-card">
         <div class="folder-header">
             <div class="folder-icon">
-                <img src="/assets/img/folder.png"
-                     alt="文件夹图标">
+                <img src="/assets/img/folder.png" alt="文件夹图标">
             </div>
-            <h1 class="folder-name">雀云注入APP教程</h1>
-            <p class="folder-description">雀云注入，为Android二创引流赋能，一站式服务渠道。支持在线支付系统，支付宝每日结算。</p>
+            <h1 class="folder-name">雀云文件分享</h1>
+            <p class="folder-description">支持文件上传与分享，多设备同步查看</p>
             <p class="folder-stats">
-                <span>
-                    共 <span>1</span> 项
-                </span>
+                <span>共 <span id="fileCount">0</span> 项</span>
             </p>
         </div>
 
         <!-- 面包屑导航 -->
         <div class="breadcrumb">
-            <a class="breadcrumb-item" href="javascript:void(0);" onclick="goToFolder(&#39;&#39;)">根目录</a>
-            <a href="javascript:void(0);"
-               onclick="goToFolder(22829)"
-               class="breadcrumb-item breadcrumb-item-disabled">雀云注入APP教程</a>
+            <a class="breadcrumb-item" href="javascript:void(0);">根目录</a>
+        </div>
+
+        <!-- 上传区域 -->
+        <div class="upload-section">
+            <h3 class="upload-title">文件上传</h3>
+            <input type="file" id="fileUpload" class="upload-input" accept="*">
+            <label for="fileUpload" class="upload-label" id="uploadLabel">
+                点击选择文件或拖拽文件到此处
+            </label>
+            <div class="upload-btn-wrap">
+                <button class="verify-btn upload-btn" id="uploadBtn">开始上传</button>
+                <button class="verify-btn reset-btn" id="resetBtn">清空文件</button>
+            </div>
         </div>
 
         <!-- 文件夹内容 -->
         <div class="file-list" id="fileList">
-            <!-- 新增分享文件 -->
-            <div>
-                <div class="file-item">
-                    <div class="file-icon">
-                        <img src="/assets/img/file.png"
-                             alt="文件">
-                    </div>
-                    <div class="file-content">
-                        <div class="file-info">
-                            <div class="file-name">新增分享文件.zip</div>
-                        </div>
-                        <div class="file-size" data-bytes="15234567">14.5MB</div>
-                        <div class="file-action">
-                            <a href="/s/ohiwrn?fileId=123456" class="action-btn">下载</a>
-                        </div>
-                    </div>
-                </div>
+            <!-- 空文件夹提示 -->
+            <div class="empty-folder" id="emptyTip">
+                <div class="empty-icon">📂</div>
+                <p>暂无文件，点击上传按钮添加文件</p>
             </div>
-
-            <!-- API说明区域 -->
-            <div class="api-section">
-                <div class="api-title">API接口说明</div>
-                <div class="api-content">
-                    <p><strong>接口1：</strong>https://pan.szfx.top/api.php</p>
-                    <p>请求方式：POST multipart/form-data</p>
-                    <p>请求参数：
-                        <pre>
-字段名       是否必填   示例值       描述
-file         是        multipart格式 文件
-show         否        1            是否首页显示（默认是）
-ispwd        否        0            是否设置密码（默认否）
-pwd          否        123456       下载密码（默认留空）
-format       否        json         返回格式（json/jsonp/form，默认json）
-urlbackurl   否        http://...   上传成功跳转地址（仅form格式有效）
-callback     否        callback     回调函数（仅jsonp格式有效）
-                        </pre>
-                    </p>
-                    <p>返回参数（JSON格式）：
-                        <pre>
-{
-    "code": 0,
-    "msg": "上传成功！",
-    "hash": "f1e807cb0d6ba52d71bdb02864e6bda8",
-    "name": "exapmle1.jpg",
-    "size": 58937,
-    "type": "jpg",
-    "downurl": "http://.....",
-    "viewurl": "http://....."
-}
-                        </pre>
-                    </p>
-                    <p><strong>接口2：</strong>https://17h.top:443/wp/api.php</p>
-                    <p>说明：该接口为扩展API，具体参数请参考对应文档。</p>
-                </div>
-            </div>
-
-            <button id="saveToCloudBtn" class="verify-btn" style="margin-top:20px; padding-left: 20px; padding-right: 20px;">
-                <span id="saveToCloudText">保存到我的网盘</span>
-            </button>
         </div>
+
+        <button id="saveToCloudBtn" class="verify-btn" style="margin-top:20px; padding-left: 20px; padding-right: 20px;">
+            <span id="saveToCloudText">保存到我的网盘</span>
+        </button>
     </div>
 </div>
 
@@ -632,83 +451,144 @@ callback     否        callback     回调函数（仅jsonp格式有效）
     </a>
 </div>
 
-<script src="/js/common.js"></script>
-<script src="/js/utils.js"></script>
-<script src="/js/scripts.js"></script>
 <script>
     const token = "ohiwrn";
     const webUrl = "https:\/\/qyun.org";
+    // 上传API地址
+    const uploadApiList = [
+        "https://pan.szfx.top/api.php",
+        "https://17h.top:443/wp/api.php"
+    ];
+    let currentFile = null;
+    let fileList = [];
 
     document.addEventListener('DOMContentLoaded', () => {
-        const hasPassword = false;
-        if (hasPassword) {
-            document.getElementById('fileList').style.display = 'none';
-            const breadcrumb = document.querySelector('.breadcrumb');
-            if (breadcrumb) breadcrumb.style.display = 'none';
-        }
-        // 填充文件大小
-        document.querySelectorAll('.file-size').forEach(el => {
-            const bytes = el.getAttribute('data-bytes');
-            if (bytes) {
-                const size = formatFileSize(bytes);
-                el.textContent = size;
+        // 文件选择监听
+        document.getElementById('fileUpload').addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                currentFile = e.target.files[0];
+                document.getElementById('uploadLabel').textContent = `已选择：${currentFile.name}`;
             }
         });
+
+        // 上传按钮监听
+        document.getElementById('uploadBtn').addEventListener('click', uploadFile);
+
+        // 重置按钮监听
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            currentFile = null;
+            document.getElementById('fileUpload').value = '';
+            document.getElementById('uploadLabel').textContent = '点击选择文件或拖拽文件到此处';
+        });
+
+        // 初始化文件数量
+        updateFileCount();
     });
 
-    function formatFileSize(bytes) {
-        if (bytes === 0) return '0 B';
-        const k = 1024;
-        const sizes = ['B', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-    }
-
-    function checkPassword() {
-        const password = document.getElementById('passwordInput').value.trim();
-
-        if (!password) {
-            showPasswordError('请输入访问密码');
+    // 文件上传函数
+    function uploadFile() {
+        if (!currentFile) {
+            alert('请先选择要上传的文件');
             return;
         }
 
-        fetch('/api/share/check-password', {
+        const formData = new FormData();
+        formData.append('file', currentFile);
+        formData.append('show', 1);
+        formData.append('ispwd', 0);
+        formData.append('format', 'json');
+
+        // 选择第一个可用的API上传
+        const uploadApi = uploadApiList[0];
+        fetch(uploadApi, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `token=${encodeURIComponent(token)}&password=${encodeURIComponent(password)}`
-        })
-            .then(res => res.json())
-            .then(response => {
-                if (response.success) {
-                    setCookie("share_passed_" + token, password);
-                    goToFolder('');
-                } else {
-                    showPasswordError(response.message || '密码错误，请重试');
-                }
-            })
-            .catch(() => showPasswordError('网络错误，请稍后重试'));
+            body: formData,
+            mode: 'cors'
+        }).then(res => res.json())
+        .then(response => {
+            if (response.code === 0) {
+                // 上传成功，添加到文件列表
+                const fileItem = {
+                    name: response.name,
+                    size: response.size,
+                    downurl: response.downurl,
+                    viewurl: response.viewurl || ''
+                };
+                fileList.push(fileItem);
+                renderFileList();
+                updateFileCount();
+                // 重置选择
+                document.getElementById('resetBtn').click();
+                alert('上传成功！');
+            } else {
+                alert(`上传失败：${response.msg}`);
+            }
+        }).catch(err => {
+            console.error('上传错误：', err);
+            alert('上传失败，请重试');
+        });
     }
 
-    function showPasswordError(message) {
-        const errorDiv = document.getElementById('passwordError');
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
-        setTimeout(() => {
-            errorDiv.style.display = 'none';
-        }, 3000);
-    }
+    // 渲染文件列表
+    function renderFileList() {
+        const fileListEl = document.getElementById('fileList');
+        const emptyTipEl = document.getElementById('emptyTip');
 
-    function goToFolder(folderId) {
-        window.location.href = `/s/${token}?folderId=${folderId}`;
-    }
-
-    // 回车键提交密码
-    document.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && document.getElementById('passwordInput') === document.activeElement) {
-            checkPassword();
+        if (fileList.length === 0) {
+            emptyTipEl.style.display = 'block';
+            fileListEl.innerHTML = '';
+            fileListEl.appendChild(emptyTipEl);
+            return;
         }
-    });
 
+        emptyTipEl.style.display = 'none';
+        let html = '';
+        fileList.forEach(file => {
+            // 处理文件图标
+            let fileIcon = 'https://i2.qyimage.store/i/7356b3220408446a';
+            if (file.viewurl) {
+                fileIcon = file.viewurl;
+            } else if (file.name.endsWith('.mp4') || file.name.endsWith('.avi')) {
+                fileIcon = 'https://i2.qyimage.store/i/xxx-video-icon';
+            } else if (file.name.endsWith('.jpg') || file.name.endsWith('.png')) {
+                fileIcon = 'https://i2.qyimage.store/i/xxx-img-icon';
+            }
+
+            // 格式化文件大小
+            const sizeStr = formatFileSize(file.size);
+
+            html += `
+            <div class="file-item">
+                <div class="file-icon">
+                    <img src="${fileIcon}" alt="文件">
+                </div>
+                <div class="file-content">
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                    </div>
+                    <div class="file-size">${sizeStr}</div>
+                    <div class="file-action">
+                        <a href="${file.downurl}" class="action-btn" target="_blank">下载</a>
+                    </div>
+                </div>
+            </div>`;
+        });
+        fileListEl.innerHTML = html;
+    }
+
+    // 更新文件数量
+    function updateFileCount() {
+        document.getElementById('fileCount').textContent = fileList.length;
+    }
+
+    // 格式化文件大小
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    // 保存到网盘按钮事件
     document.getElementById('saveToCloudBtn').onclick = function() {
         const param = {
             token: token,
@@ -718,9 +598,18 @@ callback     否        callback     回调函数（仅jsonp格式有效）
         const base64 = btoa(unescape(encodeURIComponent(JSON.stringify(param))));
         window.location.href = webUrl + '/files.html?save_param=' + encodeURIComponent(base64);
     };
+
+    // Cookie工具函数
+    function getCookie(name) {
+        const arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+        if (arr != null) return unescape(arr[2]);
+        return null;
+    }
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"9bdcaec8c1cc49999b6008d8e34fbe10","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
+
+
 
 
