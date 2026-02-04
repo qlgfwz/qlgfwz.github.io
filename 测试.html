@@ -1,257 +1,671 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>完整功能视频播放器</title>
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.png" />
+    <meta name="keywords" content="雀云,雀云网盘,蓝奏云,网盘,文件管理,图床,免费网盘,文件托管,免费网盘"/>
+    <title>雀云文件分享</title>
     <style>
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            background-color: #1a1a1a;
+            padding: 16px;
         }
-        .player-container {
-            position: relative;
-            width: 90%;
+        .container {
             max-width: 800px;
-            border-radius: 8px;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+        .folder-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            background-color: #000;
+            margin-bottom: 24px;
         }
-        #video-player {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .controls {
+        .folder-card::before {
+            content: '';
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             right: 0;
-            padding: 15px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
-            color: #fff;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 10;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
         }
-        .player-container:hover .controls {
-            opacity: 1;
+        .folder-header {
+            text-align: center;
+            margin-bottom: 32px;
         }
-        .progress-container {
-            width: 100%;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background-color: #409eff;
-            border-radius: 3px;
-            transition: width 0.1s linear;
-        }
-        .control-group {
+        .folder-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
             display: flex;
-            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .folder-icon img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+        }
+        .folder-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0 0 8px 0;
+            line-height: 1.2;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            max-height: 3.6em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        .folder-description {
+            color: #888;
+            font-size: 16px;
+            margin: 0 0 8px 0;
+            line-height: 1.4;
+        }
+        .folder-stats {
+            color: #666;
+            font-size: 16px;
+            margin: 0;
+        }
+        .password-section {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .password-icon {
+            width: 48px;
+            height: 48px;
+            background: #fef3cd;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: #856404;
+            font-size: 20px;
+        }
+        .password-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0 0 8px 0;
+            text-align: center;
+        }
+        .password-subtitle {
+            color: #666;
+            font-size: 14px;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+        .password-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 16px;
+            transition: border-color 0.3s ease;
+        }
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .verify-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 18px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+        }
+        .breadcrumb {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
             align-items: center;
             flex-wrap: wrap;
-        }
-        button, select, input {
-            padding: 6px 10px;
-            border: none;
-            border-radius: 4px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            cursor: pointer;
             font-size: 14px;
-            transition: background-color 0.2s;
         }
-        button:hover, select:hover {
-            background-color: #409eff;
+        .breadcrumb-item {
+            color: #667eea;
+            text-decoration: none;
+            margin-right: 8px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
         }
-        .volume-group {
+        .breadcrumb-item:hover {
+            background-color: #e9ecef;
+        }
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "/";
+            color: #6c757d;
+            margin: 0 8px 0 0;
+        }
+        .breadcrumb-item:last-child {
+            color: #6c757d;
+            pointer-events: none;
+        }
+        .file-list {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .file-item {
+            display: flex;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f3f4;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            min-height: 72px;
+        }
+        .file-item:hover {
+            background-color: #f8f9fa;
+        }
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 16px;
+            border-radius: 8px;
+            overflow: hidden;
             display: flex;
             align-items: center;
+            justify-content: center;
+            background: #f1f3f4;
+            flex-shrink: 0;
+        }
+        .file-icon img {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+        }
+        .file-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+        .file-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .file-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a1a;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.4;
+            cursor: pointer;
+        }
+        .text-blue {
+            color: #667eea;
+        }
+        .text-blue:hover {
+            color: #5a6fd8;
+            text-decoration: underline;
+        }
+        .file-size {
+            color: #666;
+            font-size: 14px;
+            flex-shrink: 0;
+            min-width: 80px;
+            text-align: right;
+        }
+        .file-action {
+            display: flex;
             gap: 8px;
+            flex-shrink: 0;
         }
-        #volume-slider {
+        .action-btn {
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: #f1f3f4;
+        }
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        .empty-folder {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+        .empty-icon {
             width: 80px;
-            height: 4px;
-            accent-color: #409eff;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #f1f3f4;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
         }
-        .time-display {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-left: auto;
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            padding: 20px;
         }
-        .fullscreen-btn, .landscape-btn {
-            margin-left: 8px;
+        .footer a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
         }
-        /* 横屏样式 */
-        .landscape {
-            transform: rotate(90deg);
-            transform-origin: center;
-            width: 100vh;
-            height: 100vw;
+        .footer a:hover {
+            color: white;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        /* 顶部广告位样式 */
+        .promo-banner {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            border-radius: 16px;
+            padding: 36px 24px 20px 24px; /* 上方留出空间放广告标签避免与icon重叠 */
+            margin-bottom: 24px;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(90, 103, 216, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .promo-banner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(90, 103, 216, 0.25);
+        }
+
+        .promo-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .promo-label {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #5a67d8;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1;
+            pointer-events: none; /* 防止挡住点击 */
+        }
+
+        .promo-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .promo-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+            margin-top: 0;
+        }
+
+        .promo-text {
+            flex: 1;
+            color: white;
+        }
+
+        .promo-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            line-height: 1.3;
+        }
+
+        .promo-description {
+            font-size: 13px;
+            opacity: 0.85;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .promo-button {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .promo-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding-top: 10px;
+            }
+            body {
+                padding: 12px;
+            }
+            .folder-card {
+                padding: 24px 20px;
+            }
+            .folder-name {
+                font-size: 20px;
+                max-height: 2.4em;
+                -webkit-line-clamp: 2;
+            }
+            .file-item {
+                padding: 12px 16px;
+                min-height: 60px;
+            }
+            .file-icon {
+                width: 36px;
+                height: 36px;
+                margin-right: 12px;
+            }
+            .file-icon img {
+                width: 20px;
+                height: 20px;
+            }
+            .file-content {
+                gap: 8px;
+            }
+            .file-name {
+                font-size: 14px;
+                line-height: 1.3;
+            }
+            .file-size {
+                font-size: 12px;
+                min-width: 60px;
+            }
+            .action-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .promo-banner {
+                padding: 32px 20px 16px 20px;
+                margin-bottom: 20px;
+            }
+
+            .promo-label {
+                top: 8px;
+                left: 20px;
+            }
+
+            .promo-content {
+                gap: 12px;
+            }
+
+            .promo-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .promo-title {
+                font-size: 14px;
+            }
+
+            .promo-description {
+                font-size: 12px;
+            }
+
+            .promo-button {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="player-container" id="player-container">
-        <video id="video-player" poster="" preload="metadata">
-            <source src="https://wp.kayyw.com/f/ZoL9TW/Video_1770123696585_474.mp4" type="video/mp4">
-            你的浏览器不支持 HTML5 视频播放，请更新浏览器
-        </video>
-        <div class="controls">
-            <div class="progress-container" id="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
+<div class="container">
+    <!-- 顶部广告 -->
+    <div class="promo-banner">
+        <div class="promo-label">广告</div>
+        <div class="promo-content">
+            <div class="promo-icon">
+                <img src="https://i2.qyimage.store:2999/i/7356b3220408446a"
+                     alt="文件图标"
+                     style="width: 32px; height: 32px; border-radius: 6px;">
+                
             </div>
-            <div class="control-group">
-                <button id="play-pause">播放</button>
-                <div class="volume-group">
-                    <button id="mute-btn">音量</button>
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="1">
-                </div>
-                <select id="speed-select">
-                    <option value="0.5">0.5倍</option>
-                    <option value="0.75">0.75倍</option>
-                    <option value="1" selected>1倍</option>
-                    <option value="1.25">1.25倍</option>
-                    <option value="1.5">1.5倍</option>
-                    <option value="2">2倍</option>
-                    <option value="2.5">2.5倍</option>
-                    <option value="3">3倍</option>
-                </select>
-                <button id="skip-btn">快进10秒</button>
-                <span class="time-display" id="time-display">00:00 / 00:00</span>
-                <button class="landscape-btn" id="landscape-btn">横屏</button>
-                <button class="fullscreen-btn" id="fullscreen-btn">全屏</button>
+            <div class="promo-text">
+                <div class="promo-title">雀云注入</div>
+                <div class="promo-description">安卓APP添加弹窗引流软件，全新升级激活码系统，支持在线支付，可开启广告收入，点击查看教程与下载。</div>
             </div>
+            <a href="https://wwwz.qyshare.site:2083/s/ohiwrn" target="_blank" rel="noopener"
+               class="promo-button"
+               onclick="event.stopPropagation()">立即下载</a>
         </div>
     </div>
 
-    <script>
-        // 获取DOM元素
-        const video = document.getElementById('video-player');
-        const playerContainer = document.getElementById('player-container');
-        const playPauseBtn = document.getElementById('play-pause');
-        const muteBtn = document.getElementById('mute-btn');
-        const volumeSlider = document.getElementById('volume-slider');
-        const speedSelect = document.getElementById('speed-select');
-        const skipBtn = document.getElementById('skip-btn');
-        const progressContainer = document.getElementById('progress-container');
-        const progressBar = document.getElementById('progress-bar');
-        const timeDisplay = document.getElementById('time-display');
-        const landscapeBtn = document.getElementById('landscape-btn');
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
+    <div class="folder-card">
+        <div class="folder-header">
+            <div class="folder-icon">
+                <img src="/assets/img/folder.png"
+                     alt="文件夹图标">
+            </div>
+            <h1 class="folder-name">雀云注入APP教程</h1>
+            <p class="folder-description">雀云注入，为Android二创引流赋能，一站式服务渠道。支持在线支付系统，支付宝每日结算。</p>
+            <p class="folder-stats">
+                <span>
+                    共 <span>2</span> 项
+                </span>
+            </p>
+        </div>
 
-        // 播放/暂停切换
-        playPauseBtn.addEventListener('click', () => {
-            video.paused ? video.play() : video.pause();
-        });
+        <!-- 密码验证区域 -->
+        
 
-        // 播放状态同步
-        video.addEventListener('play', () => {
-            playPauseBtn.textContent = '暂停';
-        });
-        video.addEventListener('pause', () => {
-            playPauseBtn.textContent = '播放';
-        });
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <a class="breadcrumb-item" href="javascript:void(0);" onclick="goToFolder(&#39;&#39;)">根目录</a>
+            <a href="javascript:void(0);"
+               onclick="goToFolder(22829)"
+               class="breadcrumb-item breadcrumb-item-disabled">雀云注入APP教程</a>
+        </div>
 
-        // 音量控制
-        volumeSlider.addEventListener('input', () => {
-            video.volume = volumeSlider.value;
-            muteBtn.textContent = video.volume > 0 ? '音量' : '静音';
-        });
-        muteBtn.addEventListener('click', () => {
-            video.muted = !video.muted;
-            if (video.muted) {
-                volumeSlider.value = 0;
-                muteBtn.textContent = '静音';
-            } else {
-                volumeSlider.value = 1;
-                muteBtn.textContent = '音量';
-            }
-        });
+        <!-- 文件夹内容 -->
+        <div class="file-list" id="fileList">
+            <!-- 子文件夹 -->
+            
 
-        // 倍速调节
-        speedSelect.addEventListener('change', () => {
-            video.playbackRate = speedSelect.value;
-        });
+            <!-- 文件 -->
+            <div>
+                <div class="file-item">
+                    <div class="file-icon">
+                        <img src="https://i2.qyimage.store/i/7356b3220408446a"
+                             alt="文件">
+                    </div>
+                    <div class="file-content">
+                        <div class="file-info">
+                            <div class="file-name">雀云注入_2.0.0.apk</div>
+                        </div>
+                        <div class="file-size" data-bytes="11617322"></div>
+                        <div class="file-action">
+                            <a href="/s/ohiwrn?fileId=489279" class="action-btn">下载</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="file-item">
+                    <div class="file-icon">
+                        <img src="/assets/img/file.png"
+                             alt="文件">
+                    </div>
+                    <div class="file-content">
+                        <div class="file-info">
+                            <div class="file-name">雀云注入使用教程.mp4</div>
+                        </div>
+                        <div class="file-size" data-bytes="22930580"></div>
+                        <div class="file-action">
+                            <a href="/s/ohiwrn?fileId=52034" class="action-btn">下载</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        // 点击快进10秒 + 视频画面点击快进
-        skipBtn.addEventListener('click', () => {
-            video.currentTime = Math.min(video.currentTime + 10, video.duration);
-        });
-        video.addEventListener('click', (e) => {
-            if (!e.target.closest('.controls')) {
-                video.currentTime = Math.min(video.currentTime + 10, video.duration);
-            }
-        });
+            <!-- 空文件夹提示 -->
+            
 
-        // 进度条控制
-        video.addEventListener('timeupdate', () => {
-            const progress = (video.currentTime / video.duration) * 100;
-            progressBar.style.width = `${progress}%`;
-            // 更新时间显示
-            const currentTime = formatTime(video.currentTime);
-            const duration = formatTime(video.duration);
-            timeDisplay.textContent = `${currentTime} / ${duration}`;
-        });
-        // 进度条点击跳转
-        progressContainer.addEventListener('click', (e) => {
-            const rect = progressContainer.getBoundingClientRect();
-            const pos = (e.clientX - rect.left) / rect.width;
-            video.currentTime = pos * video.duration;
-        });
+            <button id="saveToCloudBtn" class="verify-btn" style="margin-top:20px; padding-left: 20px; padding-right: 20px;">
+                <span id="saveToCloudText">保存到我的网盘</span>
+            </button>
+        </div>
+    </div>
+</div>
 
-        // 横屏切换
-        let isLandscape = false;
-        landscapeBtn.addEventListener('click', () => {
-            isLandscape = !isLandscape;
-            if (isLandscape) {
-                playerContainer.classList.add('landscape');
-                landscapeBtn.textContent = '竖屏';
-            } else {
-                playerContainer.classList.remove('landscape');
-                landscapeBtn.textContent = '横屏';
-            }
-        });
+<div class="footer">
+    <a href="https://qyun.org" target="_blank">
+        雀云网盘 · 免费稳定的云存储服务
+    </a>
+</div>
 
-        // 全屏切换
-        fullscreenBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                playerContainer.requestFullscreen().catch(err => {
-                    console.error(`全屏失败: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
-        });
+<!--<script src="/js/feather.min.js"></script>-->
+<script src="/js/common.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/scripts.js"></script>
+<script>
+    const token = "ohiwrn";
+    const webUrl = "https:\/\/qyun.org";
 
-        // 视频结束重置
-        video.addEventListener('ended', () => {
-            video.currentTime = 0;
-            playPauseBtn.textContent = '播放';
-        });
-
-        // 格式化时间为 分:秒
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    document.addEventListener('DOMContentLoaded', () => {
+        const hasPassword = false;
+        if (hasPassword) {
+            document.getElementById('fileList').style.display = 'none';
+            const breadcrumb = document.querySelector('.breadcrumb');
+            if (breadcrumb) breadcrumb.style.display = 'none';
         }
-    </script>
+    });
+
+    function checkPassword() {
+        const password = document.getElementById('passwordInput').value.trim();
+
+        if (!password) {
+            showPasswordError('请输入访问密码');
+            return;
+        }
+
+        fetch('/api/share/check-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `token=${encodeURIComponent(token)}&password=${encodeURIComponent(password)}`
+        })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    setCookie("share_passed_" + token, password);
+                    goToFolder('');
+                } else {
+                    showPasswordError(response.message || '密码错误，请重试');
+                }
+            })
+            .catch(() => showPasswordError('网络错误，请稍后重试'));
+    }
+
+    function showPasswordError(message) {
+        const errorDiv = document.getElementById('passwordError');
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 3000);
+    }
+
+    function goToFolder(folderId) {
+        window.location.href = `/s/${token}?folderId=${folderId}`;
+    }
+
+    // 回车键提交密码
+    document.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && document.getElementById('passwordInput') === document.activeElement) {
+            checkPassword();
+        }
+    });
+
+    document.getElementById('saveToCloudBtn').onclick = function() {
+        const param = {
+            token: token,
+            password: getCookie("share_passed_" + token) || '',
+            folderId: 22829
+        };
+        const base64 = btoa(unescape(encodeURIComponent(JSON.stringify(param))));
+        window.location.href = webUrl + '/files.html?save_param=' + encodeURIComponent(base64);
+    };
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"9bdcaec8c1cc49999b6008d8e34fbe10","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
-</html>
+    </html>
