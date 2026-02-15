@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>链接导航（IP全检测）</title>
+    <title>链接导航</title>
     <style>
         * {
             margin: 0;
@@ -55,53 +55,28 @@
         .link-btn:hover {
             background-color: #2563eb;
         }
-        .link-btn.disabled {
-            background-color: #94a3b8;
-            cursor: not-allowed;
-        }
-        .notice {
-            width: 100%;
-            max-width: 800px;
-            padding: 1.2rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        .success {
-            background-color: #ecfdf5;
-            border-left: 4px solid #10b981;
-            color: #065f46;
-        }
-        .error {
-            background-color: #fee2e2;
-            border-left: 4px solid #ef4444;
-            color: #991b1b;
-        }
-        .loading {
-            background-color: #f3f4f6;
-            border-left: 4px solid #f59e0b;
-            color: #78350f;
-        }
-        .ip-info {
-            margin-top: 0.5rem;
-            font-weight: 500;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="link-card">
             <h2>本人链接</h2>
-            <div class="link-btn disabled" data-url="https://t.me/qiliangnb">打开链接</div>
+            <div class="link-btn" data-url="https://t.me/qiliang76">打开链接</div>
         </div>
         <div class="link-card">
             <h2>频道链接</h2>
-            <div class="link-btn disabled" data-url="https://t.me/+0t3NSCFb6t85ZGM1">打开链接</div>
+            <div class="link-btn" data-url="https://t.me/qiliangnb">打开链接</div>
         </div>
     </div>
 
-
+    <script>
+        // 为所有按钮绑定点击跳转事件
+        document.querySelectorAll('.link-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const url = btn.getAttribute('data-url');
+                window.open(url, '_blank');
+            });
+        });
     </script>
 </body>
 </html>
-
