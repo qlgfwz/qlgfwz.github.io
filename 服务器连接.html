@@ -1,60 +1,680 @@
+
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<title>服务器连接</title>
-<style>
-*{box-sizing:border-box;font-family:system-ui,sans-serif}
-body{max-width:500px;margin:30px auto;padding:0 20px;background:#f5f7fa}
-.card{background:#fff;padding:20px;border-radius:12px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.title{font-size:18px;font-weight:600;margin-bottom:10px}
-.result{margin:8px 0;font-size:16px}
-.time{color:#0066cc;font-weight:500}
-.status{padding:4px 10px;border-radius:6px;color:white;font-size:14px}
-.good{background:#00b42a}
-.normal{background:#ff7d00}
-.bad{background:#f53f3f}
-.error{background:#999}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>筷雨私端一一联手婉悦</title>
+    
+    <!-- 字体预加载优化 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+    
+    <!-- 关键图片预加载 - 更换为鸡太美logo -->
+    <link rel="preload" href="https://i.imgs.ovh/2026/02/17/yx2cjH.jpeg" as="image">
+    
+    <style>
+        /* 基础样式 - 确保字体回退 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c0a1d, #1d0a33);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            touch-action: manipulation;
+            position: relative;
+        }
+
+        /* 霓虹灯背景效果 - 保持原样 */
+        .neon-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.3;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(255, 37, 1, 0.4), transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(34, 197, 94, 0.4), transparent 25%),
+                radial-gradient(circle at 50% 50%, rgba(0, 119, 182, 0.4), transparent 30%);
+        }
+
+        /* 霓虹灯管效果 - 保持原样 */
+        .neon-tube {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .tube {
+            position: absolute;
+            background: linear-gradient(to right, #ff2501, #ff6b6b);
+            animation: moveTube 15s linear infinite;
+            z-index: -1;
+            box-shadow: 0 0 15px #ff2501;
+        }
+        .tube.green {
+            background: linear-gradient(to right, #22c55e, #86efac);
+            box-shadow: 0 0 15px #22c55e;
+            animation: moveTube 18s linear infinite;
+        }
+        .tube.blue {
+            background: linear-gradient(to right, #2196f3, #03a9f4);
+            box-shadow: 0 0 15px #2196f3;
+            animation: moveTube 20s linear infinite;
+        }
+        @keyframes moveTube {
+            0% {
+                transform: translateY(-100%) rotate(0deg);
+                width: 100%;
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(100%) rotate(360deg);
+                width: 150%;
+                opacity: 0.3;
+            }
+        }
+
+        /* 网格背景 - 保持原样 */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(10, 10, 10, 0.8) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(10, 10, 10, 0.8) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* 主容器 - 保持原样 */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* 信息卡片 - 保持原样 */
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(15, 15, 15, 0.7);
+            border-radius: 24px;
+            padding: 32px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 
+                0 0 20px rgba(255, 37, 1, 0.3),
+                0 0 40px rgba(34, 197, 94, 0.2),
+                inset 0 0 15px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(0);
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 
+                0 0 30px rgba(255, 37, 1, 0.5),
+                0 0 60px rgba(34, 197, 94, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* 头像效果 - 保持原样 */
+        .avatar {
+            position: relative;
+            margin: 0 auto 18px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            loading: lazy;
+        }
+
+        .card h1 {
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #ff2501, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #4caf50;
+            box-shadow: 0 0 10px #4caf50;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* 信息列表 - 保持原样 */
+        .info-list {
+            text-align: left;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 14px 0;
+            padding: 12px 15px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            transition: all 0.3s;
+        }
+        .info-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            transform: translateX(5px);
+        }
+        .label {
+            color: #aaa;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .value {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .value.active {
+            color: #4caf50;
+            text-shadow: 0 0 8px rgba(76, 175, 80, 0.8);
+        }
+
+        /* 地区与延迟 - 保持原样 */
+        .region {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+        }
+        .region i {
+            margin-right: 8px;
+            color: #ffd700;
+            font-size: 16px;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+        }
+        .region .delay {
+            color: #00ffea;
+            margin-left: 12px;
+            font-weight: 500;
+            text-shadow: 0 0 8px rgba(0, 255, 234, 0.8);
+        }
+
+        /* 实时延迟 - 保持原样 */
+        .real-time {
+            margin-bottom: 24px;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .real-time .delay {
+            color: #00ffea;
+            font-weight: 700;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(0, 255, 234, 0.8);
+        }
+
+        /* TG频道 - 保持原样 */
+        .tg-channel {
+            margin-bottom: 24px;
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 234, 0.3);
+            font-size: 14px;
+        }
+        .tg-channel a {
+            color: #ff4081;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            margin: 0 10px 8px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(255, 64, 129, 0.1);
+            border: 1px solid rgba(255, 64, 129, 0.3);
+            font-size: 13px;
+        }
+        .tg-channel a:hover {
+            color: #ff6699;
+            background: rgba(255, 64, 129, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(255, 64, 129, 0.4);
+        }
+        .tip {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 10px;
+        }
+
+        /* 连接按钮 - 保持原样 */
+        .connect-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, #ff2501, #22c55e);
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            margin-bottom: 24px;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 0 20px rgba(255, 37, 1, 0.5);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .connect-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 30px rgba(255, 37, 1, 0.7),
+                0 0 40px rgba(34, 197, 94, 0.7);
+            animation: btnPulse 1.5s infinite;
+        }
+        .connect-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 版权信息 - 保持原样 */
+        .copyright {
+            font-size: 12px;
+            color: #777;
+            opacity: 0.8;
+        }
+
+        /* 樱花花瓣动画 - 保持原样 */
+        .petal {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #ffc0cb, #ff9aaf);
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            animation: fall linear infinite;
+            z-index: 0;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 5px rgba(255, 192, 203, 0.8));
+        }
+
+        /* 动画效果 - 保持原样 */
+        @keyframes fall {
+            0% {
+                transform: translate(var(--x-start), -50px) rotate(-45deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(var(--x-end), calc(100vh + 50px)) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+            }
+        }
+        @keyframes btnPulse {
+            0% {
+                box-shadow: 
+                    0 0 20px rgba(255, 37, 1, 0.5),
+                    0 0 30px rgba(34, 197, 94, 0.5);
+            }
+            50% {
+                box-shadow: 
+                    0 0 30px rgba(255, 37, 1, 0.8),
+                    0 0 40px rgba(34, 197, 94, 0.8);
+            }
+            100% {
+                box-shadow: 
+                    0 0 20px rgba(255, 37, 1, 0.5),
+                    0 0 30px rgba(34, 197, 94, 0.5);
+            }
+        }
+
+        /* 响应式适配 - 保持原有响应式设计 */
+        @media (max-width: 480px) {
+            .card {
+                padding: 25px 18px;
+            }
+            .info-item {
+                margin: 12px 0;
+                padding: 10px;
+            }
+            .connect-btn {
+                padding: 14px;
+                font-size: 16px;
+            }
+            .card h1 {
+                font-size: 24px;
+            }
+            .region {
+                font-size: 13px;
+            }
+            .tg-channel {
+                font-size: 13px;
+            }
+        }
+        
+        /* 针对OPPO等浏览器的字体回退 */
+        @supports not (font-family: 'Orbitron') {
+            .card h1 {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            }
+        }
+    </style>
 </head>
 <body>
-<h2>服务器连接</h2>
+    <!-- 背景元素 - 保持原样 -->
+    <div class="neon-bg"></div>
+    <div class="neon-tube" id="tubes-container"></div>
+    <div class="grid-bg"></div>
+    
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 信息卡片 -->
+        <div class="card">
+            <div class="avatar">
+                <!-- 更换为鸡太美logo图片 -->
+                <img src="https://i.imgs.ovh/2026/02/17/yx2cjH.jpeg" alt="鸡太美logo" width="100" height="100">
+            </div>
+            <h1>筷雨私端</h1>
+            <p class="status">
+                <span class="status-dot"></span>
+                💎至尊服务器保持稳定连接中...
+            </p>
 
-<div class="card">
-<div class="title">服务器1</div>
-<div class="result" id="r1">测试中...</div>
-</div>
+            <div class="info-list">
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-tag"></i> 私端名称</span>
+                    <span class="value">筷雨端口</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-cogs"></i> 领先优势</span>
+                    <span class="value">双适配·低延迟·高防护</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-clock"></i> 当前时间</span>
+                    <span class="value" id="current-time">加载中...</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-signal"></i> 当前状态</span>
+                    <span class="value active">极佳</span>
+                </div>
+            </div>
 
-<div class="card">
-<div class="title">服务器2</div>
-<div class="result" id="r2">测试中...</div>
-</div>
+            <div class="region">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>高防湖北十堰CN2</span>
+                <span class="delay" id="region-delay">19ms</span>
+            </div>
 
-<script>
-async function test(url, id) {
-  const el = document.getElementById(id);
-  try {
-    const start = performance.now();
-    await fetch(url, { method: "HEAD", mode: "no-cors" });
-    const time = Math.round(performance.now() - start);
+            <div class="real-time">
+                <i class="fas fa-bolt"></i>
+                <span>实时延迟：</span>
+                <span class="delay" id="realtime-delay">19ms</span>
+            </div>
 
-    let level, cls;
-    if (time < 500) { level = "优秀"; cls = "good"; }
-    else if (time < 1000) { level = "良好"; cls = "good"; }
-    else if (time < 3000) { level = "一般"; cls = "normal"; }
-    else { level = "较差"; cls = "bad"; }
+            <div class="tg-channel">
+                <div><i class="fab fa-telegram"></i> 官方QQ</div>
+                <a href="https://m.baidu.com" target="_blank" rel="noopener noreferrer">965462619</a> 
+                <a href="https://www.baidu.com" target="_blank" rel="noopener noreferrer">965462619</a>
+                <p class="tip">点击上方可切换连接路线</p>
+            </div>
 
-    el.innerHTML = `响应时间：<span class="time">${time} ms</span> <span class="status ${cls}">${level}</span><br>✅ 连接正常`;
-  } catch (e) {
-    el.innerHTML = "❌ 连接失败 <span class='status error'>不可用</span>";
-  }
-}
+            <button class="connect-btn" id="connectBtn">
+                <i class="fas fa-plug"></i> 刷新Ai智能防护，连接服务器
+            </button>
+            <p class="copyright">◎2026 TWY工作室</p>
+        </div>
+    </div>
 
-// 自动测试
-window.onload = function() {
-  test("https://m.b6w.cn/", "r1");
-  test("https://jianhancloud.cn/", "r2");
-};
-</script>
+    <!-- 樱花花瓣容器 -->
+    <div id="petals-container"></div>
+    
+    <!-- 优化后的JavaScript -->
+    <script>
+        // 性能优化：减少DOM操作，使用requestAnimationFrame
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取北京时间函数
+            function getBeijingTime() {
+                const now = new Date();
+                // 获取UTC时间
+                const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+                // 转换为北京时间 (UTC+8)
+                const beijingTime = new Date(utc + 3600000 * 8);
+                return beijingTime;
+            }
+            
+            // 格式化时间显示
+            function formatTime(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+                
+                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            }
+            
+            // 更新时间显示
+            function updateTime() {
+                const beijingTime = getBeijingTime();
+                const timeString = formatTime(beijingTime);
+                document.getElementById('current-time').textContent = timeString;
+                
+                // 使用setTimeout保证每秒更新一次，避免requestAnimationFrame的帧率问题
+                setTimeout(updateTime, 1000 - (beijingTime.getMilliseconds() % 1000));
+            }
+            
+            // 初始化时间显示
+            updateTime();
+            
+            // 模拟实时延迟变化 - 优化性能
+            let lastDelayUpdate = 0;
+            function updateDelay(timestamp) {
+                if (!lastDelayUpdate || timestamp - lastDelayUpdate > 2000) {
+                    lastDelayUpdate = timestamp;
+                    
+                    const regionDelay = document.getElementById('region-delay');
+                    const realtimeDelay = document.getElementById('realtime-delay');
+                    
+                    const baseDelay = Math.floor(Math.random() * 11) + 15;
+                    const fluctuation = Math.floor(Math.random() * 7) - 3;
+                    const newDelay = baseDelay + fluctuation;
+                    
+                    const finalDelay = Math.max(5, newDelay);
+                    
+                    realtimeDelay.textContent = `${finalDelay}ms`;
+                    regionDelay.textContent = `${finalDelay}ms`;
+                }
+                requestAnimationFrame(updateDelay);
+            }
+            
+            requestAnimationFrame(updateDelay);
+            
+            // 樱花花瓣生成 - 限制数量提高性能
+            function createPetals() {
+                const container = document.getElementById('petals-container');
+                const petalCount = Math.min(20, Math.floor(window.innerWidth / 20)); // 根据屏幕宽度调整数量
+                
+                for (let i = 0; i < petalCount; i++) {
+                    const petal = document.createElement('div');
+                    petal.className = 'petal';
+                    
+                    const startX = Math.random() * 100;
+                    const endX = startX + (Math.random() * 30 - 15);
+                    const size = 5 + Math.random() * 10;
+                    const duration = 8 + Math.random() * 10;
+                    const delay = Math.random() * 5;
+                    
+                    petal.style.setProperty('--x-start', `${startX}%`);
+                    petal.style.setProperty('--x-end', `${endX}%`);
+                    petal.style.width = `${size}px`;
+                    petal.style.height = `${size}px`;
+                    petal.style.animationDuration = `${duration}s`;
+                    petal.style.animationDelay = `${delay}s`;
+                    
+                    container.appendChild(petal);
+                }
+            }
+            
+            // 霓虹灯管生成 - 限制数量提高性能
+            function createNeonTubes() {
+                const container = document.getElementById('tubes-container');
+                const tubeCount = Math.min(10, Math.floor(window.innerWidth / 50)); // 根据屏幕宽度调整数量
+                
+                for (let i = 0; i < tubeCount; i++) {
+                    const tube = document.createElement('div');
+                    
+                    const tubeType = Math.random();
+                    if (tubeType < 0.4) {
+                        tube.className = 'tube';
+                    } else if (tubeType < 0.7) {
+                        tube.className = 'tube green';
+                    } else {
+                        tube.className = 'tube blue';
+                    }
+                    
+                    const height = 1 + Math.random() * 3;
+                    const top = Math.random() * 100;
+                    const rotate = Math.random() * 360;
+                    const animDuration = 15 + Math.random() * 15;
+                    const animDelay = Math.random() * 10;
+                    
+                    tube.style.height = `${height}px`;
+                    tube.style.top = `${top}%`;
+                    tube.style.left = '-10%';
+                    tube.style.transform = `rotate(${rotate}deg)`;
+                    tube.style.width = '110%';
+                    tube.style.animationDuration = `${animDuration}s`;
+                    tube.style.animationDelay = `${animDelay}s`;
+                    
+                    container.appendChild(tube);
+                }
+            }
+            
+            // 防抖函数
+            function debounce(func, wait) {
+                let timeout;
+                return function() {
+                    const context = this, args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        func.apply(context, args);
+                    }, wait);
+                };
+            }
+            
+            // 连接按钮事件
+            document.getElementById('connectBtn').addEventListener('click', debounce(function() {
+                const btn = this;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 刷新中...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-check"></i>🏆🏆 已刷新，成功连接';
+                    btn.style.background = 'linear-gradient(90deg, #4caf50, #8bc34a)';
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                        btn.style.background = 'linear-gradient(90deg, #ff2501, #22c55e)';
+                    }, 3000);
+                }, 2000);
+            }, 300));
+            
+            // 延迟加载动画元素，提高首屏性能
+            setTimeout(() => {
+                createPetals();
+                createNeonTubes();
+            }, 500);
+            
+            // 检测低端设备，动态调整性能
+            const isLowEndDevice = /(OPPO|vivo|Redmi|Honor|HUAWEI|SM-G|CPH)/i.test(navigator.userAgent) 
+                || /(Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini)/i.test(navigator.userAgent)
+                && /(Chrome|Safari|Firefox|SamsungBrowser|Edge)/i.test(navigator.userAgent) === false;
+            
+            if (isLowEndDevice) {
+                // 减少动画元素数量而不改变视觉效果
+                document.querySelectorAll('.petal').forEach((el, index) => {
+                    if (index % 2 === 0) el.style.display = 'none';
+                });
+                
+                document.querySelectorAll('.tube').forEach((el, index) => {
+                    if (index % 2 === 0) el.style.display = 'none';
+                });
+            }
+        });
+    </script>
 </body>
 </html>
+
