@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>服务器连接测试</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui,sans-serif}
+body{max-width:500px;margin:30px auto;padding:0 20px;background:#f5f7fa}
+.card{background:#fff;padding:20px;border-radius:12px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.title{font-size:18px;font-weight:600;margin-bottom:10px}
+.result{margin:8px 0;font-size:16px}
+.time{color:#0066cc;font-weight:500}
+.status{padding:4px 10px;border-radius:6px;color:white;font-size:14px}
+.good{background:#00b42a}
+.normal{background:#ff7d00}
+.bad{background:#f53f3f}
+.error{background:#999}
+</style>
+</head>
+<body>
+<h2>服务器连接测试</h2>
+
+<div class="card">
+<div class="title">服务器1</div>
+<div class="result" id="r1">测试中...</div>
+</div>
+
+<div class="card">
+<div class="title">服务器2</div>
+<div class="result" id="r2">测试中...</div>
+</div>
+
+<script>
+async function test(url, id) {
+  const el = document.getElementById(id);
+  try {
+    const start = performance.now();
+    await fetch(url, { method: "HEAD", mode: "no-cors" });
+    const time = Math.round(performance.now() - start);
+
+    let level, cls;
+    if (time < 500) { level = "优秀"; cls = "good"; }
+    else if (time < 1000) { level = "良好"; cls = "good"; }
+    else if (time < 3000) { level = "一般"; cls = "normal"; }
+    else { level = "较差"; cls = "bad"; }
+
+    el.innerHTML = `响应时间：<span class="time">${time} ms</span> <span class="status ${cls}">${level}</span><br>✅ 连接正常`;
+  } catch (e) {
+    el.innerHTML = "❌ 连接失败 <span class='status error'>不可用</span>";
+  }
+}
+
+// 自动测试
+window.onload = function() {
+  test("https://m.b6w.cn/", "r1");
+  test("https://jianhancloud.cn/", "r2");
+};
+</script>
+</body>
+</html>
