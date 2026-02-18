@@ -116,6 +116,73 @@
             return Math.floor(100000 + Math.random() * 900000).toString();
         }
 
+        // 定义多个真实免费接口（按优先级排序）
+        const emailApis = [
+            // 接口1: Guerrilla Mail
+            {
+                name: 'Guerrilla Mail',
+                url: 'https://api.guerrillamail.com/ajax.php',
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: (email, subject, body) => 
+                    `f=send_email&to=${encodeURIComponent(email)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&from=safe@verify.com`,
+                checkSuccess: (data) => data.result === "success"
+            },
+            // 接口2: 1secmail
+            {
+                name: '1secmail',
+                url: 'https://www.1secmail.com/api/v1/',
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: (email, subject, body) => 
+                    `action=sendMessage&login=test&domain=1secmail.com&to=${encodeURIComponent(email)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+                checkSuccess: (data) => data.success
+            },
+            // 接口3: Mailinator (备选)
+            {
+                name: 'Mailinator',
+                url: 'https://api.mailinator.com/api/v2/domains/public/emails',
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: (email, subject, body) => JSON.stringify({
+                    to: email.split('@')[0],
+                    subject: subject,
+                    text: body
+                }),
+                checkSuccess: (data) => data.status === "ok"
+            }
+        ];
+
+        // 自动选择可用的真实接口发送邮件
+        async function sendEmailWithFallback(email, subject, body) {
+            for (const api of emailApis) {
+                try {
+                    console.log(`尝试使用接口：${api.name}`);
+                    const response = await fetch(api.url, {
+                        method: api.method,
+                        headers: api.headers,
+                        body: api.body(email, subject, body)
+                    });
+                    const data = await response.json();
+                    
+                    if (api.checkSuccess(data)) {
+                        return { success: true, api: api.name };
+                    } else {
+                        console.log(`${api.name} 失败：`, data);
+                    }
+                } catch (err) {
+                    console.log(`${api.name} 异常：`, err);
+                }
+            }
+            return { success: false };
+        }
+
         // 发送邮箱验证码
         async function sendCode() {
             let email = document.getElementById('email').value.trim();
@@ -130,24 +197,12 @@
             let subject = "【账号安全验证】您的验证码";
             let body = `尊敬的用户：\n\n您本次操作的验证码为：${realCode}\n有效期5分钟，请勿泄露给他人。\n\n如非本人操作，请忽略本邮件。`;
 
-            try {
-                let res = await fetch("https://api.guerrillamail.com/ajax.php", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                    body: `f=send_email&to=${encodeURIComponent(email)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&from=safe@verify.com`
-                });
+            const result = await sendEmailWithFallback(email, subject, body);
 
-                let data = await res.json();
-                if (data.result === "success") {
-                    alert("验证码已发送！请查收邮箱（可能在垃圾箱）");
-                } else {
-                    alert("发送失败：接口限制，可重试");
-                }
-            } catch (err) {
-                alert("发送失败，接口临时限制");
-                console.log(err);
+            if (result.success) {
+                alert(`验证码已通过【${result.api}】发送！请查收邮箱（可能在垃圾箱）`);
+            } else {
+                alert('所有免费接口发送失败，可能是网络或接口限制，请稍后重试');
             }
         }
 
@@ -162,7 +217,6 @@
 
             if (input === realCode) {
                 alert('验证码正确！即将进行人机验证');
-                // 正确 → 跳人机验证
                 showCaptcha();
             } else {
                 alert('验证码错误，请重新输入');
@@ -181,3 +235,4 @@
     </script>
 </body>
 </html>
+
