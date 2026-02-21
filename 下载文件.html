@@ -1,153 +1,181 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>凄凉上色文件 - 敌方服饰上色工具</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>凄凉上色文件</title>
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+body{
+font-family:"Microsoft YaHei",sans-serif;
+background:#0a0a12;
+background-image:
+radial-gradient(circle at 20% 30%,rgba(26,26,56,0.5),transparent 45%),
+radial-gradient(circle at 80% 70%,rgba(36,16,36,0.5),transparent 45%);
+overflow-x:hidden;
+min-height:100vh;
+color:#eaeaff;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:60px 20px;
+}
 
-        body {
-            font-family: "Microsoft YaHei", sans-serif;
-            background: #0b0b0f;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(30, 30, 60, 0.4) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(40, 20, 40, 0.4) 0%, transparent 40%);
-            color: #e0e0e0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 60px 20px;
-            overflow-x: hidden;
-        }
+/* 动态流光背景线 */
+@keyframes line{
+0%{background-position:0 0}
+100%{background-position:200% 0}
+}
+.lines{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(90deg,transparent,#131425,transparent);
+background-size:200% 100%;
+animation:line 12s linear infinite;
+pointer-events:none;
+z-index:-1;
+}
 
-        /* 主标题：凄凉上色文件 */
-        .main-title {
-            font-size: 52px;
-            font-weight: bold;
-            text-align: center;
-            background: linear-gradient(90deg, #72a8ff, #ff66b2, #72a8ff);
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: glowText 3s linear infinite;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
-        }
+/* 主标题 */
+.title{
+font-size:58px;
+font-weight:900;
+background:linear-gradient(90deg,#4169ff,#ff2d78,#7ff8ff,#4169ff);
+background-size:400% 100%;
+-webkit-background-clip:text;
+background-clip:text;
+color:transparent;
+animation:titleglow 4s linear infinite;
+text-align:center;
+margin-bottom:30px;
+text-shadow:0 0 20px rgba(65,105,255,0.3);
+}
+@keyframes titleglow{
+0%{background-position:0 0}
+100%{background-position:400% 0}
+}
 
-        @keyframes glowText {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
+/* 按钮盒子 */
+.box{
+background:rgba(18,20,35,0.7);
+border:1px solid rgba(80,90,150,0.3);
+backdrop-filter:blur(12px);
+border-radius:20px;
+padding:40px 50px;
+box-shadow:0 0 50px rgba(50,70,255,0.15);
+text-align:center;
+margin-bottom:50px;
+animation:boxfade 1.2s ease-out;
+}
+@keyframes boxfade{
+0%{opacity:0;transform:translateY(30px)}
+100%{opacity:1;transform:translateY(0)}
+}
 
-        /* 下载框 */
-        .download-box {
-            border: 2px solid rgba(115, 165, 255, 0.3);
-            background: rgba(20, 22, 31, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 30px 50px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(100, 120, 255, 0.15);
-            margin-bottom: 50px;
-            transition: all 0.3s ease;
-        }
+/* 按钮通用 */
+.btn{
+display:inline-block;
+padding:16px 42px;
+border-radius:12px;
+font-size:18px;
+font-weight:bold;
+text-decoration:none;
+margin:10px;
+transition:all 0.3s ease;
+border:none;
+cursor:pointer;
+color:#fff;
+min-width:200px;
+}
 
-        .download-box:hover {
-            border-color: rgba(115, 165, 255, 0.6);
-            box-shadow: 0 0 40px rgba(100, 120, 255, 0.25);
-        }
+/* 下载按钮 */
+.down{
+background:linear-gradient(90deg,#3e63ff,#6a19ff);
+box-shadow:0 8px 25px rgba(62,99,255,0.35);
+}
+.down:hover{
+transform:translateY(-4px);
+box-shadow:0 12px 32px rgba(62,99,255,0.5);
+}
 
-        .download-btn {
-            display: inline-block;
-            padding: 14px 36px;
-            border-radius: 10px;
-            background: linear-gradient(90deg, #4a7dff, #ff4f91);
-            color: #fff;
-            font-size: 18px;
-            font-weight: bold;
-            text-decoration: none;
-            box-shadow: 0 6px 20px rgba(74, 125, 255, 0.3);
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
-        }
+/* 获取密码按钮 */
+.pwd{
+background:linear-gradient(90deg,#ff2a6d,#ff77a9);
+box-shadow:0 8px 25px rgba(255,42,109,0.35);
+}
+.pwd:hover{
+transform:translateY(-4px);
+box-shadow:0 12px 32px rgba(255,42,109,0.5);
+}
 
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(74, 125, 255, 0.45);
-            background: linear-gradient(90deg, #5e8cff, #ff66a1);
-        }
+/* 密码显示 */
+#code{
+margin-top:20px;
+font-size:22px;
+font-weight:bold;
+color:#7ff8ff;
+text-shadow:0 0 12px #7ff8ff;
+display:none;
+}
 
-        /* 内容介绍 */
-        .content {
-            max-width: 820px;
-            line-height: 1.8;
-            font-size: 17px;
-            text-align: left;
-        }
-
-        .content h2 {
-            font-size: 26px;
-            margin: 30px 0 12px;
-            color: #c0d8ff;
-        }
-
-        .content p {
-            margin-bottom: 16px;
-            color: #d0d0e0;
-        }
-
-        .content .item {
-            background: rgba(25,28,40,0.5);
-            border-left: 3px solid #6699ff;
-            padding: 12px 18px;
-            border-radius: 8px;
-            margin: 10px 0;
-        }
-    </style>
+/* 介绍 */
+.info{
+max-width:850px;
+line-height:1.9;
+font-size:17px;
+text-align:center;
+}
+.info h2{
+font-size:28px;
+color:#c6d0ff;
+margin-bottom:15px;
+}
+.info p{
+color:#c0c8e7;
+margin-bottom:12px;
+}
+</style>
 </head>
 
 <body>
+<div class="lines"></div>
 
-    <!-- 主标题 -->
-    <h1 class="main-title">凄凉上色文件</h1>
+<h1 class="title">凄凉上色文件</h1>
 
-    <!-- 下载框 -->
-    <div class="download-box">
-        <a href="https://www.baidu.com" class="download-btn" target="_blank">下载文件</a>
-    </div>
+<div class="box">
+<a href="https://www.baidu.com" target="_blank" class="btn down">下载文件</a>
+<button class="btn pwd" onclick="getPwd()">点击获取密码</button>
+<div id="code"></div>
+</div>
 
-    <!-- 介绍内容 -->
-    <div class="content">
-        <h2>📌 工具介绍</h2>
-        <p>本工具为<strong>凄凉上色文件</strong>，专注于游戏内敌方角色服饰上色优化，帮助你更快速、清晰地识别敌人位置，提升观察效率与反应速度。</p>
+<div class="info">
+<h2>⚡ 凄凉上色文件 · 功能介绍</h2>
+<p>专为敌方服饰上色优化，快速识别敌人位置，提升视野清晰度与反应速度。</p>
+<p>高亮上色、稳定不卡、适配性强，复杂环境也能一眼锁定目标。</p>
+<p>使用简单，加载流畅，助你快速观察、精准判断、占据优势。</p>
+</div>
 
-        <div class="item">
-            <strong>核心功能：敌方服饰自定义上色</strong><br>
-            对敌人服装、模型进行高亮上色处理，远距离即可精准区分目标，不再因环境干扰丢失视野。
-        </div>
-
-        <div class="item">
-            <strong>视觉优化：快速锁定敌方</strong><br>
-            强化敌方角色对比度，让目标在复杂场景中更加突出，大幅提升观察、瞄准、判断的速度。
-        </div>
-
-        <div class="item">
-            <strong>稳定流畅：不影响游戏体验</strong><br>
-            文件轻量化、加载速度快、运行稳定，不会造成卡顿、掉帧或异常问题，长期使用更安心。
-        </div>
-
-        <h2>📁 使用说明</h2>
-        <p>点击上方<strong>下载文件</strong>按钮，获取完整上色资源包。按照说明替换或加载文件后，进入游戏即可自动生效，直观看到敌方服饰上色效果，实现快速观察、快速反应。</p>
-    </div>
-
+<script>
+function getPwd(){
+let ok = confirm("请先加入电报频道！\n确认后跳转到频道，加入后再点获取密码即可显示！");
+if(ok){
+window.open("https://t.me/+bMplIi7vDvJlNzVl","_blank");
+setTimeout(()=>{
+document.getElementById("code").innerText = "@qiliang76";
+document.getElementById("code").style.display = "block";
+},1200);
+}
+}
+</script>
 </body>
 </html>
+
 
 
